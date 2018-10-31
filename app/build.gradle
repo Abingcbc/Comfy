@@ -13,6 +13,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "LEANCLOUDAPPID", "\"${leancloudAppid}\"")
+        buildConfigField("String", "LEANCLOUDAPPKEY", "\"${leancloudAppkey}\"")
     }
     buildTypes {
         release {
@@ -20,14 +22,42 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //LeanCloud config
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // LeanCloud 基础包
+    implementation 'cn.leancloud.android:avoscloud-sdk:v4.7.3'
+    // 推送与即时通讯需要的包
+    implementation('cn.leancloud.android:avoscloud-push:v4.7.3@aar') { transitive = true }
+    // LeanCloud 统计包
+    implementation 'cn.leancloud.android:avoscloud-statistics:v4.7.3'
+    // LeanCloud 用户反馈包
+    implementation 'cn.leancloud.android:avoscloud-feedback:v4.7.3@aar'
+    // avoscloud-sns：LeanCloud 第三方登录包
+    implementation 'cn.leancloud.android:avoscloud-sns:v4.7.3@aar'
+    implementation 'cn.leancloud.android:qq-sdk:1.6.1-leancloud'
+    // 新浪微博 SDK
+    //    implementation ('com.sina.weibo.sdk:core:4.1.4:openDefaultRelease@aar') deprecated
+    // LeanCloud 应用内搜索包
+    implementation 'cn.leancloud.android:avoscloud-search:v4.7.3@aar'
+    //TODO: What is this?
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+//    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation files('./jar/weibo-sdk-android-sso-3.0.1-leancloud.jar')
 }

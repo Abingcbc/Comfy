@@ -5,6 +5,12 @@ buildscript {
     repositories {
         google()
         jcenter()
+        //LeanCloud
+
+        mavenCentral()
+        maven {
+            url "http://mvn.leancloud.cn/nexus/content/repositories/public"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
@@ -19,6 +25,12 @@ allprojects {
     repositories {
         google()
         jcenter()
+
+        mavenCentral()
+        //LeanCloud
+        maven {
+            url "http://mvn.leancloud.cn/nexus/content/repositories/public"
+        }
     }
 }
 
