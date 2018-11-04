@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="5dp"
+        android:layout_margin="5dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null">
+
+        <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_gravity="center"
+                android:scaleX="2.5"
+                android:scaleY="2.5"/>
+
+        <TextView
+                android:id="@+id/personal_card_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="70dp"
+                android:layout_alignStart="@id/checkBox"
+                android:textSize="35sp"
+                android:text="aaaaaaaaa"/>
+
+        <TextView
+                style="@style/scores_item_style"
+                android:id="@+id/personal_card_description"
+                android:layout_alignStart="@id/personal_card_name"
+                android:layout_below="@id/personal_card_name"
+                android:textSize="20dp"
+                android:text="aaaaaaaaa"
+                android:layout_marginStart="40dp"/>
+
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/alarm_plus"
+                android:scaleX="3"
+                android:scaleY="3"
+                android:layout_alignStart="@+id/personal_card_description"
+                android:layout_marginStart="160dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="40dp"
+                android:clickable="true"/>
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
