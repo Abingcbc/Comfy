@@ -1,19 +1,18 @@
 package com.kha.cbc.comfy.cards.personal.presenter;
 
-import android.content.Context;
-import android.content.Intent;
-import com.kha.cbc.comfy.cards.personal.PlusCardActivity;
+import android.widget.TextView;
+import com.kha.cbc.comfy.cards.common.BasePresenter;
 
 /**
- * Created by CBC
+ * Created by ABINGCBC
  * on 2018/11/4
  */
 
-public class PersonalPlusCardPresenter {
+public class PersonalPlusCardPresenter extends BasePresenter {
 
-    public void OnClicked(Context context, String taskId) {
-        Intent intent = new Intent(context, PlusCardActivity.class);
-        intent.putExtra("taskId", taskId);
-        context.startActivity(intent);
+    public void storeCard(TextView cardName, TextView cardDescription) {
+        String title = cardName.getText().toString();
+        String description = cardDescription.getText().toString();
+
     }
 }

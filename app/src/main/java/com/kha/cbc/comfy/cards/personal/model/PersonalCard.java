@@ -3,7 +3,7 @@ package com.kha.cbc.comfy.cards.personal.model;
 import com.kha.cbc.comfy.cards.common.BaseCardModel;
 
 /**
- * Created by CBC
+ * Created by ABINGCBC
  * on 2018/11/2
  */
 

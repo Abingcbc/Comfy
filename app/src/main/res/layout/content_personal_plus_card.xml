@@ -6,8 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_plus_card"
-        tools:context=".cards.personal.PlusCardActivity"
+        tools:showIn="@layout/activity_personal_plus_card"
+        tools:context=".cards.personal.PersonalPlusCardActivity"
         android:orientation="vertical">
     <android.support.design.widget.TextInputLayout
             android:id="@+id/card_title"

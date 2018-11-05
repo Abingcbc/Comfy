@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by CBC
+ * Created by ABINGCBC
  * on 2018/11/2
  */
 
@@ -22,6 +22,7 @@ public class BaseTaskModel {
         builder.append(calendar.get(Calendar.DAY_OF_MONTH) + "-");
         builder.append(calendar.get(Calendar.HOUR_OF_DAY) + "-");
         builder.append(calendar.get(Calendar.MINUTE) + "-");
+        builder.append(title);
         return builder.toString();
     }
 

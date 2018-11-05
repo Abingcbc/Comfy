@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".cards.personal.PlusCardActivity"
+                android:name=".cards.personal.PersonalPlusCardActivity"
                 android:label="@string/title_activity_plus_card"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>

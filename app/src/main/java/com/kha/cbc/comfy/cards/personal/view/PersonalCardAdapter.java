@@ -9,19 +9,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.cards.common.BaseCardModel;
-import com.kha.cbc.comfy.cards.personal.presenter.PersonalPlusCardPresenter;
+import com.kha.cbc.comfy.cards.personal.presenter.PersonalPresenter;
 
 import java.util.List;
 
 /**
- * Created by CBC
+ * Created by ABINGCBC
  * on 2018/11/2
  */
 
 public class PersonalCardAdapter extends RecyclerView.Adapter {
 
     List<BaseCardModel> personalCardList;
-    PersonalPlusCardPresenter personalPlusCardPresenter = new PersonalPlusCardPresenter();
+    PersonalPresenter personalPresenter = new PersonalPresenter();
 
     PersonalCardAdapter(List<BaseCardModel> personalCardList) {
         this.personalCardList = personalCardList;
@@ -61,7 +61,7 @@ public class PersonalCardAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Context context = view.getContext();
-                    personalPlusCardPresenter.OnClicked(context,
+                    personalPresenter.OnPlusCardClicked(context,
                             personalCardList.get(position).getTaskId());
                 }
             });
