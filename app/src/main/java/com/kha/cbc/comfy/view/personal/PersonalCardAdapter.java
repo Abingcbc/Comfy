@@ -1,6 +1,8 @@
-package com.kha.cbc.comfy.cards.personal.view;
+package com.kha.cbc.comfy.view.personal;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.kha.cbc.comfy.R;
-import com.kha.cbc.comfy.cards.common.BaseCardModel;
-import com.kha.cbc.comfy.cards.personal.presenter.PersonalPresenter;
+import com.kha.cbc.comfy.common.BaseCardModel;
+import com.kha.cbc.comfy.view.plus.PersonalPlusCardActivity;
 
 import java.util.List;
 
@@ -21,7 +23,6 @@ import java.util.List;
 public class PersonalCardAdapter extends RecyclerView.Adapter {
 
     List<BaseCardModel> personalCardList;
-    PersonalPresenter personalPresenter = new PersonalPresenter();
 
     PersonalCardAdapter(List<BaseCardModel> personalCardList) {
         this.personalCardList = personalCardList;
@@ -61,8 +62,9 @@ public class PersonalCardAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Context context = view.getContext();
-                    personalPresenter.OnPlusCardClicked(context,
-                            personalCardList.get(position).getTaskId());
+                    Intent intent = new Intent(context, PersonalPlusCardActivity.class);
+                    intent.putExtra("taskId", personalCardList.get(position).getTaskId());
+                    ((Activity)context).startActivityForResult(intent, 2);
                 }
             });
         }

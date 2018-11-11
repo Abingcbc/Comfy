@@ -1,4 +1,4 @@
-package com.kha.cbc.comfy.cards.common;
+package com.kha.cbc.comfy.common;
 
 import io.reactivex.disposables.CompositeDisposable;
 

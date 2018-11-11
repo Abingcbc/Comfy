@@ -1,4 +1,4 @@
-package com.kha.cbc.comfy.cards.personal.view;
+package com.kha.cbc.comfy.view.personal;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.kha.cbc.comfy.R;
-import com.kha.cbc.comfy.cards.personal.model.PersonalTask;
+import com.kha.cbc.comfy.data.model.PersonalTask;
 import com.loopeer.cardstack.CardStackView;
 import com.loopeer.cardstack.StackAdapter;
 
@@ -47,6 +47,11 @@ public class PersonalTaskAdapter extends StackAdapter<Integer> {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.stack_task, parent, false);
         return new PersonalTaskViewHolder(view);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     public class PersonalTaskViewHolder extends CardStackView.ViewHolder {

@@ -1,11 +1,13 @@
-package com.kha.cbc.comfy.cards.common;
+package com.kha.cbc.comfy.view.plus;
+
+import com.kha.cbc.comfy.common.BaseCardModel;
 
 /**
  * Created by ABINGCBC
  * on 2018/11/2
  */
 
-public class PlusCard extends BaseCardModel{
+public class PlusCard extends BaseCardModel {
 
     public PlusCard(String taskId) {
         super(taskId);

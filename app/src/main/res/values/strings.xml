@@ -3,4 +3,7 @@
     <string name="title_activity_plus_card">PlusCardActivity</string>
     <string name="card_title_hint">Please input the name</string>
     <string name="card_description_hint">Please input the description</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_personal_plus_task">PersonalPlusTaskActivity</string>
 </resources>

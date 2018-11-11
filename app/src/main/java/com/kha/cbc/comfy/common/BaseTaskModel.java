@@ -1,4 +1,6 @@
-package com.kha.cbc.comfy.cards.common;
+package com.kha.cbc.comfy.common;
+
+import com.kha.cbc.comfy.common.BaseCardModel;
 
 import java.util.Calendar;
 import java.util.List;
@@ -28,5 +30,13 @@ public class BaseTaskModel {
 
     public void addCard(BaseCardModel cardModel) {
         cardModelList.add(cardModelList.size() - 1, cardModel);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getId() {
+        return id;
     }
 }

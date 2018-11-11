@@ -1,6 +1,7 @@
-package com.kha.cbc.comfy.cards.personal.model;
+package com.kha.cbc.comfy.data.model;
 
-import com.kha.cbc.comfy.cards.common.BaseCardModel;
+import com.kha.cbc.comfy.common.BaseCardModel;
+import com.kha.cbc.comfy.data.entity.GDPersonalCard;
 
 /**
  * Created by ABINGCBC

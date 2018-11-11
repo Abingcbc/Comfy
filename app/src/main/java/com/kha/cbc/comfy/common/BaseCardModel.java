@@ -1,4 +1,7 @@
-package com.kha.cbc.comfy.cards.common;
+package com.kha.cbc.comfy.common;
+
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Created by ABINGCBC

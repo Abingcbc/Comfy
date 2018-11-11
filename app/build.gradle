@@ -33,6 +33,10 @@ android {
     lintOptions {
         abortOnError false
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
@@ -77,4 +81,6 @@ dependencies {
 
 greendao {
     schemaVersion 1 //当前数据库版本
+    daoPackage 'com.kha.cbc.comfy.greendao.gen'// 设置DaoMaster、DaoSession、Dao 包名
+    targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
 }

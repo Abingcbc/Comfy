@@ -1,4 +1,4 @@
-package com.kha.cbc.comfy.cards.personal;
+package com.kha.cbc.comfy.view.plus;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,18 +9,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import com.kha.cbc.comfy.MainActivity;
+import com.kha.cbc.comfy.ComfyApp;
+import com.kha.cbc.comfy.data.entity.GDPersonalCard;
+import com.kha.cbc.comfy.data.entity.GDPersonalTask;
+import com.kha.cbc.comfy.data.model.PersonalCard;
+import com.kha.cbc.comfy.data.model.PersonalTask;
+import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
+import com.kha.cbc.comfy.view.main.MainActivity;
 import com.kha.cbc.comfy.R;
-import com.kha.cbc.comfy.cards.personal.presenter.PersonalPlusCardPresenter;
 
 /**
  * Created by ABINGCBC
  * on 2018/11/4
  */
 
-public class PersonalPlusCardActivity extends AppCompatActivity {
+public class PersonalPlusCardActivity extends AppCompatActivity implements PersonalPlusView{
 
     PersonalPlusCardPresenter presenter = new PersonalPlusCardPresenter();
+    String taskId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +39,13 @@ public class PersonalPlusCardActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PersonalPlusCardActivity.this, MainActivity.class);
-                intent.putExtra("isSuccess", "failed");
+                Intent intent = new Intent();
                 setResult(Activity.RESULT_CANCELED, intent);
                 finish();
             }
         });
+        Intent intent = getIntent();
+        taskId = intent.getStringExtra("taskId");
     }
 
     //绑定完成按钮到toolbar中
@@ -52,8 +59,20 @@ public class PersonalPlusCardActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.plus_success:
-                presenter.storeCard((TextView)findViewById(R.id.input_card_title),
-                        (TextView)findViewById(R.id.input_card_description));
+                //TODO: 此时只在本地添加一条card，暂时觉得没有必要开多线程，但以后服务端同步要开
+                GDPersonalTaskDao taskDao = ((ComfyApp) getApplication())
+                        .getDaoSession().getGDPersonalTaskDao();
+                TextView titleView = findViewById(R.id.input_card_title);
+                TextView descriptionView = findViewById(R.id.input_card_description);
+                String title = titleView.getText().toString();
+                String description = descriptionView.getText().toString();
+                GDPersonalTask task = taskDao.load(taskId);
+                task.getPersonalCardList().add(task.getPersonalCardList().size() - 1,
+                        new GDPersonalCard(title, description, taskId));
+                taskDao.update(task);
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK, intent);
+                finish();
                 return true;
 
                 default:
