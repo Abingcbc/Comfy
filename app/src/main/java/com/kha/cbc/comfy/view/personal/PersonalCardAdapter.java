@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.common.BaseCardModel;
 import com.kha.cbc.comfy.view.plus.PersonalPlusCardActivity;
+import com.loopeer.cardstack.CardStackView;
 
 import java.util.List;
 
@@ -23,9 +24,11 @@ import java.util.List;
 public class PersonalCardAdapter extends RecyclerView.Adapter {
 
     List<BaseCardModel> personalCardList;
+    CardStackView cardStackView;
 
-    PersonalCardAdapter(List<BaseCardModel> personalCardList) {
+    PersonalCardAdapter(List<BaseCardModel> personalCardList, CardStackView cardStackView) {
         this.personalCardList = personalCardList;
+        this.cardStackView = cardStackView;
     }
 
     @Override
@@ -62,6 +65,9 @@ public class PersonalCardAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Context context = view.getContext();
+                    if (cardStackView.isExpending()) {
+                        cardStackView.clearSelectPosition();
+                    }
                     Intent intent = new Intent(context, PersonalPlusCardActivity.class);
                     intent.putExtra("taskId", personalCardList.get(position).getTaskId());
                     ((Activity)context).startActivityForResult(intent, 2);

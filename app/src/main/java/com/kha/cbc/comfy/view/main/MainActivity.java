@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (cardStackView.isExpending()) {
+                    cardStackView.clearSelectPosition();
+                }
                 Intent intent = new Intent(MainActivity.this, PersonalPlusTaskActivity.class);
                 startActivityForResult(intent, 1);
             }
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity
 
     void init() {
         presenter = new MainPresenter(this);
-        personalTaskAdapter = new PersonalTaskAdapter(this);
+        personalTaskAdapter = new PersonalTaskAdapter(this, cardStackView);
         backColor = new LinkedList<>();
         cardStackView = findViewById(R.id.cardStackView);
         cardStackView.setAdapter(personalTaskAdapter);
@@ -101,18 +105,26 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        DaoSession daoSession = ((ComfyApp) getApplication()).getDaoSession();
+        GDPersonalTaskDao taskDao = daoSession.getGDPersonalTaskDao();
         switch (requestCode) {
-            //1为添加task
+                //1为添加task
             case 1:
                 if (resultCode == RESULT_OK) {
-                    DaoSession daoSession = ((ComfyApp) getApplication()).getDaoSession();
-                    GDPersonalTaskDao taskDao = daoSession.getGDPersonalTaskDao();
                     presenter.loadAllTasksFromDB(taskDao);
                 }
+                break;
             case 2:
+                //成功添加card
                 if (resultCode == RESULT_OK) {
-
+                    presenter.loadAllTasksFromDB(taskDao);
                 }
+                //取消添加card
+                else if (resultCode == RESULT_CANCELED) {
+                    if (cardStackView.isExpending())
+                        cardStackView.clearSelectPosition();
+                }
+                break;
         }
     }
 
@@ -201,6 +213,7 @@ public class MainActivity extends AppCompatActivity
                 .getDaoSession().getGDPersonalTaskDao();
         List<GDPersonalTask> personalTasks = taskDao.queryBuilder().list();
         taskList = new LinkedList<>();
+        personalTaskAdapter = new PersonalTaskAdapter(this, cardStackView);
         if (personalTasks.isEmpty())
             return;
         else {
@@ -212,6 +225,7 @@ public class MainActivity extends AppCompatActivity
             for (int i = 0; i < taskList.size(); i++) {
                 backColor.add(R.color.avoscloud_blue);
             }
+            cardStackView.setAdapter(personalTaskAdapter);
             personalTaskAdapter.updateData(backColor, taskList);
         }
     }

@@ -1,5 +1,6 @@
 package com.kha.cbc.comfy.common;
 
+import android.util.Log;
 import com.kha.cbc.comfy.common.BaseCardModel;
 
 import java.util.Calendar;
@@ -19,17 +20,14 @@ public class BaseTaskModel {
     public String initId(String name) {
         StringBuilder builder = new StringBuilder();
         Calendar calendar = Calendar.getInstance();
-        builder.append(calendar.get(Calendar.YEAR) + "-");
         builder.append(calendar.get(Calendar.MONTH) + "-");
         builder.append(calendar.get(Calendar.DAY_OF_MONTH) + "-");
         builder.append(calendar.get(Calendar.HOUR_OF_DAY) + "-");
         builder.append(calendar.get(Calendar.MINUTE) + "-");
-        builder.append(title);
+        builder.append(calendar.get(Calendar.SECOND) + "-");
+        builder.append(name);
+        Log.d("id:-----------", builder.toString());
         return builder.toString();
-    }
-
-    public void addCard(BaseCardModel cardModel) {
-        cardModelList.add(cardModelList.size() - 1, cardModel);
     }
 
     public String getTitle() {

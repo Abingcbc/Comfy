@@ -14,6 +14,7 @@ import com.kha.cbc.comfy.data.entity.GDPersonalCard;
 import com.kha.cbc.comfy.data.entity.GDPersonalTask;
 import com.kha.cbc.comfy.data.model.PersonalCard;
 import com.kha.cbc.comfy.data.model.PersonalTask;
+import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.view.main.MainActivity;
 import com.kha.cbc.comfy.R;
@@ -60,16 +61,14 @@ public class PersonalPlusCardActivity extends AppCompatActivity implements Perso
         switch (item.getItemId()) {
             case R.id.plus_success:
                 //TODO: 此时只在本地添加一条card，暂时觉得没有必要开多线程，但以后服务端同步要开
-                GDPersonalTaskDao taskDao = ((ComfyApp) getApplication())
-                        .getDaoSession().getGDPersonalTaskDao();
-                TextView titleView = findViewById(R.id.input_card_title);
+                GDPersonalCardDao cardDao = ((ComfyApp) getApplication())
+                        .getDaoSession().getGDPersonalCardDao();
+                        TextView titleView = findViewById(R.id.input_card_title);
                 TextView descriptionView = findViewById(R.id.input_card_description);
                 String title = titleView.getText().toString();
                 String description = descriptionView.getText().toString();
-                GDPersonalTask task = taskDao.load(taskId);
-                task.getPersonalCardList().add(task.getPersonalCardList().size() - 1,
-                        new GDPersonalCard(title, description, taskId));
-                taskDao.update(task);
+                cardDao.insert(new GDPersonalCard(title, description, taskId));
+
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 finish();

@@ -25,9 +25,11 @@ import java.util.List;
 public class PersonalTaskAdapter extends StackAdapter<Integer> {
 
     List<PersonalTask> personalTaskList;
+    CardStackView cardStackView;
 
-    public PersonalTaskAdapter(Context context) {
+    public PersonalTaskAdapter(Context context, CardStackView cardStackView) {
         super(context);
+        this.cardStackView = cardStackView;
     }
 
     public void updateData(List<Integer> data, List<PersonalTask> personalTaskList) {
@@ -74,7 +76,8 @@ public class PersonalTaskAdapter extends StackAdapter<Integer> {
                     ContextCompat.getColor(getContext(), backgroundColorId),
                     PorterDuff.Mode.SRC_IN);
             taskTitle.setText(dataList.get(position).getTitle());
-            PersonalCardAdapter personalCardAdapter = new PersonalCardAdapter(dataList.get(position).getCards());
+            PersonalCardAdapter personalCardAdapter = new
+                    PersonalCardAdapter(dataList.get(position).getCards(), cardStackView);
             cardsList.setLayoutManager(new LinearLayoutManager(getContext()));
             cardsList.setAdapter(personalCardAdapter);
         }
