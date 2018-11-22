@@ -54,6 +54,7 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView{
         intent.putExtra("username", user.username)
         intent.putExtra("sessionToken", user.sessionToken)
         startActivity(intent)
+        this.finish()
     }
 
     override fun onRegisterError(error: Throwable) {
@@ -65,6 +66,7 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView{
         intent.putExtra("username", user.username)
         intent.putExtra("sessionToken", user.sessionToken)
         startActivity(intent)
+        this.finish()
     }
 
     override fun onLoginError(error: Throwable) {

@@ -9,7 +9,7 @@
         tools:showIn="@layout/activity_personal_plus_card"
         tools:context=".view.plus.PersonalPlusCardActivity"
         android:orientation="vertical">
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/card_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,15 +17,15 @@
             app:hintAnimationEnabled="true"
             app:hintTextAppearance="@style/HintAppearance">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/card_title_hint"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/card_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,12 +33,12 @@
             app:hintAnimationEnabled="true"
             app:hintTextAppearance="@style/HintAppearance">
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
                 android:id="@+id/input_card_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/card_description_hint"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

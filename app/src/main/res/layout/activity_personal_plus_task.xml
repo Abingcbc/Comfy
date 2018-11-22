@@ -9,7 +9,7 @@
         tools:showIn="@layout/activity_personal_plus_card"
         tools:context=".view.plus.PersonalPlusTaskActivity"
         android:orientation="vertical">
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/task_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,13 +17,13 @@
             app:hintAnimationEnabled="true"
             app:hintTextAppearance="@style/HintAppearance">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_task_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/card_title_hint"
                 android:singleLine="true"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

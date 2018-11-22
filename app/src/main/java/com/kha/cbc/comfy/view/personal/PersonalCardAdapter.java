@@ -1,17 +1,13 @@
 package com.kha.cbc.comfy.view.personal;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.common.BaseCardModel;
-import com.kha.cbc.comfy.view.plus.PersonalPlusCardActivity;
 import com.loopeer.cardstack.CardStackView;
 
 import java.util.List;
