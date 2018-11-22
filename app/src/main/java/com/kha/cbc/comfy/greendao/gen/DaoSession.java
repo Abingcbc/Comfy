@@ -8,8 +8,8 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
-import com.kha.cbc.comfy.data.entity.GDPersonalCard;
-import com.kha.cbc.comfy.data.entity.GDPersonalTask;
+import com.kha.cbc.comfy.entity.GDPersonalCard;
+import com.kha.cbc.comfy.entity.GDPersonalTask;
 
 import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;

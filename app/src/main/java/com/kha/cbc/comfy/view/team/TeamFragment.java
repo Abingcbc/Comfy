@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.kha.cbc.comfy.R;
-import com.kha.cbc.comfy.data.model.TeamTask;
+import com.kha.cbc.comfy.model.TeamTask;
 
 import java.util.ArrayList;
 import java.util.List;

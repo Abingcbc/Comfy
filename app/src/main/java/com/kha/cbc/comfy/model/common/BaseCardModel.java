@@ -1,4 +1,4 @@
-package com.kha.cbc.comfy.common;
+package com.kha.cbc.comfy.model.common;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;

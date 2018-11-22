@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.kha.cbc.comfy.R;
-import com.kha.cbc.comfy.data.model.PersonalTask;
+import com.kha.cbc.comfy.model.PersonalTask;
 import com.loopeer.cardstack.CardStackView;
 import com.loopeer.cardstack.StackAdapter;
 

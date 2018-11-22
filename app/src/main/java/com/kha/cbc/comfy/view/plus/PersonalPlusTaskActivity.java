@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
-import com.kha.cbc.comfy.data.entity.GDPersonalTask;
-import com.kha.cbc.comfy.data.model.PersonalTask;
+import com.kha.cbc.comfy.entity.GDPersonalTask;
+import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 
 public class PersonalPlusTaskActivity extends AppCompatActivity {

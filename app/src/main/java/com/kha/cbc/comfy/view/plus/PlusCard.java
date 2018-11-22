@@ -1,6 +1,6 @@
 package com.kha.cbc.comfy.view.plus;
 
-import com.kha.cbc.comfy.common.BaseCardModel;
+import com.kha.cbc.comfy.model.common.BaseCardModel;
 
 /**
  * Created by ABINGCBC

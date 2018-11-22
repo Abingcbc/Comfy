@@ -1,7 +1,6 @@
 package com.kha.cbc.comfy.view.personal;
 
-import com.kha.cbc.comfy.data.model.PersonalTask;
-import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
+import com.kha.cbc.comfy.model.PersonalTask;
 
 import java.util.List;
 

@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.kha.cbc.comfy.R;
-import com.kha.cbc.comfy.common.BaseCardModel;
+import com.kha.cbc.comfy.model.common.BaseCardModel;
 import com.loopeer.cardstack.CardStackView;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.kha.cbc.comfy.view.plus;
 
 import android.widget.TextView;
-import com.kha.cbc.comfy.common.BasePresenter;
+import com.kha.cbc.comfy.presenter.BasePresenter;
 
 /**
  * Created by ABINGCBC

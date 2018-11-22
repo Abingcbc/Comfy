@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.kha.cbc.comfy.R;
-import com.kha.cbc.comfy.data.model.TeamTask;
+import com.kha.cbc.comfy.model.TeamTask;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.util.List;

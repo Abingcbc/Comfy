@@ -1,6 +1,6 @@
-package com.kha.cbc.comfy.data.entity;
+package com.kha.cbc.comfy.entity;
 
-import com.kha.cbc.comfy.common.BaseCardModel;
+import com.kha.cbc.comfy.model.common.BaseCardModel;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 

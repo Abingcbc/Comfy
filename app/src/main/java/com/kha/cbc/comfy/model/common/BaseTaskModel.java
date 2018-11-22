@@ -1,7 +1,6 @@
-package com.kha.cbc.comfy.common;
+package com.kha.cbc.comfy.model.common;
 
 import android.util.Log;
-import com.kha.cbc.comfy.common.BaseCardModel;
 
 import java.util.Calendar;
 import java.util.List;

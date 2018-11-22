@@ -1,6 +1,6 @@
-package com.kha.cbc.comfy.data.model;
+package com.kha.cbc.comfy.model;
 
-import com.kha.cbc.comfy.common.BaseTaskModel;
+import com.kha.cbc.comfy.model.common.BaseTaskModel;
 
 /**
  * Created by ABINGCBC
