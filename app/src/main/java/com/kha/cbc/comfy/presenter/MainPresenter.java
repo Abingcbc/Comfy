@@ -1,6 +1,7 @@
-package com.kha.cbc.comfy.view.main;
+package com.kha.cbc.comfy.presenter;
 
 import com.kha.cbc.comfy.presenter.BasePresenter;
+import com.kha.cbc.comfy.view.main.MainView;
 
 /**
  * Created by ABINGCBC

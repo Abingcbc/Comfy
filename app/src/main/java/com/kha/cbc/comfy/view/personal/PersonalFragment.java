@@ -14,6 +14,7 @@ import com.kha.cbc.comfy.entity.GDPersonalTask;
 import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.greendao.gen.DaoSession;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
+import com.kha.cbc.comfy.presenter.PersonalFragPresenter;
 import com.kha.cbc.comfy.view.plus.PersonalPlusCardActivity;
 import com.kha.cbc.comfy.view.plus.PersonalPlusTaskActivity;
 import com.loopeer.cardstack.AllMoveDownAnimatorAdapter;

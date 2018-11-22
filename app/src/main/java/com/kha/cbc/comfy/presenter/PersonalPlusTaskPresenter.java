@@ -1,4 +1,4 @@
-package com.kha.cbc.comfy.view.plus;
+package com.kha.cbc.comfy.presenter;
 
 /**
  * Created by ABINGCBC
@@ -6,7 +6,7 @@ package com.kha.cbc.comfy.view.plus;
  */
 public class PersonalPlusTaskPresenter {
 
-    void addTask(String title) {
+    public void addTask(String title) {
 
     }
 }

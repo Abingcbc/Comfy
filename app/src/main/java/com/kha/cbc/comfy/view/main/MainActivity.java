@@ -18,6 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
+import com.kha.cbc.comfy.presenter.MainPresenter;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
 import com.kha.cbc.comfy.view.team.TeamFragment;
