@@ -13,6 +13,7 @@ import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.entity.GDPersonalTask;
 import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
+import com.kha.cbc.comfy.presenter.PersonalPlusTaskPresenter;
 
 public class PersonalPlusTaskActivity extends AppCompatActivity {
 

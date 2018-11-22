@@ -1,4 +1,4 @@
-package com.kha.cbc.comfy.view.plus;
+package com.kha.cbc.comfy.presenter;
 
 import android.widget.TextView;
 import com.kha.cbc.comfy.presenter.BasePresenter;

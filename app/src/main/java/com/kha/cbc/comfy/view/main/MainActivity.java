@@ -13,11 +13,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.flyco.tablayout.*;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
+import com.kha.cbc.comfy.model.TabEntity;
+import com.kha.cbc.comfy.presenter.MainPresenter;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
 import com.kha.cbc.comfy.view.team.TeamFragment;
@@ -31,8 +35,9 @@ public class MainActivity extends AppCompatActivity
 
     MainPresenter presenter;
     ViewPager viewPager;
-    SlidingTabLayout slidingTabLayout;
-    List<Fragment> fragmentList;
+    CommonTabLayout commonTabLayout;
+    ArrayList<Fragment> fragmentList;
+    ArrayList<CustomTabEntity> tabEntityList;
     PersonalFragment personalFragment;
     MainFragmentAdapter adapter;
     GDPersonalTaskDao taskDao;
@@ -95,16 +100,20 @@ public class MainActivity extends AppCompatActivity
         taskDao = ((ComfyApp) getApplication())
                 .getDaoSession().getGDPersonalTaskDao();
         presenter = new MainPresenter(this);
-        viewPager = findViewById(R.id.viewPager);
-        slidingTabLayout = findViewById(R.id.tabLayout);
+        //viewPager = findViewById(R.id.viewPager);
+        commonTabLayout = findViewById(R.id.tabLayout);
         personalFragment = PersonalFragment.getInstance(taskDao);
         fragmentList = new ArrayList<>();
         fragmentList.add(personalFragment);
         fragmentList.add(TeamFragment.getInstance());
         fragmentList.add(PersonalFragment.getInstance(taskDao));
         adapter = new MainFragmentAdapter(getSupportFragmentManager(), fragmentList);
-        viewPager.setAdapter(adapter);
-        slidingTabLayout.setViewPager(viewPager);
+        //viewPager.setAdapter(adapter);
+        tabEntityList = new ArrayList<>();
+        tabEntityList.add(new TabEntity("个人", R.drawable.account));
+        tabEntityList.add(new TabEntity("团队", R.drawable.account_supervisor));
+        tabEntityList.add(new TabEntity("效率", R.drawable.finance));
+        commonTabLayout.setTabData(tabEntityList, this, R.id.frag_change, fragmentList);
     }
 
     //--------------------------------------------

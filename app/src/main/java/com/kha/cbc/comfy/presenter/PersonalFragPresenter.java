@@ -1,9 +1,10 @@
-package com.kha.cbc.comfy.view.personal;
+package com.kha.cbc.comfy.presenter;
 
 import com.kha.cbc.comfy.entity.GDPersonalTask;
 import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.presenter.BasePresenter;
+import com.kha.cbc.comfy.view.personal.PersonalFragView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -19,12 +20,12 @@ public class PersonalFragPresenter extends BasePresenter {
 
     PersonalFragView personalFragView;
 
-    PersonalFragPresenter(PersonalFragView view) {
+    public PersonalFragPresenter(PersonalFragView view) {
         personalFragView = view;
     }
 
 
-    List loadAllTasksFromDB(GDPersonalTaskDao taskDao) {
+    public List loadAllTasksFromDB(GDPersonalTaskDao taskDao) {
         getSubscriptions().add(Observable.just("load")
                 .map(s -> {
                     //TODO:可在此添加网路的检测及同步
