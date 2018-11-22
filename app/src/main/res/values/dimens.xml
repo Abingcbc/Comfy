@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_min_width">100dp</dimen>
+    <dimen name="firstpage_icon">100dp</dimen>
+</resources>

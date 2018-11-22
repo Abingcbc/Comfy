@@ -1,0 +1,31 @@
+package com.kha.cbc.comfy.data.network
+
+import com.kha.cbc.comfy.data.network.dto.UserInfoDto
+import io.reactivex.Single
+import okhttp3.RequestBody
+import retrofit2.http.*
+
+interface LeanCloudApi {
+
+// Example:
+// @GET("characters")
+//    fun getCharacters(
+//        @Query("offset") offset: Int?,
+//        @Query("nameStartsWith") searchQuery: String?,
+//        @Query("limit") limit: Int?
+//    ): Single<DataWrapper<List<CharacterMarvelDto>>>
+
+    //register
+
+    @POST("users")
+        fun postNewregister(
+        @Body requestBody: RequestBody
+    ): Single<UserInfoDto>
+
+    //login
+    @POST("login")
+        fun getAccount(
+        @Body requestBody: RequestBody
+    ): Single<UserInfoDto>
+
+}

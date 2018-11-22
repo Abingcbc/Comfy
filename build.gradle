@@ -6,10 +6,15 @@ buildscript {
         google()
         jcenter()
         //LeanCloud
-
+        maven {
+            url 'https://jitpack.io'
+        }
         mavenCentral()
         maven {
             url "http://mvn.leancloud.cn/nexus/content/repositories/public"
+        }
+        maven {
+            url 'https://jitpack.io'
         }
     }
     dependencies {
@@ -30,6 +35,10 @@ allprojects {
         //LeanCloud
         maven {
             url "http://mvn.leancloud.cn/nexus/content/repositories/public"
+        }
+
+        maven {
+            url 'https://jitpack.io'
         }
     }
 }

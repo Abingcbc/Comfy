@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        tools:context=".view.login.LoginActivity"
+        android:background="@color/colorPrimary">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="@dimen/firstpage_icon"
+            android:layout_height="@dimen/firstpage_icon"
+            android:src="@drawable/twitter_film"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"/>
+
+    <shem.com.materiallogin.MaterialLoginView
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+            />
+
+
+</LinearLayout>
