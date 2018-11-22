@@ -23,12 +23,14 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void createAllTables(Database db, boolean ifNotExists) {
         GDPersonalCardDao.createTable(db, ifNotExists);
         GDPersonalTaskDao.createTable(db, ifNotExists);
+        GDUserDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
         GDPersonalCardDao.dropTable(db, ifExists);
         GDPersonalTaskDao.dropTable(db, ifExists);
+        GDUserDao.dropTable(db, ifExists);
     }
 
     /**
@@ -49,6 +51,7 @@ public class DaoMaster extends AbstractDaoMaster {
         super(db, SCHEMA_VERSION);
         registerDaoClass(GDPersonalCardDao.class);
         registerDaoClass(GDPersonalTaskDao.class);
+        registerDaoClass(GDUserDao.class);
     }
 
     public DaoSession newSession() {

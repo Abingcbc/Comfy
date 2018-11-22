@@ -12,7 +12,7 @@ public class MainPresenter extends BasePresenter {
 
     MainView mainView;
 
-    MainPresenter(MainView mainView) {
+    public MainPresenter(MainView mainView) {
         this.mainView = mainView;
     }
 

@@ -2,7 +2,9 @@ package com.kha.cbc.comfy.view.login
 
 import android.content.Intent
 import android.os.Bundle
+import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
+import com.kha.cbc.comfy.entity.GDUser
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.LoginPresenter
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter
@@ -53,6 +55,8 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView{
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("username", user.username)
         intent.putExtra("sessionToken", user.sessionToken)
+        val userDao = (application as ComfyApp).daoSession.gdUserDao
+        userDao.insert(GDUser(user))
         startActivity(intent)
         this.finish()
     }
@@ -65,6 +69,8 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView{
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("username", user.username)
         intent.putExtra("sessionToken", user.sessionToken)
+        val userDao = (application as ComfyApp).daoSession.gdUserDao
+        userDao.insert(GDUser(user))
         startActivity(intent)
         this.finish()
     }

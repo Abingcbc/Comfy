@@ -20,7 +20,7 @@ public class PersonalFragPresenter extends BasePresenter {
 
     PersonalFragView personalFragView;
 
-    PersonalFragPresenter(PersonalFragView view) {
+    public PersonalFragPresenter(PersonalFragView view) {
         personalFragView = view;
     }
 

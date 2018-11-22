@@ -1,6 +1,7 @@
 package com.kha.cbc.comfy.model
 
 import com.kha.cbc.comfy.data.network.dto.UserInfoDto
+import com.kha.cbc.comfy.entity.GDUser
 
 //TODO: encryption
 data class User(
@@ -13,8 +14,4 @@ data class User(
         username = dto.username,
         sessionToken = dto.sessionToken
     )
-//    constructor(dto: UserDto): this(
-//        name = dto.name,
-//        imageUrl = dto.imageUrl
-//    )
 }
