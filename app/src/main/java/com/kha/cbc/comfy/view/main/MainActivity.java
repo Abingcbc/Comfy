@@ -19,8 +19,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
+import com.kha.cbc.comfy.entity.GDUser;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.model.TabEntity;
+import com.kha.cbc.comfy.greendao.gen.GDUserDao;
+import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.presenter.MainPresenter;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
@@ -50,16 +53,14 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intentFrom = getIntent();
-        user = intentFrom.getStringExtra("username");
-        sessionToken = intentFrom.getStringExtra("sessionToken");
-        if(user == null || sessionToken == null){
+
+        GDUserDao userDao = ((ComfyApp)getApplication()).getDaoSession().getGDUserDao();
+        List<GDUser> userList = userDao.loadAll();
+        if(userList.size() != 1 || userList.get(0) == null ||
+                userList.get(0).getUsername() == null || userList.get(0).getSessionToken() == null){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             this.finish();
-        }
-        else{
-            //TODO: need to be deleted, just for test
-            Toast.makeText(this, sessionToken, Toast.LENGTH_LONG).show();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);

@@ -11,6 +11,6 @@ import com.kha.cbc.comfy.presenter.BasePresenter;
 public class PersonalPlusCardPresenter extends BasePresenter {
 
     //将新增卡片信息上传至服务器
-    void postCard(TextView titleView, TextView descriptionView) {
+    public void postCard(TextView titleView, TextView descriptionView) {
     }
 }

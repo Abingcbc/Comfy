@@ -6,7 +6,7 @@ package com.kha.cbc.comfy.presenter;
  */
 public class PersonalPlusTaskPresenter {
 
-    void addTask(String title) {
+    public void addTask(String title) {
 
     }
 }
