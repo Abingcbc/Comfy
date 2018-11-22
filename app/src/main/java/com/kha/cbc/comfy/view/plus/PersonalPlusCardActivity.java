@@ -19,6 +19,8 @@ import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.view.main.MainActivity;
 import com.kha.cbc.comfy.R;
 
+import java.util.List;
+
 /**
  * Created by ABINGCBC
  * on 2018/11/4
@@ -67,8 +69,14 @@ public class PersonalPlusCardActivity extends AppCompatActivity implements Perso
                 TextView descriptionView = findViewById(R.id.input_card_description);
                 String title = titleView.getText().toString();
                 String description = descriptionView.getText().toString();
-                cardDao.insert(new GDPersonalCard(title, description, taskId));
-
+                cardDao.insertOrReplace(new GDPersonalCard(title, description, taskId));
+                GDPersonalTaskDao taskDao = ((ComfyApp) getApplication())
+                        .getDaoSession().getGDPersonalTaskDao();
+                List<GDPersonalTask> personalTaskList = taskDao.loadAll();
+                //多表链接时，GreenDao不会实时更新
+                for (GDPersonalTask task : personalTaskList) {
+                    task.resetPersonalCardList();
+                }
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 finish();

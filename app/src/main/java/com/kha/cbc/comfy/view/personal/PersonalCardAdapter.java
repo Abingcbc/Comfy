@@ -25,10 +25,14 @@ public class PersonalCardAdapter extends RecyclerView.Adapter {
 
     List<BaseCardModel> personalCardList;
     CardStackView cardStackView;
+    PersonalFragment fragment;
 
-    PersonalCardAdapter(List<BaseCardModel> personalCardList, CardStackView cardStackView) {
+    PersonalCardAdapter(List<BaseCardModel> personalCardList,
+                        CardStackView cardStackView,
+                        PersonalFragment fragment) {
         this.personalCardList = personalCardList;
         this.cardStackView = cardStackView;
+        this.fragment = fragment;
     }
 
     @Override
@@ -64,13 +68,7 @@ public class PersonalCardAdapter extends RecyclerView.Adapter {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Context context = view.getContext();
-                    if (cardStackView.isExpending()) {
-                        cardStackView.clearSelectPosition();
-                    }
-                    Intent intent = new Intent(context, PersonalPlusCardActivity.class);
-                    intent.putExtra("taskId", personalCardList.get(position).getTaskId());
-                    ((Activity)context).startActivityForResult(intent, 2);
+                    fragment.plusCard(personalCardList.get(position).getTaskId());
                 }
             });
         }

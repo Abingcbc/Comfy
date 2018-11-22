@@ -9,10 +9,11 @@
         tools:context=".view.main.MainActivity"
         tools:showIn="@layout/app_bar_main">
 
-    <com.loopeer.cardstack.CardStackView
-            android:id="@+id/cardStackView"
+    <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-    </com.loopeer.cardstack.CardStackView>
+
+    </android.support.v4.view.ViewPager>
 
 </android.support.constraint.ConstraintLayout>

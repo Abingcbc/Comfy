@@ -17,5 +17,4 @@ public interface MainView {
     void saveCardToCloud();
     void saveTaskToCloud();
 
-    void OnLoadAllFromDBSuccess(List<PersonalTask> taskList);
 }

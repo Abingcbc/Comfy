@@ -26,10 +26,14 @@ public class PersonalTaskAdapter extends StackAdapter<Integer> {
 
     List<PersonalTask> personalTaskList;
     CardStackView cardStackView;
+    PersonalFragment fragment;
 
-    public PersonalTaskAdapter(Context context, CardStackView cardStackView) {
+    public PersonalTaskAdapter(Context context,
+                               CardStackView cardStackView,
+                               PersonalFragment fragment) {
         super(context);
         this.cardStackView = cardStackView;
+        this.fragment = fragment;
     }
 
     public void updateData(List<Integer> data, List<PersonalTask> personalTaskList) {
@@ -77,7 +81,8 @@ public class PersonalTaskAdapter extends StackAdapter<Integer> {
                     PorterDuff.Mode.SRC_IN);
             taskTitle.setText(dataList.get(position).getTitle());
             PersonalCardAdapter personalCardAdapter = new
-                    PersonalCardAdapter(dataList.get(position).getCards(), cardStackView);
+                    PersonalCardAdapter(dataList.get(position).getCards(),
+                    cardStackView, fragment);
             cardsList.setLayoutManager(new LinearLayoutManager(getContext()));
             cardsList.setAdapter(personalCardAdapter);
         }

@@ -3,41 +3,40 @@ package com.kha.cbc.comfy.view.main;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import com.flyco.tablayout.*;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
-import com.kha.cbc.comfy.data.entity.GDPersonalTask;
 import com.kha.cbc.comfy.greendao.gen.DaoSession;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
-import com.kha.cbc.comfy.view.personal.PersonalTaskAdapter;
-import com.kha.cbc.comfy.data.model.PersonalTask;
+import com.kha.cbc.comfy.view.personal.PersonalFragment;
 import com.kha.cbc.comfy.view.plus.PersonalPlusTaskActivity;
-import com.loopeer.cardstack.AllMoveDownAnimatorAdapter;
-import com.loopeer.cardstack.CardStackView;
-import com.loopeer.cardstack.UpDownAnimatorAdapter;
-import com.loopeer.cardstack.UpDownStackAnimatorAdapter;
+import com.kha.cbc.comfy.view.team.TeamFragment;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements CardStackView.ItemExpendListener, MainView,
+        implements MainView,
         NavigationView.OnNavigationItemSelectedListener{
 
-    CardStackView cardStackView;
-    List<PersonalTask> taskList;
-    PersonalTaskAdapter personalTaskAdapter;
-    List<Integer> backColor;
     MainPresenter presenter;
+    ViewPager viewPager;
+    SlidingTabLayout slidingTabLayout;
+    List<Fragment> fragmentList;
+    PersonalFragment personalFragment;
+    MainFragmentAdapter adapter;
+    GDPersonalTaskDao taskDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +49,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (cardStackView.isExpending()) {
-                    cardStackView.clearSelectPosition();
-                }
-                Intent intent = new Intent(MainActivity.this, PersonalPlusTaskActivity.class);
-                startActivityForResult(intent, 1);
+                personalFragment.plusTask();
             }
         });
 
@@ -83,49 +78,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     void init() {
+        taskDao = ((ComfyApp) getApplication())
+                .getDaoSession().getGDPersonalTaskDao();
         presenter = new MainPresenter(this);
-        personalTaskAdapter = new PersonalTaskAdapter(this, cardStackView);
-        backColor = new LinkedList<>();
-        cardStackView = findViewById(R.id.cardStackView);
-        cardStackView.setAdapter(personalTaskAdapter);
-        cardStackView.setItemExpendListener(this);
-        //personalTaskAdapter.updateData(backColor, taskList);
-        //动画效果
-        cardStackView.setAnimatorAdapter(new AllMoveDownAnimatorAdapter(cardStackView));
-        cardStackView.setAnimatorAdapter(new UpDownAnimatorAdapter(cardStackView));
-        cardStackView.setAnimatorAdapter(new UpDownStackAnimatorAdapter(cardStackView));
-        DaoSession daoSession = ((ComfyApp) getApplication()).getDaoSession();
-        GDPersonalTaskDao taskDao = daoSession.getGDPersonalTaskDao();
-        presenter.loadAllTasksFromDB(taskDao);
-    }
-
-    @Override
-    public void onItemExpend(boolean expend) {
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        DaoSession daoSession = ((ComfyApp) getApplication()).getDaoSession();
-        GDPersonalTaskDao taskDao = daoSession.getGDPersonalTaskDao();
-        switch (requestCode) {
-                //1为添加task
-            case 1:
-                if (resultCode == RESULT_OK) {
-                    presenter.loadAllTasksFromDB(taskDao);
-                }
-                break;
-            case 2:
-                //成功添加card
-                if (resultCode == RESULT_OK) {
-                    presenter.loadAllTasksFromDB(taskDao);
-                }
-                //取消添加card
-                else if (resultCode == RESULT_CANCELED) {
-                    if (cardStackView.isExpending())
-                        cardStackView.clearSelectPosition();
-                }
-                break;
-        }
+        viewPager = findViewById(R.id.viewPager);
+        slidingTabLayout = findViewById(R.id.tabLayout);
+        personalFragment = PersonalFragment.getInstance(taskDao);
+        fragmentList = new ArrayList<>();
+        fragmentList.add(personalFragment);
+        fragmentList.add(TeamFragment.getInstance());
+        fragmentList.add(PersonalFragment.getInstance(taskDao));
+        adapter = new MainFragmentAdapter(getSupportFragmentManager(), fragmentList);
+        viewPager.setAdapter(adapter);
+        slidingTabLayout.setViewPager(viewPager);
     }
 
     //--------------------------------------------
@@ -204,31 +169,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void saveTaskToCloud() {
-
     }
-
-    @Override
-    public void OnLoadAllFromDBSuccess(List<PersonalTask> personalTaskList) {
-        GDPersonalTaskDao taskDao = ((ComfyApp) getApplication())
-                .getDaoSession().getGDPersonalTaskDao();
-        List<GDPersonalTask> personalTasks = taskDao.queryBuilder().list();
-        taskList = new LinkedList<>();
-        personalTaskAdapter = new PersonalTaskAdapter(this, cardStackView);
-        if (personalTasks.isEmpty())
-            return;
-        else {
-            for (GDPersonalTask task : personalTasks) {
-                taskList.add(new PersonalTask(task));
-            }
-            //TODO:这里的backColor是固定的，到后期确定涂色表要进行添加
-            backColor = new LinkedList<>();
-            for (int i = 0; i < taskList.size(); i++) {
-                backColor.add(R.color.avoscloud_blue);
-            }
-            cardStackView.setAdapter(personalTaskAdapter);
-            personalTaskAdapter.updateData(backColor, taskList);
-        }
-    }
-
 
 }
