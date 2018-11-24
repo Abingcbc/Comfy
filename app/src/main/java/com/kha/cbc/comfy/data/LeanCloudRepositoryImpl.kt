@@ -20,7 +20,7 @@ class LeanCloudRepositoryImpl: LeanCloudRepository {
         json.put("password", password)
         val requestBody = RequestBody.create(JSONMediaType, json.toString())
         //TODO:尝试直接抛入JSONObject?
-        return api.postNewregister(requestBody).map (::User)
+        return api.postNewregister(requestBody).map(User::fromUserInfoDto)
     }
 
     override fun login(username: String, password: String): Single<User>{
@@ -28,7 +28,7 @@ class LeanCloudRepositoryImpl: LeanCloudRepository {
         json.put("username", username)
         json.put("password", password)
         val requestBody = RequestBody.create(JSONMediaType, json.toString())
-        return api.getAccount(requestBody).map (::User)
+        return api.getAccount(requestBody).map(User::fromUserInfoDto)
     }
 
 

@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity
     GDPersonalTaskDao taskDao;
     FloatingActionButton fab;
     Boolean logged = false;
-    public static String user;
     String sessionToken;
 
     MainPresenter presenter;
@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             this.finish();
         }
-        user = userList.get(0).getUsername();
+        else{
+            User.INSTANCE.fromGDUser(userList.get(0));
+        }
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
@@ -91,6 +93,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        ImageView avatarImageView = (ImageView) headerView.findViewById(R.id.drawer_avatar_imageView);
+        TextView usernameTextView = headerView.findViewById(R.id.drawer_username_textView);
+        TextView sessionTokenTextView = headerView.findViewById(R.id.drawer_sessionToken_textView);
+        usernameTextView.setText(User.INSTANCE.getUsername());
+        sessionTokenTextView.setText(User.INSTANCE.getSessionToken());
 
         //LeanCloud Test Code
 //        AVObject testObject = new AVObject("TestObject");
