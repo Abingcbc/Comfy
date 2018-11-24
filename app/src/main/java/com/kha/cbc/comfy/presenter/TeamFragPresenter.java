@@ -1,8 +1,109 @@
 package com.kha.cbc.comfy.presenter;
 
+import android.os.Looper;
+import android.util.Log;
+import com.avos.avoscloud.*;
+import com.kha.cbc.comfy.model.TeamTask;
+import com.kha.cbc.comfy.view.main.MainActivity;
+import com.kha.cbc.comfy.view.team.TeamFragView;
+import com.kha.cbc.comfy.view.team.TeamFragment;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+
+import java.util.LinkedList;
+import java.util.List;
+
+
 /**
  * Created by ABINGCBC
  * on 2018/11/19
  */
-public class TeamFragPresenter {
+public class TeamFragPresenter extends BasePresenter{
+
+    TeamFragView view;
+
+    public TeamFragPresenter(TeamFragView fragView) {
+        view = fragView;
+    }
+
+    public void getAllCreateTask(List<TeamTask> teamTaskList) {
+        Observable<Integer> observable = Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                AVQuery<AVObject> query = new AVQuery<>("TeamTask");
+                query.whereEqualTo("CreateUserName", MainActivity.user);
+                query.findInBackground(new FindCallback<AVObject>() {
+                    @Override
+                    public void done(List<AVObject> list, AVException e) {
+                        if (e != null) {
+                            e.printStackTrace();
+                            return;
+                        }
+                        teamTaskList.add(new TeamTask("0", "0", "0", "0"));
+                        for (AVObject teamTask : list) {
+                            teamTaskList.add(new TeamTask(
+                                    teamTask.getString("TaskTitle"),
+                                    teamTask.getString("CreateUserName"),
+                                    //TODO:可自选项目图片
+                                    null,
+                                    teamTask.getObjectId()));
+                        }
+                        AVQuery<AVObject> queryP = new AVQuery<>("UserTaskMap");
+                        queryP.whereEqualTo("ParticipateUser", AVUser.getCurrentUser());
+                        queryP.findInBackground(new FindCallback<AVObject>() {
+                            @Override
+                            public void done(List<AVObject> list, AVException e) {
+                                if (e != null) {
+                                    e.printStackTrace();
+                                    return;
+                                }
+                                TeamFragment.numOfCreate = teamTaskList.size();
+                                teamTaskList.add(new TeamTask("0", "0", "0", "0"));
+                                for (AVObject map : list) {
+                                    AVObject teamTask = map.getAVObject("TeamTask");
+                                    teamTaskList.add(new TeamTask(
+                                            teamTask.getString("TaskTitle"),
+                                            teamTask.getString("CreateUserName"),
+                                            //TODO:可自选项目图片
+                                            null,
+                                            teamTask.getObjectId()));
+                                }
+                                emitter.onComplete();
+                            }
+                        });
+                    }
+                });
+
+            }
+        });
+        DisposableObserver<Integer> observer = new DisposableObserver<Integer>() {
+            @Override
+            public void onNext(Integer integer) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                view.onGetAllTaskError(e);
+            }
+
+            @Override
+            public void onComplete() {
+                view.onGetAllTaskSuccess(teamTaskList);
+            }
+        };
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe((e) -> view.setRefreshing(true))
+                .doFinally(() -> view.setRefreshing(false))
+                .subscribe(observer);
+        getSubscriptions().add(observer);
+
+    }
+
 }

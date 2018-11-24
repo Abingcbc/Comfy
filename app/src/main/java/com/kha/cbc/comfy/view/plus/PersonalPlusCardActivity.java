@@ -63,7 +63,7 @@ public class PersonalPlusCardActivity extends AppCompatActivity implements Perso
                 //TODO: 此时只在本地添加一条card，暂时觉得没有必要开多线程，但以后服务端同步要开
                 GDPersonalCardDao cardDao = ((ComfyApp) getApplication())
                         .getDaoSession().getGDPersonalCardDao();
-                        TextView titleView = findViewById(R.id.input_card_title);
+                TextView titleView = findViewById(R.id.input_card_title);
                 TextView descriptionView = findViewById(R.id.input_card_description);
                 String title = titleView.getText().toString();
                 String description = descriptionView.getText().toString();

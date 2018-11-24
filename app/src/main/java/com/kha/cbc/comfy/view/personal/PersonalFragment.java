@@ -16,7 +16,7 @@ import com.kha.cbc.comfy.greendao.gen.DaoSession;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.presenter.PersonalFragPresenter;
 import com.kha.cbc.comfy.view.plus.PersonalPlusCardActivity;
-import com.kha.cbc.comfy.view.plus.PersonalPlusTaskActivity;
+import com.kha.cbc.comfy.view.plus.PlusTaskActivity;
 import com.loopeer.cardstack.AllMoveDownAnimatorAdapter;
 import com.loopeer.cardstack.CardStackView;
 import com.loopeer.cardstack.UpDownAnimatorAdapter;
@@ -84,7 +84,10 @@ public class PersonalFragment extends Fragment
         if (cardStackView.isExpending()) {
             cardStackView.clearSelectPosition();
         }
-        Intent intent = new Intent(getContext(), PersonalPlusTaskActivity.class);
+        Intent intent = new Intent(getContext(), PlusTaskActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", 0);
+        intent.putExtras(bundle);
         startActivityForResult(intent, 1);
     }
 
@@ -122,7 +125,7 @@ public class PersonalFragment extends Fragment
     }
 
     @Override
-    public void OnLoadAllFromDBSuccess(List<PersonalTask> taskList) {
+    public void onLoadAllFromDBSuccess(List<PersonalTask> taskList) {
             GDPersonalTaskDao taskDao = ((ComfyApp) getActivity().getApplication())
                     .getDaoSession().getGDPersonalTaskDao();
             List<GDPersonalTask> personalTasks = taskDao.queryBuilder().list();
@@ -143,5 +146,10 @@ public class PersonalFragment extends Fragment
                 cardStackView.setAdapter(personalTaskAdapter);
                 personalTaskAdapter.updateData(backColor, taskList);
             }
+    }
+
+    @Override
+    public void onLoadAllFromDBError(Throwable e) {
+        e.printStackTrace();
     }
 }

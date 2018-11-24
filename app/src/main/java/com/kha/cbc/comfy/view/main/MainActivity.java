@@ -1,4 +1,5 @@
 package com.kha.cbc.comfy.view.main;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,9 +26,12 @@ import com.kha.cbc.comfy.model.TabEntity;
 import com.kha.cbc.comfy.greendao.gen.GDUserDao;
 import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.presenter.MainPresenter;
+import com.kha.cbc.comfy.presenter.Presenter;
+import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
 import com.kha.cbc.comfy.view.team.TeamFragment;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,17 +40,21 @@ public class MainActivity extends AppCompatActivity
         implements MainView,
         NavigationView.OnNavigationItemSelectedListener{
 
-    MainPresenter presenter;
-    ViewPager viewPager;
     CommonTabLayout commonTabLayout;
-    ArrayList<Fragment> fragmentList;
     ArrayList<CustomTabEntity> tabEntityList;
+    int currentPosition;
+
+    ArrayList<Fragment> fragmentList;
     PersonalFragment personalFragment;
-    MainFragmentAdapter adapter;
+    TeamFragment teamFragment;
+
     GDPersonalTaskDao taskDao;
+    FloatingActionButton fab;
     Boolean logged = false;
-    String user;
+    public static String user;
     String sessionToken;
+
+    MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,25 +70,26 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             this.finish();
         }
+        user = userList.get(0).getUsername();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.main_plus_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fab = findViewById(R.id.main_plus_fab);
+        fab.setOnClickListener(view -> {
+            if (currentPosition == 0)
                 personalFragment.plusTask();
-            }
+            else
+                teamFragment.plusTask();
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //LeanCloud Test Code
@@ -101,20 +110,37 @@ public class MainActivity extends AppCompatActivity
         taskDao = ((ComfyApp) getApplication())
                 .getDaoSession().getGDPersonalTaskDao();
         presenter = new MainPresenter(this);
-        //viewPager = findViewById(R.id.viewPager);
         commonTabLayout = findViewById(R.id.tabLayout);
-        personalFragment = PersonalFragment.getInstance(taskDao);
+
         fragmentList = new ArrayList<>();
+        personalFragment = PersonalFragment.getInstance(taskDao);
         fragmentList.add(personalFragment);
-        fragmentList.add(TeamFragment.getInstance());
+        teamFragment = TeamFragment.getInstance();
+        fragmentList.add(teamFragment);
         fragmentList.add(PersonalFragment.getInstance(taskDao));
-        adapter = new MainFragmentAdapter(getSupportFragmentManager(), fragmentList);
-        //viewPager.setAdapter(adapter);
+
         tabEntityList = new ArrayList<>();
         tabEntityList.add(new TabEntity("个人", R.drawable.account));
         tabEntityList.add(new TabEntity("团队", R.drawable.account_supervisor));
         tabEntityList.add(new TabEntity("效率", R.drawable.finance));
         commonTabLayout.setTabData(tabEntityList, this, R.id.frag_change, fragmentList);
+        commonTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onTabSelect(int position) {
+                currentPosition = position;
+                if (position == 2) {
+                    fab.setVisibility(View.GONE);
+                } else {
+                    fab.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
     }
 
     //--------------------------------------------
@@ -195,4 +221,9 @@ public class MainActivity extends AppCompatActivity
     public void saveTaskToCloud() {
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onViewDestroyed();
+    }
 }

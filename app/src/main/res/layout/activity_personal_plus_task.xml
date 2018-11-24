@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_personal_plus_card"
-        tools:context=".view.plus.PersonalPlusTaskActivity"
+        tools:context=".view.plus.PlusTaskActivity"
         android:orientation="vertical">
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/task_title"

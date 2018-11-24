@@ -1,4 +1,4 @@
-package com.kha.cbc.comfy.view.plus;
+package com.kha.cbc.comfy.model;
 
 import com.kha.cbc.comfy.model.common.BaseCardModel;
 

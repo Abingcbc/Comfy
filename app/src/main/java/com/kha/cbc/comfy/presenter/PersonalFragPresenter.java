@@ -39,7 +39,8 @@ public class PersonalFragPresenter extends BasePresenter {
                     return taskList;
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(personalFragView::OnLoadAllFromDBSuccess));
+                .subscribe(personalFragView::onLoadAllFromDBSuccess,
+                        personalFragView::onLoadAllFromDBError));
         return null;
     }
 }

@@ -2,6 +2,7 @@ package com.kha.cbc.comfy;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
+import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
 import com.kha.cbc.comfy.greendao.gen.DaoMaster;
 import com.kha.cbc.comfy.greendao.gen.DaoSession;
@@ -17,6 +18,8 @@ public class ComfyApp extends Application {
 
         // 初始化参数依次为 this, AppId, AppKey
         AVOSCloud.initialize(this, BuildConfig.LEANCLOUDAPPID, BuildConfig.LEANCLOUDAPPKEY);
+
+        AVInstallation.getCurrentInstallation().saveInBackground();
 
         //LeanCloud debug log
         AVOSCloud.setDebugLogEnabled(true);

@@ -60,9 +60,11 @@
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-                android:name=".view.plus.PersonalPlusTaskActivity"
+                android:name=".view.plus.PlusTaskActivity"
                 android:label="@string/title_activity_personal_plus_task"
                 android:theme="@style/AppTheme">
+        </activity>
+        <activity android:name=".view.team.TeamDetailActivity">
         </activity>
     </application>
 

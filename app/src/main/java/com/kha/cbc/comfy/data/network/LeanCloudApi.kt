@@ -1,5 +1,6 @@
 package com.kha.cbc.comfy.data.network
 
+import com.kha.cbc.comfy.data.network.dto.TeamTaskDto
 import com.kha.cbc.comfy.data.network.dto.UserInfoDto
 import io.reactivex.Single
 import okhttp3.RequestBody
@@ -27,5 +28,15 @@ interface LeanCloudApi {
         fun getAccount(
         @Body requestBody: RequestBody
     ): Single<UserInfoDto>
+
+    @POST("classes")
+        fun postTeamTask(
+        @Body requestBody: RequestBody
+    ): Single<TeamTaskDto>
+
+//    @GET("classes")
+//        fun loadAllCreateTask(
+//
+//    )
 
 }

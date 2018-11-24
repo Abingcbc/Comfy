@@ -10,6 +10,7 @@ import java.util.List;
  */
 public interface PersonalFragView {
 
-    void OnLoadAllFromDBSuccess(List<PersonalTask> taskList);
+    void onLoadAllFromDBSuccess(List<PersonalTask> taskList);
+    void onLoadAllFromDBError(Throwable e);
 
 }
