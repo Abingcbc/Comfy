@@ -1,10 +1,12 @@
 package com.kha.cbc.comfy.view.main;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,7 +14,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-import com.flyco.tablayout.*;
+import com.flyco.tablayout.SlidingTabLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.kha.cbc.comfy.ComfyApp;
@@ -41,7 +43,6 @@ public class MainActivity extends AppCompatActivity
     MainFragmentAdapter adapter;
     GDPersonalTaskDao taskDao;
     Boolean logged = false;
-    String user;
     String sessionToken;
 
     @Override
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             this.finish();
+        }
+        else{
+            User.INSTANCE.fromGDUser(userList.get(0));
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -78,6 +82,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        ImageView avatarImageView = (ImageView) headerView.findViewById(R.id.drawer_avatar_imageView);
+        TextView usernameTextView = headerView.findViewById(R.id.drawer_username_textView);
+        TextView sessionTokenTextView = headerView.findViewById(R.id.drawer_sessionToken_textView);
+        usernameTextView.setText(User.INSTANCE.getUsername());
+        sessionTokenTextView.setText(User.INSTANCE.getSessionToken());
 
         //LeanCloud Test Code
 //        AVObject testObject = new AVObject("TestObject");
