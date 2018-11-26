@@ -1,5 +1,5 @@
 package com.kha.cbc.comfy.presenter
 
-interface Presenter{
+interface Presenter {
     fun onViewDestroyed()
 }

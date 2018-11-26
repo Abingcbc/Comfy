@@ -4,7 +4,8 @@ import com.kha.cbc.comfy.data.network.dto.TeamTaskDto
 import com.kha.cbc.comfy.data.network.dto.UserInfoDto
 import io.reactivex.Single
 import okhttp3.RequestBody
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface LeanCloudApi {
 
@@ -19,18 +20,18 @@ interface LeanCloudApi {
     //register
 
     @POST("users")
-        fun postNewregister(
+    fun postNewregister(
         @Body requestBody: RequestBody
     ): Single<UserInfoDto>
 
     //login
     @POST("login")
-        fun getAccount(
+    fun getAccount(
         @Body requestBody: RequestBody
     ): Single<UserInfoDto>
 
     @POST("classes")
-        fun postTeamTask(
+    fun postTeamTask(
         @Body requestBody: RequestBody
     ): Single<TeamTaskDto>
 

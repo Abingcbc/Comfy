@@ -1,9 +1,9 @@
 package com.kha.cbc.comfy.model;
 
-import com.kha.cbc.comfy.model.common.BaseCardModel;
-import com.kha.cbc.comfy.model.common.BaseTaskModel;
 import com.kha.cbc.comfy.entity.GDPersonalCard;
 import com.kha.cbc.comfy.entity.GDPersonalTask;
+import com.kha.cbc.comfy.model.common.BaseCardModel;
+import com.kha.cbc.comfy.model.common.BaseTaskModel;
 import org.greenrobot.greendao.annotation.Entity;
 
 import java.util.LinkedList;

@@ -6,18 +6,17 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import com.avos.avoscloud.AVUser;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.entity.GDPersonalTask;
-import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
+import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.model.TeamTask;
+import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.presenter.PlusTaskPresenter;
-import com.kha.cbc.comfy.view.main.MainActivity;
 
-public class PlusTaskActivity extends AppCompatActivity implements PlusTaskView{
+public class PlusTaskActivity extends AppCompatActivity implements PlusTaskView {
 
     PlusTaskPresenter presenter = new PlusTaskPresenter(this);
     int type;
@@ -38,19 +37,19 @@ public class PlusTaskActivity extends AppCompatActivity implements PlusTaskView{
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.setOnEditorActionListener((textView, i, keyEvent) -> {
             if (i == EditorInfo.IME_ACTION_DONE ||
-                    (keyEvent!=null &&
-                            keyEvent.getKeyCode()== KeyEvent.KEYCODE_ENTER)) {
+                    (keyEvent != null &&
+                            keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                 String taskTitle = textView.getText().toString();
                 if (type == 0) {
-                    Intent intent = new Intent();
-                    setResult(RESULT_OK, intent);
                     GDPersonalTaskDao taskDao = ((ComfyApp) getApplication())
                             .getDaoSession().getGDPersonalTaskDao();
                     GDPersonalTask personalTask = new GDPersonalTask(new PersonalTask(taskTitle));
                     taskDao.insert(personalTask);
                 } else {
-                    presenter.postTask(new TeamTask(taskTitle, MainActivity.user, null, null));
+                    presenter.postTask(new TeamTask(taskTitle, User.INSTANCE.getUsername(), null, null));
                 }
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
                 finish();
                 return true;
             }

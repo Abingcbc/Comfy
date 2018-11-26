@@ -9,6 +9,7 @@ buildscript {
         maven {
             url 'https://jitpack.io'
         }
+        maven { url "https://dl.bintray.com/drummer-aidan/maven/" }
         mavenCentral()
         maven {
             url "http://mvn.leancloud.cn/nexus/content/repositories/public"
@@ -38,6 +39,7 @@ allprojects {
             url "http://mvn.leancloud.cn/nexus/content/repositories/public"
         }
 
+        maven { url "https://dl.bintray.com/drummer-aidan/maven/" }
         maven {
             url 'https://jitpack.io'
         }

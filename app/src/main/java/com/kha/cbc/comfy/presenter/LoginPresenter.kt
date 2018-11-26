@@ -5,20 +5,20 @@ import com.kha.cbc.comfy.data.plusAssign
 import com.kha.cbc.comfy.data.subscribeBy
 import com.kha.cbc.comfy.view.login.LoginView
 
-class LoginPresenter(override val view: LoginView): LeanCloudPresenter(view){
-    fun onRegister(user: String, password: String){
+class LoginPresenter(override val view: LoginView) : LeanCloudPresenter(view) {
+    fun onRegister(user: String, password: String) {
         subscriptions += repository.registerNewUser(user, password)
             .applySchedulers()
-            .subscribeBy (
+            .subscribeBy(
                 onSuccess = view::onRegisterComplete,
                 onError = view::onRegisterError
             )
     }
 
-    fun onLogin(user: String, password: String){
+    fun onLogin(user: String, password: String) {
         subscriptions += repository.login(user, password)
             .applySchedulers()
-            .subscribeBy (
+            .subscribeBy(
                 onSuccess = view::onLoginComplete,
                 onError = view::onLoginError
             )

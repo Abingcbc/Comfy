@@ -92,8 +92,9 @@ dependencies {
     implementation 'com.loopeer.library:cardstack:1.0.2'
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    implementation 'com.afollestad.material-dialogs:core:2.0.0-rc1'
+    implementation 'com.afollestad.material-dialogs:input:2.0.0-rc1'
 }
-
 greendao {
     schemaVersion 1 //当前数据库版本
     daoPackage 'com.kha.cbc.comfy.greendao.gen'// 设置DaoMaster、DaoSession、Dao 包名

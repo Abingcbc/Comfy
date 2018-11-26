@@ -3,8 +3,6 @@ package com.kha.cbc.comfy.view.team;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.model.TeamTask;
 import com.kha.cbc.comfy.presenter.TeamFragPresenter;
+import com.kha.cbc.comfy.view.common.BaseRefreshView;
 import com.kha.cbc.comfy.view.plus.PlusTaskActivity;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,7 +29,8 @@ import static android.app.Activity.RESULT_OK;
  */
 //user:khazeus@outlook.com
 //password: A12345678
-public class TeamFragment extends Fragment implements TeamFragView {
+public class TeamFragment extends Fragment
+        implements TeamFragView, BaseRefreshView {
 
     View view;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -87,7 +86,6 @@ public class TeamFragment extends Fragment implements TeamFragView {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK)
@@ -96,20 +94,13 @@ public class TeamFragment extends Fragment implements TeamFragView {
     }
 
     @Override
-    public void onGetAllTaskSuccess(List<TeamTask> teamTasks) {
-        if (Thread.currentThread() == Looper.getMainLooper().getThread())
-            Log.d("a", "a");
-        recyclerView.setAdapter(new TeamTaskAdapter(teamTaskList,this, numOfCreate));
-    }
-
-    @Override
-    public void onGetAllTaskError(Throwable e) {
-        e.printStackTrace();
-    }
-
-    @Override
-    public void setRefreshing(boolean b) {
+    public void refresh(boolean b) {
         swipeRefreshLayout.setRefreshing(b);
+    }
+
+    @Override
+    public void onComplete() {
+        recyclerView.setAdapter(new TeamTaskAdapter(teamTaskList, this, numOfCreate));
     }
 
     class TeamItemDecoration extends RecyclerView.ItemDecoration {

@@ -18,6 +18,7 @@ public class TeamDetailFragAdapter extends FragmentPagerAdapter {
         super(manager);
         this.fragmentList = fragmentList;
     }
+
     @Override
     public Fragment getItem(int position) {
         return fragmentList.get(position);

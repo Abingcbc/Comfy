@@ -10,7 +10,7 @@ fun <T> Single<T>.applySchedulers(): Single<T> = this
     .subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())
 
-operator fun CompositeDisposable.plusAssign(disposable: Disposable){
+operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
     add(disposable)
 }
 
@@ -18,4 +18,4 @@ operator fun CompositeDisposable.plusAssign(disposable: Disposable){
 fun <T> Single<T>.subscribeBy(
     onError: ((Throwable) -> Unit)? = null,
     onSuccess: (T) -> Unit
-): Disposable = subscribe(onSuccess, { onError?.invoke(it)} )
+): Disposable = subscribe(onSuccess, { onError?.invoke(it) })

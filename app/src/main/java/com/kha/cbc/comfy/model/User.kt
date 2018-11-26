@@ -5,17 +5,17 @@ import com.kha.cbc.comfy.entity.GDUser
 
 //TODO: encryption
 
-object User{
+object User {
     var username: String? = null
     var sessionToken: String? = null
 
-    fun fromUserInfoDto(dto: UserInfoDto): User{
+    fun fromUserInfoDto(dto: UserInfoDto): User {
         username = dto.username
         sessionToken = dto.sessionToken
         return User
     }
 
-    fun fromGDUser(gdUser: GDUser): User{
+    fun fromGDUser(gdUser: GDUser): User {
         username = gdUser.username
         sessionToken = gdUser.sessionToken
         return User

@@ -7,4 +7,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_personal_plus_task">PersonalPlusTaskActivity</string>
+    <string name="submit">确认</string>
+    <string name="cancel">取消</string>
 </resources>

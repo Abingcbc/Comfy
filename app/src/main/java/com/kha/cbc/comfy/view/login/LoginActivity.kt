@@ -8,7 +8,6 @@ import com.kha.cbc.comfy.entity.GDUser
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.LoginPresenter
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter
-import com.kha.cbc.comfy.view.common.toast
 import com.kha.cbc.comfy.view.common.yum
 import com.kha.cbc.comfy.view.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -16,7 +15,7 @@ import shem.com.materiallogin.DefaultLoginView
 import shem.com.materiallogin.DefaultRegisterView
 import shem.com.materiallogin.MaterialLoginView
 
-class LoginActivity : BaseActivityWithPresenter(), LoginView{
+class LoginActivity : BaseActivityWithPresenter(), LoginView {
 
     override val presenter = LoginPresenter(this)
 
@@ -30,21 +29,18 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView{
             val user = registerUser.editText!!.text.toString()
             if (passRep != pass) {
                 login.yum("Two passwords didn't match").show()
-            }
-            else if (pass == "" || user == ""){
+            } else if (pass == "" || user == "") {
                 login.yum("Invalid Username or Password").show()
-            }
-            else{
+            } else {
                 presenter.onRegister(user, pass)
             }
         }
-        ((login as MaterialLoginView).loginView as DefaultLoginView).setListener{ loginUser, loginPass ->
+        ((login as MaterialLoginView).loginView as DefaultLoginView).setListener { loginUser, loginPass ->
             val pass = loginPass.editText!!.text.toString()
             val user = loginUser.editText!!.text.toString()
-            if(user == "" || pass == ""){
+            if (user == "" || pass == "") {
                 login.yum("Invalid Username or Password").show()
-            }
-            else{
+            } else {
                 presenter.onLogin(user, pass)
             }
         }

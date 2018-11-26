@@ -5,6 +5,6 @@ package com.kha.cbc.comfy.view.plus;
  * on 2018/11/5
  */
 
-public interface PersonalPlusView {
+public interface PlusCardView {
 
 }

@@ -55,7 +55,7 @@
         <activity android:name=".view.login.LoginActivity">
         </activity>
         <activity
-                android:name=".view.plus.PersonalPlusCardActivity"
+                android:name=".view.plus.PlusCardActivity"
                 android:label="@string/title_activity_plus_card"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>

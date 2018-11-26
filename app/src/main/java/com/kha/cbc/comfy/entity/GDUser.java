@@ -2,8 +2,8 @@ package com.kha.cbc.comfy.entity;
 
 import com.kha.cbc.comfy.model.User;
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 @Entity
 public class GDUser {
@@ -13,7 +13,7 @@ public class GDUser {
     String sessionToken;
 
 
-    public GDUser(User user){
+    public GDUser(User user) {
         username = user.getUsername();
         sessionToken = user.getSessionToken();
     }

@@ -44,7 +44,7 @@ public class PersonalTaskAdapter extends StackAdapter<Integer> {
 
     @Override
     public void bindView(Integer data, int position, CardStackView.ViewHolder holder) {
-        PersonalTaskViewHolder personalTaskViewHolder = (PersonalTaskViewHolder)holder;
+        PersonalTaskViewHolder personalTaskViewHolder = (PersonalTaskViewHolder) holder;
         personalTaskViewHolder.onBind(data, position, personalTaskList);
     }
 
@@ -75,7 +75,7 @@ public class PersonalTaskAdapter extends StackAdapter<Integer> {
             taskTitle = view.findViewById(R.id.task_title_text);
         }
 
-        public void onBind(Integer backgroundColorId,int position,List<PersonalTask> dataList) {
+        public void onBind(Integer backgroundColorId, int position, List<PersonalTask> dataList) {
             header.getBackground().setColorFilter(
                     ContextCompat.getColor(getContext(), backgroundColorId),
                     PorterDuff.Mode.SRC_IN);

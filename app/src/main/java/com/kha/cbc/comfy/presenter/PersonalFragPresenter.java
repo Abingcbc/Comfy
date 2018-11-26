@@ -1,9 +1,8 @@
 package com.kha.cbc.comfy.presenter;
 
 import com.kha.cbc.comfy.entity.GDPersonalTask;
-import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
-import com.kha.cbc.comfy.presenter.BasePresenter;
+import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.view.personal.PersonalFragView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

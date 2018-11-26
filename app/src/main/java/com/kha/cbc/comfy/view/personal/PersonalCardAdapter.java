@@ -56,7 +56,7 @@ public class PersonalCardAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        PersonalCardViewHolder cardViewHolder = (PersonalCardViewHolder)holder;
+        PersonalCardViewHolder cardViewHolder = (PersonalCardViewHolder) holder;
         if (position != personalCardList.size() - 1) {
             cardViewHolder.name.setText(personalCardList.get(position).getTitle());
             cardViewHolder.description.setText(personalCardList.get(position).getDescription());
@@ -75,7 +75,7 @@ public class PersonalCardAdapter extends RecyclerView.Adapter {
         return personalCardList.size();
     }
 
-    public class PersonalCardViewHolder extends RecyclerView.ViewHolder{
+    public class PersonalCardViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
         TextView description;

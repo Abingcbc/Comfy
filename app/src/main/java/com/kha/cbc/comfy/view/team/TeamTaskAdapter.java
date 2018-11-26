@@ -1,6 +1,5 @@
 package com.kha.cbc.comfy.view.team;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
     TeamFragment fragment;
     int numOfCreate;
 
-    TeamTaskAdapter(List<TeamTask> teamTaskList,TeamFragment fragment, int numOfCreate) {
+    TeamTaskAdapter(List<TeamTask> teamTaskList, TeamFragment fragment, int numOfCreate) {
         this.teamTaskList = teamTaskList;
         this.fragment = fragment;
         this.numOfCreate = numOfCreate;
@@ -53,11 +52,11 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
                         R.layout.info_participate, parent, false);
                 ViewHolder viewHolder2 = new ViewHolder(view2);
                 return viewHolder2;
-                default:
-                    View view = LayoutInflater.from(parent.getContext()).inflate(
-                            R.layout.team_task, parent, false);
-                    ViewHolder viewHolder = new ViewHolder(view);
-                    return viewHolder;
+            default:
+                View view = LayoutInflater.from(parent.getContext()).inflate(
+                        R.layout.team_task, parent, false);
+                ViewHolder viewHolder = new ViewHolder(view);
+                return viewHolder;
         }
     }
 

@@ -5,10 +5,10 @@ import android.view.View
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 
-fun Context.toast(text: String, length: Int = Toast.LENGTH_LONG){
+fun Context.toast(text: String, length: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this, text, length).show()
 }
 
-fun View.yum(text: String, length: Int = Snackbar.LENGTH_SHORT) : Snackbar{
+fun View.yum(text: String, length: Int = Snackbar.LENGTH_SHORT): Snackbar {
     return Snackbar.make(this, text, length)
 }

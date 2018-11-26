@@ -1,8 +1,5 @@
 package com.kha.cbc.comfy.model.common;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-
 /**
  * Created by ABINGCBC
  * on 2018/11/2

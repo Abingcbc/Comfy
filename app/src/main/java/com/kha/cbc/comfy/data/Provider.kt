@@ -1,6 +1,6 @@
 package com.kha.cbc.comfy.data
 
-abstract class Provider<T>{
+abstract class Provider<T> {
     abstract fun creator(): T
 
     private val instance: T by lazy { creator() }

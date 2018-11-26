@@ -1,17 +1,17 @@
 package com.kha.cbc.comfy.entity;
 
-import com.kha.cbc.comfy.model.common.BaseCardModel;
-import com.kha.cbc.comfy.model.PersonalTask;
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.ToMany;
-
-import java.util.List;
-import org.greenrobot.greendao.DaoException;
 import com.kha.cbc.comfy.greendao.gen.DaoSession;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
+import com.kha.cbc.comfy.model.PersonalTask;
+import com.kha.cbc.comfy.model.common.BaseCardModel;
+import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.ToMany;
+
+import java.util.List;
 
 /**
  * Created by ABINGCBC
@@ -27,10 +27,14 @@ public class GDPersonalTask {
     //使用GreenDao一对多
     @ToMany(referencedJoinProperty = "taskId")
     List<GDPersonalCard> personalCardList;
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 1868782258)
     private transient GDPersonalTaskDao myDao;
 
@@ -52,15 +56,19 @@ public class GDPersonalTask {
             this.personalCardList.add(new GDPersonalCard(cardModelList.get(i)));
         }
     }
+
     public String getId() {
         return this.id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
+
     public String getTitle() {
         return this.title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -92,7 +100,9 @@ public class GDPersonalTask {
         return personalCardList;
     }
 
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    /**
+     * Resets a to-many relationship, making the next get call to query for a fresh result.
+     */
     @Generated(hash = 335706845)
     public synchronized void resetPersonalCardList() {
         personalCardList = null;
@@ -134,11 +144,13 @@ public class GDPersonalTask {
         myDao.update(this);
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 1340018206)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getGDPersonalTaskDao() : null;
     }
-    
+
 }

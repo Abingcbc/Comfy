@@ -1,6 +1,6 @@
 package com.kha.cbc.comfy.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by ABINGCBC
@@ -8,9 +8,11 @@ import java.util.List;
  */
 public class Stage {
 
-    List<TeamCard> teamCardList;
+    public ArrayList<TeamCard> teamCardList;
+    public String title;
 
-    public Stage(List<TeamCard> teamCardList) {
+    public Stage(ArrayList<TeamCard> teamCardList, String title) {
         this.teamCardList = teamCardList;
+        this.title = title;
     }
 }

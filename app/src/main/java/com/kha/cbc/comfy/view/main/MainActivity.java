@@ -1,4 +1,5 @@
 package com.kha.cbc.comfy.view.main;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import com.flyco.tablayout.*;
+import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,23 +23,20 @@ import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.entity.GDUser;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
-import com.kha.cbc.comfy.model.TabEntity;
 import com.kha.cbc.comfy.greendao.gen.GDUserDao;
+import com.kha.cbc.comfy.model.TabEntity;
 import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.presenter.MainPresenter;
-import com.kha.cbc.comfy.presenter.Presenter;
-import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
 import com.kha.cbc.comfy.view.team.TeamFragment;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements MainView,
-        NavigationView.OnNavigationItemSelectedListener{
+        NavigationView.OnNavigationItemSelectedListener {
 
     CommonTabLayout commonTabLayout;
     ArrayList<CustomTabEntity> tabEntityList;
@@ -62,15 +59,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Intent intentFrom = getIntent();
 
-        GDUserDao userDao = ((ComfyApp)getApplication()).getDaoSession().getGDUserDao();
+        GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
         List<GDUser> userList = userDao.loadAll();
-        if(userList.size() != 1 || userList.get(0) == null ||
-                userList.get(0).getUsername() == null || userList.get(0).getSessionToken() == null){
+        if (userList.size() != 1 || userList.get(0) == null ||
+                userList.get(0).getUsername() == null || userList.get(0).getSessionToken() == null) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             this.finish();
-        }
-        else{
+        } else {
             User.INSTANCE.fromGDUser(userList.get(0));
         }
 
