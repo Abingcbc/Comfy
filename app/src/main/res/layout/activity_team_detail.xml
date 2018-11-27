@@ -44,30 +44,11 @@
             android:layout_centerVertical="true"/>
 
 
-    <androidx.viewpager.widget.ViewPager
+    <com.tmall.ultraviewpager.UltraViewPager
             android:id="@+id/stage_viewpager"
-            android:elevation="3dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp">
-
-    </androidx.viewpager.widget.ViewPager>
-
-    <LinearLayout
-            android:layout_alignTop="@id/stage_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-    </LinearLayout>
-
-    <View
-            android:id="@+id/indicator_dots"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:background="@drawable/dots">
-
-    </View>
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
 
 
 </RelativeLayout>

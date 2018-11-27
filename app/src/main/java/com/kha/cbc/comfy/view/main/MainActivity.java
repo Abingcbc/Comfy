@@ -31,14 +31,17 @@ import com.kha.cbc.comfy.greendao.gen.GDUserDao;
 import com.kha.cbc.comfy.model.TabEntity;
 import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.presenter.MainPresenter;
+import com.kha.cbc.comfy.presenter.Presenter;
+import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
 import com.kha.cbc.comfy.view.team.TeamFragment;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivityWithPresenter
         implements MainView,
         NavigationView.OnNavigationItemSelectedListener {
 
@@ -57,11 +60,14 @@ public class MainActivity extends AppCompatActivity
 
     MainPresenter presenter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intentFrom = getIntent();
+
+
 
         GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
         List<GDUser> userList = userDao.loadAll();
@@ -101,18 +107,18 @@ public class MainActivity extends AppCompatActivity
         usernameTextView.setText(User.INSTANCE.getUsername());
         sessionTokenTextView.setText(User.INSTANCE.getSessionToken());
 
-        //LeanCloud Test Code
-        AVObject testObject = new AVObject("TestObject");
-        testObject.put("words","Hello World!");
-        testObject.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                if(e == null){
-                    Log.d("saved","success!");
-                }
-            }
-        });
         init();
+        //LeanCloud Test Code
+//        AVObject testObject = new AVObject("TestObject");
+//        testObject.put("words","Hello World!");
+//        testObject.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(AVException e) {
+//                if(e == null){
+//                    Log.d("saved","success!");
+//                }
+//            }
+//        });
     }
 
     void init() {
@@ -234,5 +240,11 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         presenter.onViewDestroyed();
+    }
+
+    @NotNull
+    @Override
+    public Presenter getPresenter() {
+        return presenter;
     }
 }

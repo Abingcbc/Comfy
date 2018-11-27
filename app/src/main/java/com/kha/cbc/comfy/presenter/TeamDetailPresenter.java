@@ -31,6 +31,8 @@ public class TeamDetailPresenter extends BasePresenter {
         queryForStage.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> alist, AVException e) {
+                if (alist == null)
+                    return;
                 if (alist.isEmpty()) {
                     view.onComplete();
                     view.refresh(false);
@@ -38,6 +40,7 @@ public class TeamDetailPresenter extends BasePresenter {
                 for (AVObject stage : alist) {
                     AVQuery<AVObject> queryForCard = new AVQuery<>("TeamCard");
                     queryForCard.whereEqualTo("Stage", stage);
+                    queryForCard.orderByAscending("createdAt");
                     queryForCard.findInBackground(new FindCallback<AVObject>() {
                         @Override
                         public void done(List<AVObject> list, AVException e) {
@@ -47,7 +50,10 @@ public class TeamDetailPresenter extends BasePresenter {
                                         card.getString("Executor"),
                                         card.getString("CardTitle")));
                             }
-                            stageList.add(new Stage(tempCardList, stage.getString("Title")));
+                            stageList.add(new Stage(tempCardList,
+                                    stage.getString("Title"),
+                                    stage.getObjectId(),
+                                    stage.getInt("Index")));
                             if (stageList.size() == alist.size()) {
                                 view.onComplete();
                                 view.refresh(false);

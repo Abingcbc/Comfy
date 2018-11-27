@@ -25,6 +25,7 @@ public class TeamFragPresenter extends BasePresenter {
         view.refresh(true);
         AVQuery<AVObject> query = new AVQuery<>("TeamTask");
         query.whereEqualTo("CreateUserName", User.INSTANCE.getUsername());
+        query.orderByAscending("createdAt");
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {

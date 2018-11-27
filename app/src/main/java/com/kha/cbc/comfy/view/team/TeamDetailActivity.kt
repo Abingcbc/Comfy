@@ -1,22 +1,28 @@
 package com.kha.cbc.comfy.view.team
 
 import android.os.Bundle
+import android.os.Handler
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.model.Stage
 import com.kha.cbc.comfy.presenter.TeamDetailPresenter
 import com.kha.cbc.comfy.view.common.BaseRefreshView
+import com.tmall.ultraviewpager.UltraViewPager
+import com.tmall.ultraviewpager.UltraViewPagerAdapter
 import java.util.*
 
 class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView {
 
     lateinit var bar: ProgressBar
-    lateinit var viewPager: ViewPager
+    lateinit var viewPager: UltraViewPager
     lateinit var presenter: TeamDetailPresenter
     lateinit var fragmentList: MutableList<StageFragment>
     lateinit var stageList: List<Stage>
@@ -29,6 +35,8 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
 
         bar = findViewById(R.id.loading_progressBar)
         viewPager = findViewById(R.id.stage_viewpager)
+        viewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL)
+
         val toolbar = findViewById<Toolbar>(R.id.team_detail_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
@@ -55,18 +63,29 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
     }
 
     override fun onComplete() {
+        stageList = stageList.sortedBy { it.index }
         for (stage in stageList) {
-            fragmentList.add(StageFragment.getInstance(stage.title, stage.teamCardList, objectId))
+            fragmentList.add(StageFragment.getInstance(stage.title,
+                stage.teamCardList, stage.objectId, stageList.size))
         }
-        fragmentList.add(
+        var stageFragment =
             StageFragment.getInstance(
                 "plus",
-                ArrayList(), objectId
+                ArrayList(), objectId, stageList.size
             )
+        fragmentList.add(stageFragment)
+        var pagerAdapter = TeamDetailFragAdapter(
+                supportFragmentManager, fragmentList
         )
-        viewPager.adapter = TeamDetailFragAdapter(
-            supportFragmentManager,
-            fragmentList
-        )
+        var ultraViewPagerAdapter = UltraViewPagerAdapter(pagerAdapter)
+        viewPager.adapter = ultraViewPagerAdapter
+        viewPager.initIndicator()
+        viewPager.indicator.setOrientation(UltraViewPager.Orientation.HORIZONTAL)
+            .setFocusColor(R.color.material_blue_grey_800)
+            .setNormalColor(R.color.avoscloud_feedback_text_gray)
+            .setGravity(Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM)
+        viewPager.indicator.setRadius(20)
+            .setIndicatorPadding(40)
+        viewPager.indicator.build()
     }
 }
