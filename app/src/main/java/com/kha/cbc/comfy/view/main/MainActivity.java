@@ -24,8 +24,10 @@ import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.greendao.gen.GDUserDao;
 import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.presenter.MainPresenter;
+import com.kha.cbc.comfy.view.common.ActivityManager;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
+import com.kha.cbc.comfy.view.settings.SettingsActivity;
 import com.kha.cbc.comfy.view.team.TeamFragment;
 
 import java.util.ArrayList;
@@ -80,15 +82,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        View headerView = navigationView.getHeaderView(0);
-        ImageView avatarImageView = (ImageView) headerView.findViewById(R.id.drawer_avatar_imageView);
-        TextView usernameTextView = headerView.findViewById(R.id.drawer_username_textView);
-        TextView sessionTokenTextView = headerView.findViewById(R.id.drawer_sessionToken_textView);
-        usernameTextView.setText(User.INSTANCE.getUsername());
-        sessionTokenTextView.setText(User.INSTANCE.getSessionToken());
+        initNavigationView();
 
         //LeanCloud Test Code
 //        AVObject testObject = new AVObject("TestObject");
@@ -102,6 +96,20 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
         init();
+
+        ActivityManager.INSTANCE.plusAssign(this);
+    }
+
+    void initNavigationView(){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        ImageView avatarImageView = (ImageView) headerView.findViewById(R.id.drawer_avatar_imageView);
+        TextView usernameTextView = headerView.findViewById(R.id.drawer_username_textView);
+        TextView sessionTokenTextView = headerView.findViewById(R.id.drawer_sessionToken_textView);
+        usernameTextView.setText(User.INSTANCE.getUsername());
+        sessionTokenTextView.setText(User.INSTANCE.getSessionToken());
     }
 
     void init() {
@@ -167,7 +175,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
-
+            final Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -198,4 +207,9 @@ public class MainActivity extends AppCompatActivity
     public void saveTaskToCloud() {
     }
 
+    @Override
+    protected void onDestroy() {
+        ActivityManager.INSTANCE.minusAssign(this);
+        super.onDestroy();
+    }
 }

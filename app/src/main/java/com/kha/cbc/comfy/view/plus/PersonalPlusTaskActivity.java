@@ -14,6 +14,7 @@ import com.kha.cbc.comfy.entity.GDPersonalTask;
 import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.presenter.PersonalPlusTaskPresenter;
+import com.kha.cbc.comfy.view.common.ActivityManager;
 
 public class PersonalPlusTaskActivity extends AppCompatActivity {
 
@@ -49,6 +50,13 @@ public class PersonalPlusTaskActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        ActivityManager.INSTANCE.plusAssign(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        ActivityManager.INSTANCE.minusAssign(this);
+        super.onDestroy();
+    }
 }

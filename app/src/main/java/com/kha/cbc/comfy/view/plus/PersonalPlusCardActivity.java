@@ -16,6 +16,7 @@ import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.presenter.PersonalPlusCardPresenter;
+import com.kha.cbc.comfy.view.common.ActivityManager;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class PersonalPlusCardActivity extends AppCompatActivity implements Perso
         });
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");
+        ActivityManager.INSTANCE.plusAssign(this);
     }
 
     //绑定完成按钮到toolbar中
@@ -83,5 +85,11 @@ public class PersonalPlusCardActivity extends AppCompatActivity implements Perso
                 default:
                     return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        ActivityManager.INSTANCE.minusAssign(this);
+        super.onDestroy();
     }
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.settings.user.UserSettingActivity"
+    android:id="@+id/user_setting_layout"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin">
+
+
+    <ProgressBar
+        android:id="@+id/upload_avatar_progress"
+        style="@android:style/Widget.Material.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/first_layout"
+        android:layout_below="@id/upload_avatar_progress">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/firstpage_icon"
+            android:layout_height="@dimen/firstpage_icon"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_launcher_round"
+            android:layout_margin="@dimen/activity_vertical_margin"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_below="@id/first_layout">
+
+        <com.leon.lib.settingview.LSettingItem
+            android:id="@+id/username"
+            app:isShowRightText="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.leon.lib.settingview.LSettingItem
+            android:id="@+id/copy_sessionToken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:isShowRightText="true"
+            android:layout_below="@id/username"/>
+
+        <!--TODO: Add Change Password function-->
+
+        <com.leon.lib.settingview.LSettingItem
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rightTextSize="5"
+            app:rightTextColor="@color/avoscloud_feedback_text_gray"
+            app:leftText="Change Password"
+            android:layout_below="@id/copy_sessionToken"/>
+
+    </RelativeLayout>
+
+    <!--TODO: Compatibility-->
+
+    <!--android:background="@color/material_login_register_error_color"?-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:id="@+id/log_out"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="@dimen/activity_vertical_margin"/>
+
+
+
+</RelativeLayout>
