@@ -120,12 +120,11 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
 
-}
-
     implementation ('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
         transitive = true
     }
 }
+
 greendao {
     schemaVersion 1 //当前数据库版本
     daoPackage 'com.kha.cbc.comfy.greendao.gen'// 设置DaoMaster、DaoSession、Dao 包名
