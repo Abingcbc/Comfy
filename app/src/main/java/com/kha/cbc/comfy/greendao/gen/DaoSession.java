@@ -8,10 +8,12 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
+import com.kha.cbc.comfy.entity.GDAvatar;
 import com.kha.cbc.comfy.entity.GDPersonalCard;
 import com.kha.cbc.comfy.entity.GDPersonalTask;
 import com.kha.cbc.comfy.entity.GDUser;
 
+import com.kha.cbc.comfy.greendao.gen.GDAvatarDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.greendao.gen.GDUserDao;
@@ -25,10 +27,12 @@ import com.kha.cbc.comfy.greendao.gen.GDUserDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
+    private final DaoConfig gDAvatarDaoConfig;
     private final DaoConfig gDPersonalCardDaoConfig;
     private final DaoConfig gDPersonalTaskDaoConfig;
     private final DaoConfig gDUserDaoConfig;
 
+    private final GDAvatarDao gDAvatarDao;
     private final GDPersonalCardDao gDPersonalCardDao;
     private final GDPersonalTaskDao gDPersonalTaskDao;
     private final GDUserDao gDUserDao;
@@ -36,6 +40,9 @@ public class DaoSession extends AbstractDaoSession {
     public DaoSession(Database db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
+
+        gDAvatarDaoConfig = daoConfigMap.get(GDAvatarDao.class).clone();
+        gDAvatarDaoConfig.initIdentityScope(type);
 
         gDPersonalCardDaoConfig = daoConfigMap.get(GDPersonalCardDao.class).clone();
         gDPersonalCardDaoConfig.initIdentityScope(type);
@@ -46,19 +53,26 @@ public class DaoSession extends AbstractDaoSession {
         gDUserDaoConfig = daoConfigMap.get(GDUserDao.class).clone();
         gDUserDaoConfig.initIdentityScope(type);
 
+        gDAvatarDao = new GDAvatarDao(gDAvatarDaoConfig, this);
         gDPersonalCardDao = new GDPersonalCardDao(gDPersonalCardDaoConfig, this);
         gDPersonalTaskDao = new GDPersonalTaskDao(gDPersonalTaskDaoConfig, this);
         gDUserDao = new GDUserDao(gDUserDaoConfig, this);
 
+        registerDao(GDAvatar.class, gDAvatarDao);
         registerDao(GDPersonalCard.class, gDPersonalCardDao);
         registerDao(GDPersonalTask.class, gDPersonalTaskDao);
         registerDao(GDUser.class, gDUserDao);
     }
     
     public void clear() {
+        gDAvatarDaoConfig.clearIdentityScope();
         gDPersonalCardDaoConfig.clearIdentityScope();
         gDPersonalTaskDaoConfig.clearIdentityScope();
         gDUserDaoConfig.clearIdentityScope();
+    }
+
+    public GDAvatarDao getGDAvatarDao() {
+        return gDAvatarDao;
     }
 
     public GDPersonalCardDao getGDPersonalCardDao() {

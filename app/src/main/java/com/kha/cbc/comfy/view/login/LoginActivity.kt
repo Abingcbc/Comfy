@@ -7,6 +7,7 @@ import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.entity.GDUser
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.LoginPresenter
+import com.kha.cbc.comfy.view.common.ActivityManager
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter
 import com.kha.cbc.comfy.view.common.yum
 import com.kha.cbc.comfy.view.main.MainActivity
@@ -44,10 +45,15 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView {
                 presenter.onLogin(user, pass)
             }
         }
+
+        ActivityManager += this
     }
 
     override fun onRegisterComplete(user: User) {
         login.yum("Successfully registered, auto login").show()
+        User.username = user.username
+        User.sessionToken = user.sessionToken
+        presenter.uploadComfyUser(User.username!!)
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("username", user.username)
         intent.putExtra("sessionToken", user.sessionToken)
@@ -73,5 +79,10 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView {
 
     override fun onLoginError(error: Throwable) {
         login.yum("Cannot login, please check your password-username pairs").show()
+    }
+
+    override fun onDestroy() {
+        ActivityManager -= this
+        super.onDestroy()
     }
 }

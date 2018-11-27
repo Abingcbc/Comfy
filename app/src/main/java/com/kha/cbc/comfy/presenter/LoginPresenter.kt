@@ -1,5 +1,8 @@
 package com.kha.cbc.comfy.presenter
 
+import com.avos.avoscloud.AVException
+import com.avos.avoscloud.AVObject
+import com.avos.avoscloud.SaveCallback
 import com.kha.cbc.comfy.data.applySchedulers
 import com.kha.cbc.comfy.data.plusAssign
 import com.kha.cbc.comfy.data.subscribeBy
@@ -15,7 +18,17 @@ class LoginPresenter(override val view: LoginView) : LeanCloudPresenter(view) {
             )
     }
 
-    fun onLogin(user: String, password: String) {
+    fun uploadComfyUser(username: String){
+        val comfyUser = AVObject("ComfyUser")
+        comfyUser.put("username", username)
+        comfyUser.saveInBackground(object: SaveCallback(){
+            override fun done(p0: AVException?) {
+
+            }
+        })
+    }
+
+    fun onLogin(user: String, password: String){
         subscriptions += repository.login(user, password)
             .applySchedulers()
             .subscribeBy(
