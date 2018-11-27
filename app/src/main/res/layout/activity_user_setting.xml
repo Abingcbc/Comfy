@@ -54,7 +54,7 @@
             app:isShowRightText="true"
             android:layout_below="@id/username"/>
 
-        <!--TODO: Add Change Password function-->
+        <!--TODO: Add Change Password function and Change sessionToken Style-->
 
         <com.leon.lib.settingview.LSettingItem
             android:id="@+id/password"

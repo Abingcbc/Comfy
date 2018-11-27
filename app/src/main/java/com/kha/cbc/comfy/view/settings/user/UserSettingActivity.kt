@@ -4,10 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -38,8 +35,8 @@ import java.io.File
 
 class UserSettingActivity : BaseActivityWithPresenter() , AvatarView{
 
-    override fun downloadAvatarFinish() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun downloadAvatarFinish(url: String) {
+        Glide.with(this).load(url).into(avatar)
     }
 
     override val presenter = AvatarPresenter(this)
@@ -67,6 +64,7 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_setting)
         initUserSettingView()
+        presenter.loadAvatar()
         ActivityManager += this
     }
 

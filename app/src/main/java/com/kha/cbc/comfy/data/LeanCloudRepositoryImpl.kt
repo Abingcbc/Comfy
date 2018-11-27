@@ -1,7 +1,5 @@
 package com.kha.cbc.comfy.data
 
-import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import com.kha.cbc.comfy.data.network.LeanCloudApi
 import com.kha.cbc.comfy.data.network.providers.retrofit
 import com.kha.cbc.comfy.model.User
