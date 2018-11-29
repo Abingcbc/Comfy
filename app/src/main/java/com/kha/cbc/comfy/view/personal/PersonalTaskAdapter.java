@@ -7,13 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.cy.cyrvadapter.adapter.SwipeRVAdapter;
+import com.cy.cyrvadapter.recyclerview.SwipeRecyclerView;
 import com.kha.cbc.comfy.R;
+import com.kha.cbc.comfy.model.PersonalCard;
 import com.kha.cbc.comfy.model.PersonalTask;
+import com.kha.cbc.comfy.model.common.BaseCardModel;
 import com.loopeer.cardstack.CardStackView;
 import com.loopeer.cardstack.StackAdapter;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 
 import java.util.List;
 
@@ -64,14 +70,15 @@ public class PersonalTaskAdapter extends StackAdapter<Integer> {
 
         View root;
         FrameLayout header;
-        RecyclerView cardsList;
+        RecyclerView cardsListView;
         TextView taskTitle;
+        SwipeRVAdapter adapter;
 
         public PersonalTaskViewHolder(View view) {
             super(view);
             root = view;
             header = view.findViewById(R.id.task_header);
-            cardsList = view.findViewById(R.id.cards_list);
+            cardsListView = view.findViewById(R.id.cards_list);
             taskTitle = view.findViewById(R.id.task_title_text);
         }
 
@@ -80,16 +87,38 @@ public class PersonalTaskAdapter extends StackAdapter<Integer> {
                     ContextCompat.getColor(getContext(), backgroundColorId),
                     PorterDuff.Mode.SRC_IN);
             taskTitle.setText(dataList.get(position).getTitle());
-            PersonalCardAdapter personalCardAdapter = new
-                    PersonalCardAdapter(dataList.get(position).getCards(),
-                    cardStackView, fragment);
-            cardsList.setLayoutManager(new LinearLayoutManager(getContext()));
-            cardsList.setAdapter(personalCardAdapter);
+            int num  = position;
+            PersonalCardAdapter personalCardAdapter = new PersonalCardAdapter(dataList.get(position).getCards(), fragment);
+//            adapter = new SwipeRVAdapter<BaseCardModel>(dataList.get(position).getCards()) {
+//                @Override
+//                public int getItemLayoutID(int position, BaseCardModel bean) {
+//                    if (position == dataList.get(num).getCards().size() - 1)
+//                        return R.layout.plus_card;
+//                    else
+//                        return R.layout.personal_cards;
+//                }
+//
+//                @Override
+//                public void onItemClick(int position, BaseCardModel bean) {
+//
+//                }
+//
+//                @Override
+//                public void bindSwipeDataToView(RVViewHolder holder, int position, BaseCardModel bean, boolean isSelected) {
+//                    if (position != dataList.get(num).getCards().size() - 1) {
+//                        holder.setText(R.id.personal_card_name, bean.getTitle());
+//                        holder.setText(R.id.personal_card_description, bean.getDescription());
+//                    }
+//                }
+//            };
+            cardsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+            cardsListView.setAdapter(personalCardAdapter);
         }
+
 
         @Override
         public void onItemExpand(boolean b) {
-            cardsList.setVisibility(b ? View.VISIBLE : View.GONE);
+            cardsListView.setVisibility(b ? View.VISIBLE : View.GONE);
         }
     }
 }

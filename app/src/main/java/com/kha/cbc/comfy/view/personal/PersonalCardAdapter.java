@@ -1,10 +1,16 @@
 package com.kha.cbc.comfy.view.personal;
 
+import android.content.Context;
+import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.model.common.BaseCardModel;
@@ -17,19 +23,18 @@ import java.util.List;
  * on 2018/11/2
  */
 
-public class PersonalCardAdapter extends RecyclerView.Adapter {
+public class PersonalCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+{
 
     List<BaseCardModel> personalCardList;
-    CardStackView cardStackView;
     PersonalFragment fragment;
 
     PersonalCardAdapter(List<BaseCardModel> personalCardList,
-                        CardStackView cardStackView,
                         PersonalFragment fragment) {
         this.personalCardList = personalCardList;
-        this.cardStackView = cardStackView;
         this.fragment = fragment;
     }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -39,6 +44,7 @@ public class PersonalCardAdapter extends RecyclerView.Adapter {
             return 1;
         }
     }
+
 
     @NonNull
     @Override

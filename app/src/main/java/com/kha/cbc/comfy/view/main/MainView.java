@@ -9,12 +9,4 @@ import com.kha.cbc.comfy.view.common.BaseView;
 
 public interface MainView extends BaseView {
 
-    void saveCardToLocal();
-
-    void saveTaskToLocal();
-
-    void saveCardToCloud();
-
-    void saveTaskToCloud();
-
 }

@@ -1,57 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<com.cy.cyrvadapter.recyclerview.SwipeLayout-->
+        <!--android:id="@+id/sl"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--xmlns:tools="http://schemas.android.com/tools"-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android">-->
+
+
 <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         app:cardElevation="5dp"
         app:cardCornerRadius="5dp"
         android:layout_margin="5dp"
         android:foreground="?android:attr/selectableItemBackground"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null">
+    <LinearLayout android:layout_width="match_parent"
+                  android:id="@+id/personal_card"
+                  android:layout_marginBottom="1dp"
+                  android:gravity="center"
+                  android:orientation="horizontal"
+                  android:layout_height="match_parent">
 
-        <CheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_gravity="center"
-                android:scaleX="2.5"
-                android:scaleY="2.5"/>
-
-        <TextView
-                android:id="@+id/personal_card_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="70dp"
-                android:layout_alignStart="@id/checkBox"
-                android:textSize="35sp"
-                android:text="aaaaaaaaa"/>
-
-        <TextView
-                style="@style/scores_item_style"
-                android:id="@+id/personal_card_description"
-                android:layout_alignStart="@id/personal_card_name"
-                android:layout_below="@id/personal_card_name"
-                android:textSize="20dp"
-                android:text="aaaaaaaaa"
-                android:layout_marginStart="40dp"/>
-
-        <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/alarm_plus"
-                android:scaleX="3"
-                android:scaleY="3"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="40dp"
-                android:clickable="true"/>
+       <androidx.appcompat.widget.AppCompatCheckBox
+               android:id="@+id/checkbox"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="15dp"
+               android:scaleX="1.5"
+               android:scaleY="1.5"/>
 
 
-    </RelativeLayout>
+        <RelativeLayout
+                android:layout_marginLeft="16dp"
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="?android:attr/listPreferredItemHeight">
+
+            <TextView
+                    android:layout_alignParentTop="true"
+                    tools:ignore="MissingPrefix"
+                    android:id="@+id/personal_card_name"
+                    android:lines="1"
+                    android:gravity="start|bottom"
+                    android:textColor="@color/black"
+                    android:ellipsize="end"
+                    android:textSize="24dp"
+                    android:text="Clean your room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            <TextView
+                    android:layout_below="@id/personal_card_name"
+                    android:id="@+id/personal_card_description"
+                    android:text="27 Sept 2015, 22:30"
+                    android:textColor="?attr/colorAccent"
+                    android:textSize="18sp"
+                    android:gravity="start|center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
 </androidx.cardview.widget.CardView>
+
+    <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+        <!--<FrameLayout-->
+                <!--android:id="@+id/layout_delete"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+
+                <!--android:background="#ff0000">-->
+
+            <!--<ImageView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="30dp"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:paddingRight="20dp"-->
+                    <!--android:scaleType="centerInside"-->
+                    <!--android:src="@drawable/delete" />-->
+        <!--</FrameLayout>-->
+    <!--</LinearLayout>-->
+<!--</com.cy.cyrvadapter.recyclerview.SwipeLayout>-->
