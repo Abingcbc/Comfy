@@ -52,6 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:isShowRightText="true"
+            app:LtextSize="3"
             android:layout_below="@id/username"/>
 
         <!--TODO: Add Change Password function and Change sessionToken Style-->

@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
+import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.AvatarPresenter
 import com.kha.cbc.comfy.view.common.ActivityManager
@@ -34,6 +35,8 @@ import kotlinx.android.synthetic.main.activity_user_setting.*
 import java.io.File
 
 class UserSettingActivity : BaseActivityWithPresenter() , AvatarView{
+
+    override val avatarDao: GDAvatarDao = (application as ComfyApp).daoSession.gdAvatarDao
 
     override fun downloadAvatarFinish(url: String) {
         Glide.with(this).load(url).into(avatar)
