@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
+import com.avos.avoscloud.*
 import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.entity.GDPersonalCard
@@ -34,12 +35,21 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView {
     internal var taskId: String? = null
     internal var type: Int = 0
     lateinit var executorName: String
-    var executorObjectId: String = "5bfd06c867f356005fbf5b6a"
+    lateinit var executorObjectId: String
     lateinit var stageObjectId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_personal_plus_card)
+
+        val query = AVQuery<AVObject>("ComfyUser")
+        query.whereEqualTo("username", User.username)
+        val comfyUser = query.findInBackground(object: FindCallback<AVObject>(){
+            override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
+                executorObjectId = p0!![0].objectId
+            }
+        })
+
         val toolbar = findViewById<Toolbar>(R.id.personal_plus_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
