@@ -22,6 +22,7 @@ public class StageFragPresenter extends BasePresenter {
         AVObject stage = AVObject.create("Stage");
         stage.put("TeamTask", teamTask);
         stage.put("Title", title);
+        stage.put("Index", index);
         stage.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
