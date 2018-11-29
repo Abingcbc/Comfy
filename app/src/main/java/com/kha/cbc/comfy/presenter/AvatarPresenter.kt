@@ -2,18 +2,23 @@ package com.kha.cbc.comfy.presenter
 
 import android.net.Uri
 import com.avos.avoscloud.*
+import com.kha.cbc.comfy.entity.GDAvatar
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.view.common.AvatarView
 
 
 class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(view){
     //TODO: Structure not perfect
+    //TODO: Check the cache function
 
     fun loadAvatar(){
 
-
-
-//        if(avatarUrl == ""){
+        val historyAvatarList = view.avatarDao.loadAll()
+        if(historyAvatarList.size > 0 && historyAvatarList[0] != null){
+            val historyAvatar = historyAvatarList[0]
+            view.downloadAvatarFinish(historyAvatar.avatarUrl)
+        }
+        else{
             val query = AVQuery<AVObject>("ComfyUser")
             query.whereEqualTo("username", User.username)
             query.findInBackground(object: FindCallback<AVObject>(){
@@ -30,10 +35,7 @@ class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(view){
                     })
                 }
             })
-//        }
-//        else{
-//            view.downloadAvatarFinish(avatarUrl)
-//        }
+        }
     }
 
     fun uploadAvatar(uri: Uri){
@@ -65,6 +67,13 @@ class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(view){
                                 mapObject.saveInBackground(object :SaveCallback(){
                                     override fun done(p0: AVException?) {
                                         view.uploadAvatarFinish(uploadFile.url)
+                                        try {
+                                            val historyAvatar = GDAvatar(User.username, uploadFile.url)
+                                            view.avatarDao.insert(historyAvatar)
+                                        }
+                                        catch (e: Exception){
+                                            e.printStackTrace()
+                                        }
                                     }
                                 })
                             }
