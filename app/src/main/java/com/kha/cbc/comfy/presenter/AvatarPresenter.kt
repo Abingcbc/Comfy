@@ -16,7 +16,13 @@ class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(view){
         val historyAvatarList = view.avatarDao.loadAll()
         if(historyAvatarList.size > 0 && historyAvatarList[0] != null){
             val historyAvatar = historyAvatarList[0]
-            view.downloadAvatarFinish(historyAvatar.avatarUrl)
+            if(User.username == historyAvatar.username){
+                view.downloadAvatarFinish(historyAvatar.avatarUrl)
+            }
+            else{
+                view.avatarDao.deleteAll()
+                loadAvatar()
+            }
         }
         else{
             val query = AVQuery<AVObject>("ComfyUser")
@@ -70,6 +76,7 @@ class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(view){
                                     override fun done(p0: AVException?) {
                                         view.uploadAvatarFinish(uploadFile.url)
                                         try {
+                                            view.avatarDao.deleteAll()
                                             val historyAvatar = GDAvatar(User.username, uploadFile.url)
                                             view.avatarDao.insert(historyAvatar)
                                         }

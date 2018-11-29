@@ -4,5 +4,6 @@ import com.kha.cbc.comfy.presenter.LoginPresenter
 
 interface UserServiceView :BaseView{
     fun usernameChangeFinished()
+    fun usernameChangeFailed()
     fun passwordChangeFinished()
 }
