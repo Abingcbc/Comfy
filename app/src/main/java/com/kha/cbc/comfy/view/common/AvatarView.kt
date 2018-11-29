@@ -7,7 +7,7 @@ import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
 interface AvatarView: BaseView{
 
 
-    val avatarDao: GDAvatarDao
+    var avatarDao: GDAvatarDao
     fun uploadAvatarFinish(url: String)
 
     fun uploadProgressUpdate(progress: Int?)

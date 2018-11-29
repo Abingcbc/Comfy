@@ -29,8 +29,10 @@ class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(view){
                     avatarQuery.include("avatar")
                     avatarQuery.findInBackground(object: FindCallback<AVObject>(){
                         override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
-                            val avatar = p0!![0].getAVFile<AVFile>("avatar")
-                            view.downloadAvatarFinish(avatar.url)
+                            if(p0 != null && p0.size > 0){
+                                val avatar = p0!![0].getAVFile<AVFile>("avatar")
+                                view.downloadAvatarFinish(avatar.url)
+                            }
                         }
                     })
                 }

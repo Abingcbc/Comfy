@@ -36,7 +36,7 @@ import java.io.File
 
 class UserSettingActivity : BaseActivityWithPresenter() , AvatarView{
 
-    override val avatarDao: GDAvatarDao = (application as ComfyApp).daoSession.gdAvatarDao
+    override lateinit var avatarDao: GDAvatarDao
 
     override fun downloadAvatarFinish(url: String) {
         Glide.with(this).load(url).into(avatar)
@@ -65,6 +65,7 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
         setContentView(R.layout.activity_user_setting)
         initUserSettingView()
         presenter.loadAvatar()
