@@ -78,6 +78,7 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
         setContentView(R.layout.activity_user_setting)
         avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
         initUserSettingView()
