@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -39,6 +40,7 @@ import com.kha.cbc.comfy.view.personal.PersonalFragment;
 import com.kha.cbc.comfy.view.settings.SettingsActivity;
 import com.kha.cbc.comfy.view.team.TeamFragment;
 import org.jetbrains.annotations.NotNull;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,17 @@ public class MainActivity extends BaseActivityWithPresenter
 
     MainPresenter presenter;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initNavigationView();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,10 +260,23 @@ public class MainActivity extends BaseActivityWithPresenter
     }
 
     @Override
+    protected void onStop() {
+        GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
+        List<GDUser> userList = userDao.loadAll();
+        if(userList != null && userList.size() > 0){
+            for(GDUser item : userList){
+                userDao.delete(item);
+            }
+        }
+        GDUser newUser = new GDUser(User.INSTANCE.getUsername(), User.INSTANCE.getSessionToken());
+        userDao.insert(newUser);
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         presenter.onViewDestroyed();
-        ActivityManager.INSTANCE.minusAssign(this);
     }
 
     @NotNull

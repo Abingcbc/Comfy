@@ -22,27 +22,40 @@ import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.AvatarPresenter
-import com.kha.cbc.comfy.view.common.ActivityManager
-import com.kha.cbc.comfy.view.common.AvatarView
-import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter
-import com.kha.cbc.comfy.view.common.yum
+import com.kha.cbc.comfy.presenter.UserServicePresenter
+import com.kha.cbc.comfy.view.common.*
 import com.kha.cbc.comfy.view.main.MainActivity
 import com.leon.lib.settingview.LSettingItem
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_user_setting.*
+import pub.devrel.easypermissions.AfterPermissionGranted
 import java.io.File
 
-class UserSettingActivity : BaseActivityWithPresenter() , AvatarView{
+class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServiceView{
 
-    override val avatarDao: GDAvatarDao = (application as ComfyApp).daoSession.gdAvatarDao
+    val RC_GALLERY = 1
+
+    override lateinit var avatarDao: GDAvatarDao
+
+    override fun usernameChangeFinished() {
+        val userSetting: LSettingItem = findViewById(R.id.username)
+        userSetting.setRightText(User.username)
+    }
+
+    override fun passwordChangeFinished() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun downloadAvatarFinish(url: String) {
         Glide.with(this).load(url).into(avatar)
     }
 
     override val presenter = AvatarPresenter(this)
+
+    val userServicePresenter = UserServicePresenter(this)
+
 
     override fun setProgressBarVisible(){
         upload_avatar_progress.visibility = View.VISIBLE
@@ -66,6 +79,7 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_setting)
+        avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
         initUserSettingView()
         presenter.loadAvatar()
         ActivityManager += this
@@ -105,10 +119,12 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView{
 
         avatar.setOnClickListener {
 
+            //TODO: change permissions
+
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ,1)
+                    ,RC_GALLERY)
             }
             else {
                 val intent = Intent("android.intent.action.GET_CONTENT")
@@ -116,8 +132,27 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView{
                 startActivityForResult(intent, CHOOSE_PHOTO)
             }
         }
+    }
 
 
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            RC_GALLERY -> {
+                for(permission in permissions){
+                    if(permission == Manifest.permission.WRITE_EXTERNAL_STORAGE &&
+                        grantResults[permissions.indexOf(permission)] == PackageManager.PERMISSION_GRANTED){
+                        val intent = Intent("android.intent.action.GET_CONTENT")
+                        intent.type = "image/*"
+                        startActivityForResult(intent, CHOOSE_PHOTO)
+                    }
+                    else{
+                        user_setting_layout.yum("You Denied the permission").show()
+                    }
+                }
+            }
+        }
     }
 
     class UsernameSetDialog: DialogFragment(){
@@ -128,9 +163,9 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView{
             builder.setView(view)
                 .setPositiveButton("change"){_,_ ->
                     val usernameEdit: EditText = view.findViewById(R.id.dialog_username)
-                    User.username = usernameEdit.text.toString()
-                    val userSetting: LSettingItem = (activity)!!.findViewById(R.id.username)
-                    userSetting.setRightText(usernameEdit.text.toString())
+                    val passwordEdit: EditText = view.findViewById(R.id.dialog_password)
+                    (activity as UserSettingActivity).userServicePresenter
+                        .usernameChange(usernameEdit.text.toString(), passwordEdit.text.toString())
                 }
                 .setNegativeButton("cancel"){_,_ -> this@UsernameSetDialog.dialog.cancel()}
                 .setTitle("Change Username")

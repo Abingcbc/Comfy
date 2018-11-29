@@ -126,6 +126,8 @@ dependencies {
     implementation ('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
         transitive = true
     }
+
+    implementation 'pub.devrel:easypermissions:2.0.0'
 }
 
 greendao {

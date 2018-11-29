@@ -12,7 +12,23 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/dialog_username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="Username"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dialog_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password for Identity Confirmation"/>
+
 
     </com.google.android.material.textfield.TextInputLayout>
 
