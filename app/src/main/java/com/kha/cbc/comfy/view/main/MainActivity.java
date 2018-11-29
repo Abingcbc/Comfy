@@ -241,25 +241,6 @@ public class MainActivity extends BaseActivityWithPresenter
     }
 
     @Override
-    public void saveCardToLocal() {
-
-    }
-
-    @Override
-    public void saveTaskToLocal() {
-
-    }
-
-    @Override
-    public void saveCardToCloud() {
-
-    }
-
-    @Override
-    public void saveTaskToCloud() {
-    }
-
-    @Override
     protected void onStop() {
         GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
         List<GDUser> userList = userDao.loadAll();
