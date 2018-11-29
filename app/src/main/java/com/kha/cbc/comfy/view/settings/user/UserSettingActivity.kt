@@ -39,6 +39,10 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServic
 
     override lateinit var avatarDao: GDAvatarDao
 
+    override fun usernameChangeFailed() {
+        user_setting_layout.yum("This username can't be used")
+    }
+
     override fun usernameChangeFinished() {
         val userSetting: LSettingItem = findViewById(R.id.username)
         userSetting.setRightText(User.username)
