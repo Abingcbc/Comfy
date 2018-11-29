@@ -38,6 +38,8 @@ public class PlusCardPresenter extends BasePresenter {
         card.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
+                if (e != null)
+                    e.printStackTrace();
                 Log.d("sss", "success");
             }
         });
