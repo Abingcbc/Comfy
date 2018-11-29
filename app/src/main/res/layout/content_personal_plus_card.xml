@@ -15,13 +15,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="50dp"
             app:hintAnimationEnabled="true"
-            app:hintTextAppearance="@style/HintAppearance">
+            app:hintTextAppearance="@style/HintAppearance"
+            android:hint="@string/card_title_hint">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_card_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/card_title_hint"/>
+                android:layout_height="wrap_content"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -31,13 +31,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="50dp"
             app:hintAnimationEnabled="true"
-            app:hintTextAppearance="@style/HintAppearance">
+            app:hintTextAppearance="@style/HintAppearance"
+            android:hint="@string/card_description_hint">
 
         <EditText
                 android:id="@+id/input_card_description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/card_description_hint"/>
+                android:layout_height="wrap_content"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

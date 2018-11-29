@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<com.cy.cyrvadapter.recyclerview.SwipeLayout-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
 <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         app:cardElevation="5dp"
         app:cardCornerRadius="5dp"
         android:layout_margin="5dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
@@ -15,3 +21,4 @@
             android:layout_height="wrap_content"
             android:src="@drawable/plus"/>
 </androidx.cardview.widget.CardView>
+        <!--</com.cy.cyrvadapter.recyclerview.SwipeLayout>-->
