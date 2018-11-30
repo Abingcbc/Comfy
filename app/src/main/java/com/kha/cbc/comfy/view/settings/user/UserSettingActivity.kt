@@ -35,12 +35,16 @@ import java.io.File
 
 class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServiceView{
 
+    override fun passwordChangeFailed() {
+        user_setting_layout.yum("Old Password Not Correct").show()
+    }
+
     val RC_GALLERY = 1
 
     override lateinit var avatarDao: GDAvatarDao
 
     override fun usernameChangeFailed() {
-        user_setting_layout.yum("This username can't be used")
+        user_setting_layout.yum("This username can't be used").show()
     }
 
     override fun usernameChangeFinished() {
@@ -49,7 +53,7 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServic
     }
 
     override fun passwordChangeFinished() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        user_setting_layout.yum("Password successfully Changed").show()
     }
 
     override fun downloadAvatarFinish(url: String) {
@@ -110,6 +114,18 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServic
 
             val newDialog = UsernameSetDialog()
             newDialog.show(fragmentTransac,"set_username")
+        }
+
+        password.setmOnLSettingItemClick {
+            val fragmentTransac = supportFragmentManager.beginTransaction()
+            val prev = supportFragmentManager.findFragmentByTag("set_password")
+            if(prev != null){
+                fragmentTransac.remove(prev)
+            }
+            fragmentTransac.addToBackStack(null)
+
+            val newDialog = PasswordSetDialog()
+            newDialog.show(fragmentTransac,"set_password")
         }
 
         log_out.setOnClickListener {
@@ -174,6 +190,24 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServic
                 }
                 .setNegativeButton("cancel"){_,_ -> this@UsernameSetDialog.dialog.cancel()}
                 .setTitle("Change Username")
+            return builder.create()
+        }
+    }
+
+    class PasswordSetDialog: DialogFragment(){
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            val builder = AlertDialog.Builder(activity)
+            val inflater = activity!!.layoutInflater
+            val view = inflater.inflate(R.layout.set_password_dialog, null)
+            builder.setView(view)
+                .setPositiveButton("change"){_,_ ->
+                    val newPasswordEdit: EditText = view.findViewById(R.id.dialog_new_password)
+                    val oldPasswordEdit: EditText = view.findViewById(R.id.dialog_old_password)
+                    (activity as UserSettingActivity).userServicePresenter
+                        .passwordChange(newPasswordEdit.text.toString(), oldPasswordEdit.text.toString())
+                }
+                .setNegativeButton("cancel"){_,_ -> this.dialog.cancel()}
+                .setTitle("Change Password")
             return builder.create()
         }
     }

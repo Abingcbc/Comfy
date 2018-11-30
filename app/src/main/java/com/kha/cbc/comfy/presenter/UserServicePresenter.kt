@@ -50,17 +50,23 @@ class UserServicePresenter(val view: UserServiceView){
 
     }
 
-    fun passwordChange(password: String){
-        AVUser.logInInBackground(User.username, password, object : LogInCallback<AVUser>() {
+    fun passwordChange(newPassword: String, oldPassword: String){
+        //Add failed logic
+        AVUser.logInInBackground(User.username, oldPassword, object : LogInCallback<AVUser>() {
             override fun done(avUser: AVUser?, p1: AVException?) {
-                avUser!!.put("password", password)
-                avUser.saveInBackground(object: SaveCallback(){
-                    override fun done(e: AVException?) {
-                        User.username = avUser.username
-                        User.sessionToken = avUser.sessionToken
-                        view.passwordChangeFinished()
-                    }
-                })
+                if(avUser != null && p1 == null){
+                    avUser!!.put("password", newPassword)
+                    avUser.saveInBackground(object: SaveCallback(){
+                        override fun done(e: AVException?) {
+                            User.username = avUser.username
+                            User.sessionToken = avUser.sessionToken
+                            view.passwordChangeFinished()
+                        }
+                    })
+                }
+                else{
+                    view.passwordChangeFailed()
+                }
             }
         })
     }

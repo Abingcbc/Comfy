@@ -6,4 +6,5 @@ interface UserServiceView :BaseView{
     fun usernameChangeFinished()
     fun usernameChangeFailed()
     fun passwordChangeFinished()
+    fun passwordChangeFailed()
 }
