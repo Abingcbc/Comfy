@@ -68,8 +68,6 @@ dependencies {
     // LeanCloud 应用内搜索包
     implementation 'cn.leancloud.android:avoscloud-search:v4.7.3@aar'
 
-    //TODO: What is this?
-
     //Conflict?
 
     //    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
@@ -127,7 +125,7 @@ dependencies {
 
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
 
-    implementation ('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
+    implementation('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
         transitive = true
     }
 

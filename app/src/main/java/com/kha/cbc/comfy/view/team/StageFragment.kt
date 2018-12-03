@@ -43,8 +43,8 @@ class StageFragment : Fragment(), BaseRefreshView{
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val bundle = arguments
-        stageTitle = bundle!!.getString("stageName")
-        objectId = bundle!!.getString("objectId")
+        stageTitle = bundle!!.getString("stageName")!!
+        objectId = bundle.getString("objectId")
         val view: View
         if (stageTitle === "plus") {
             var index = bundle.getInt("index")

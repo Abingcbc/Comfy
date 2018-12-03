@@ -64,7 +64,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView {
         val bundle = intentType.extras
         type = bundle!!.getInt("type")
         if (type == 1) {
-            stageObjectId = bundle.getString("objectId")
+            stageObjectId = bundle.getString("objectId")!!
             val button = findViewById<Button>(R.id.assign_button)
             button.setOnClickListener {
                 val materialDialog = MaterialDialog(this)
