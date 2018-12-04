@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.kha.cbc.comfy">
 
     <!-- permissions-start -->
@@ -9,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
 
     <!-- permissions-end -->
     <application
@@ -53,20 +55,21 @@
         </activity>
         <activity android:name=".view.login.LoginActivity" />
         <activity android:name=".view.settings.SettingsActivity" />
-        <activity android:name=".view.settings.user.UserSettingActivity"/>
+        <activity android:name=".view.settings.user.UserSettingActivity" />
         <activity
             android:name=".view.plus.PlusCardActivity"
             android:label="@string/title_activity_plus_card"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.plus.PlusTaskActivity"
             android:label="@string/title_activity_personal_plus_task"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".view.team.TeamDetailActivity"/>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".view.team.TeamDetailActivity" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".view.efficient.UsageActivity"></activity>
     </application>
 
 </manifest>
