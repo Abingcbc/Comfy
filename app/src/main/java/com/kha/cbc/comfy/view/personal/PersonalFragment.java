@@ -5,14 +5,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
+import com.kha.cbc.comfy.entity.GDPersonalCard;
 import com.kha.cbc.comfy.entity.GDPersonalTask;
 import com.kha.cbc.comfy.greendao.gen.DaoSession;
+import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
+import com.kha.cbc.comfy.model.PersonalCard;
 import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.presenter.PersonalFragPresenter;
 import com.kha.cbc.comfy.view.plus.PlusCardActivity;
@@ -21,6 +26,7 @@ import com.loopeer.cardstack.AllMoveDownAnimatorAdapter;
 import com.loopeer.cardstack.CardStackView;
 import com.loopeer.cardstack.UpDownAnimatorAdapter;
 import com.loopeer.cardstack.UpDownStackAnimatorAdapter;
+import org.greenrobot.greendao.query.Query;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -107,7 +113,6 @@ public class PersonalFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         DaoSession daoSession = ((ComfyApp) getActivity().getApplication()).getDaoSession();
         GDPersonalTaskDao taskDao = daoSession.getGDPersonalTaskDao();
-        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             //1为添加task
             case 1:
@@ -129,6 +134,7 @@ public class PersonalFragment extends Fragment
 
     @Override
     public void onLoadAllFromDBSuccess(List<PersonalTask> taskList) {
+
         GDPersonalTaskDao taskDao = ((ComfyApp) getActivity().getApplication())
                 .getDaoSession().getGDPersonalTaskDao();
         List<GDPersonalTask> personalTasks = taskDao.queryBuilder().list();
@@ -149,10 +155,40 @@ public class PersonalFragment extends Fragment
             cardStackView.setAdapter(personalTaskAdapter);
             personalTaskAdapter.updateData(backColor, taskList);
         }
+        ImageView imageView = view.findViewById(R.id.empty_image);
+        TextView textView = view.findViewById(R.id.empty_text);
+        if (taskList.isEmpty()) {
+            imageView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE);
+        } else {
+            imageView.setVisibility(View.GONE);
+            textView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onLoadAllFromDBError(Throwable e) {
         e.printStackTrace();
+    }
+
+    public void onDeleteItemInDB (PersonalCard card) {
+        GDPersonalCardDao cardDao = ((ComfyApp) getActivity().getApplication())
+                .getDaoSession().getGDPersonalCardDao();
+        cardDao.delete(new GDPersonalCard(card));
+    }
+
+    public void deleteTaskFromDB(PersonalTask task) {
+        GDPersonalTaskDao taskDao = ((ComfyApp) getActivity().getApplication())
+                .getDaoSession().getGDPersonalTaskDao();
+        taskDao.delete(new GDPersonalTask(task));
+        GDPersonalCardDao cardDao = ((ComfyApp) getActivity().getApplication())
+                .getDaoSession().getGDPersonalCardDao();
+        cardDao.queryBuilder().where(GDPersonalCardDao.Properties.TaskId.eq(task.getId()))
+                .buildDelete().executeDeleteWithoutDetachingEntities();
+        presenter.loadAllTasksFromDB(taskDao);
+    }
+
+    public void onCompleteCard (PersonalCard card) {
+        onDeleteItemInDB(card);
     }
 }

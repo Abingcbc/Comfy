@@ -1,20 +1,15 @@
 package com.kha.cbc.comfy.view.personal;
 
-import android.content.Context;
-import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+import com.daimajia.swipe.SwipeLayout;
 import com.kha.cbc.comfy.R;
+import com.kha.cbc.comfy.model.PersonalCard;
 import com.kha.cbc.comfy.model.common.BaseCardModel;
-import com.loopeer.cardstack.CardStackView;
 
 import java.util.List;
 
@@ -23,18 +18,18 @@ import java.util.List;
  * on 2018/11/2
  */
 
-public class PersonalCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-{
+public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapter.PersonalCardViewHolder> {
 
     List<BaseCardModel> personalCardList;
     PersonalFragment fragment;
+    Boolean cannotBeDeleted;
 
     PersonalCardAdapter(List<BaseCardModel> personalCardList,
                         PersonalFragment fragment) {
         this.personalCardList = personalCardList;
         this.fragment = fragment;
+        this.cannotBeDeleted = false;
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -45,10 +40,9 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PersonalCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         if (viewType == 1) {
             view = LayoutInflater.from(parent.getContext())
@@ -61,18 +55,54 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        PersonalCardViewHolder cardViewHolder = (PersonalCardViewHolder) holder;
+    public void onBindViewHolder(@NonNull PersonalCardViewHolder holder, final int position) {
+        PersonalCardViewHolder cardViewHolder = holder;
         if (position != personalCardList.size() - 1) {
             cardViewHolder.name.setText(personalCardList.get(position).getTitle());
-            cardViewHolder.description.setText(personalCardList.get(position).getDescription());
-        } else {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            cardViewHolder.description.setText(personalCardList.get(position).getDescription());cardViewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+            cardViewHolder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
                 @Override
-                public void onClick(View view) {
-                    fragment.plusCard(personalCardList.get(position).getTaskId());
+                public void onStartOpen(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onOpen(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onStartClose(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onClose(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+
+                }
+
+                @Override
+                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+
                 }
             });
+            cardViewHolder.checkView.setOnClickListener(v -> {
+                fragment.onCompleteCard((PersonalCard) personalCardList.get(position));
+            });
+            cardViewHolder.deleteView.setOnClickListener(v -> {
+                fragment.onDeleteItemInDB((PersonalCard) personalCardList.get(position));
+                personalCardList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(0, getItemCount());
+            });
+        } else {
+            holder.itemView.setOnClickListener(view
+                    -> fragment.plusCard(personalCardList.get(position).getTaskId()));
         }
     }
 
@@ -81,15 +111,22 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return personalCardList.size();
     }
 
+
     public class PersonalCardViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
         TextView description;
+        SwipeLayout swipeLayout;
+        ImageView checkView;
+        ImageView deleteView;
 
         public PersonalCardViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.personal_card_name);
             description = itemView.findViewById(R.id.personal_card_description);
+            swipeLayout = itemView.findViewById(R.id.personal_card_swipe_layout);
+            checkView = itemView.findViewById(R.id.personal_card_check);
+            deleteView = itemView.findViewById(R.id.personal_card_delete);
         }
     }
 }

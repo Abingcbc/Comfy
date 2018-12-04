@@ -1,6 +1,9 @@
 package com.kha.cbc.comfy.presenter;
 
+import com.kha.cbc.comfy.ComfyApp;
+import com.kha.cbc.comfy.entity.GDPersonalCard;
 import com.kha.cbc.comfy.entity.GDPersonalTask;
+import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.view.personal.PersonalFragView;

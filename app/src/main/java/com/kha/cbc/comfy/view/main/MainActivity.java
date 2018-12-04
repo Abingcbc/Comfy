@@ -3,7 +3,6 @@ package com.kha.cbc.comfy.view.main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,14 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.SaveCallback;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -27,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.entity.GDUser;
+import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.greendao.gen.GDUserDao;
 import com.kha.cbc.comfy.model.TabEntity;
@@ -82,8 +78,6 @@ public class MainActivity extends BaseActivityWithPresenter
         setContentView(R.layout.activity_main);
         Intent intentFrom = getIntent();
 
-
-
         GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
         List<GDUser> userList = userDao.loadAll();
         if (userList.size() != 1 || userList.get(0) == null ||
@@ -115,21 +109,10 @@ public class MainActivity extends BaseActivityWithPresenter
         initNavigationView();
 
         init();
-        //LeanCloud Test Code
-//        AVObject testObject = new AVObject("TestObject");
-//        testObject.put("words","Hello World!");
-//        testObject.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(AVException e) {
-//                if(e == null){
-//                    Log.d("saved","success!");
-//                }
-//            }
-//        });
-        init();
 
         ActivityManager.INSTANCE.plusAssign(this);
     }
+
 
     void initNavigationView(){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -142,6 +125,8 @@ public class MainActivity extends BaseActivityWithPresenter
         usernameTextView.setText(User.INSTANCE.getUsername());
         sessionTokenTextView.setText(User.INSTANCE.getSessionToken());
     }
+
+
 
     void init() {
         taskDao = ((ComfyApp) getApplication())
@@ -179,6 +164,20 @@ public class MainActivity extends BaseActivityWithPresenter
             }
         });
     }
+
+//    @Override
+//    protected void onStop() {
+//        GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
+//        List<GDUser> userList = userDao.loadAll();
+//        if(userList != null && userList.size() > 0){
+//            for(GDUser item : userList){
+//                userDao.delete(item);
+//            }
+//        }
+//        GDUser newUser = new GDUser(User.INSTANCE.getUsername(), User.INSTANCE.getSessionToken());
+//        userDao.insert(newUser);
+//        super.onStop();
+//    }
 
     //--------------------------------------------
 
@@ -238,20 +237,6 @@ public class MainActivity extends BaseActivityWithPresenter
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    protected void onStop() {
-        GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
-        List<GDUser> userList = userDao.loadAll();
-        if(userList != null && userList.size() > 0){
-            for(GDUser item : userList){
-                userDao.delete(item);
-            }
-        }
-        GDUser newUser = new GDUser(User.INSTANCE.getUsername(), User.INSTANCE.getSessionToken());
-        userDao.insert(newUser);
-        super.onStop();
     }
 
     @Override

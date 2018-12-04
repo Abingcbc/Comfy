@@ -46,6 +46,5 @@ public class PlusCardPresenter extends BasePresenter {
     }
 
     public void queryMember(String memberName) {
-        //TODO:更新view中的objectId
     }
 }

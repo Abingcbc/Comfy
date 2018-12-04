@@ -7,10 +7,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.getInputField
 import com.afollestad.materialdialogs.input.input
 import com.avos.avoscloud.*
 import com.kha.cbc.comfy.ComfyApp
@@ -65,13 +67,17 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView {
         type = bundle!!.getInt("type")
         if (type == 1) {
             stageObjectId = bundle.getString("objectId")
+            val linearLayout = findViewById<LinearLayout>(R.id.enterDateLinearLayout)
+            linearLayout.visibility = View.VISIBLE
+
             val button = findViewById<Button>(R.id.assign_button)
             button.setOnClickListener {
                 val materialDialog = MaterialDialog(this)
                 materialDialog.input { _, charSequence ->
                     executorName = charSequence.toString()
                     presenter.queryMember(charSequence.toString())
-                }.positiveButton(R.string.submit)
+                }.positiveButton(text = "确认")
+                    .title(text = "输入要添加成员的名称")
                     .show()
             }
         } else {

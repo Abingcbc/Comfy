@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="40dp"
-            app:srcCompat="@android:drawable/ic_menu_add"
+            android:src="@drawable/ic_add_white_24dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="78dp"
             android:layout_marginStart="@dimen/fab_margin"
