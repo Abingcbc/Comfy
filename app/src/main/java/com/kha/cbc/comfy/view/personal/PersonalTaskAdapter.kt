@@ -16,6 +16,7 @@ import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.model.PersonalTask
 import com.loopeer.cardstack.CardStackView
 import com.loopeer.cardstack.StackAdapter
+import kotlinx.android.synthetic.main.stack_task.view.*
 
 /**
  * Created by ABINGCBC
@@ -57,9 +58,9 @@ class PersonalTaskAdapter(
         internal var taskTitle: TextView
 
         init {
-            header = root.findViewById(R.id.task_header)
-            cardsListView = root.findViewById(R.id.cards_list)
-            taskTitle = root.findViewById(R.id.task_title_text)
+            header = root.task_header
+            cardsListView = root.cards_list
+            taskTitle = root.task_title_text
         }
 
         fun onBind(backgroundColorId: Int?, position: Int, dataList: List<PersonalTask>) {

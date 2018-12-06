@@ -84,7 +84,8 @@ public class MainActivity extends BaseActivityWithPresenter
         GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
         List<GDUser> userList = userDao.loadAll();
         if (userList.size() != 1 || userList.get(0) == null ||
-                userList.get(0).getUsername() == null || userList.get(0).getSessionToken() == null) {
+                userList.get(0).getUsername() == null || userList.get(0).getSessionToken() == null
+                || userList.get(0).getObjectId() == null) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             this.finish();

@@ -19,6 +19,7 @@ object User {
     fun fromGDUser(gdUser: GDUser): User {
         username = gdUser.username
         sessionToken = gdUser.sessionToken
+        comfyUserObjectId = gdUser.objectId
         return User
     }
 }

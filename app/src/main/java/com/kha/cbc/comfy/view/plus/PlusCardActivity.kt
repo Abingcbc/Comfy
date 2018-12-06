@@ -6,30 +6,29 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
-import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.getInputField
 import com.afollestad.materialdialogs.input.input
 import com.avos.avoscloud.*
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
+import com.kha.cbc.comfy.view.common.*
 import com.kha.cbc.comfy.entity.GDPersonalCard
 import com.kha.cbc.comfy.entity.GDPersonalTask
+import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
 import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.PlusCardPresenter
 import com.kha.cbc.comfy.presenter.Presenter
+import com.kha.cbc.comfy.view.common.AvatarView
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import kotlinx.android.synthetic.main.activity_personal_plus_card.*
+import kotlinx.android.synthetic.main.content_personal_plus_card.*
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,7 +40,9 @@ import java.util.*
 
 class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     TimePickerDialog.OnTimeSetListener,
-    DatePickerDialog.OnDateSetListener {
+    DatePickerDialog.OnDateSetListener, AvatarView {
+
+    override lateinit var avatarDao: GDAvatarDao
 
     override var presenter = PlusCardPresenter(this)
     internal var taskId: String? = null
@@ -55,19 +56,10 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_personal_plus_card)
 
-//        val query = AVQuery<AVObject>("ComfyUser")
-//        query.whereEqualTo("username", User.username)
-//        val comfyUser = query.findInBackground(object: FindCallback<AVObject>(){
-//            override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
-//                executorObjectId = p0!![0].objectId
-//            }
-//        })
-
-        val toolbar = findViewById<Toolbar>(R.id.personal_plus_toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(personal_plus_toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-        toolbar.setNavigationOnClickListener {
+        personal_plus_toolbar.setNavigationOnClickListener {
             val intent = Intent()
             setResult(Activity.RESULT_CANCELED, intent)
             finish()
@@ -78,11 +70,8 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         type = bundle!!.getInt("type")
         if (type == 1) {
             stageObjectId = bundle.getString("objectId")
-            val linearLayout = findViewById<LinearLayout>(R.id.enterDateLinearLayout)
-            linearLayout.visibility = View.VISIBLE
-
-            val button = findViewById<Button>(R.id.assign_button)
-            button.setOnClickListener {
+            executor_assign.visibility = View.VISIBLE
+            assign_button.setOnClickListener {
                 val materialDialog = MaterialDialog(this)
                 materialDialog.input { _, charSequence ->
                     executorName = charSequence.toString()
@@ -94,20 +83,16 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         } else {
             taskId = bundle.getString("taskId")
         }
+        executorObjectId = User.comfyUserObjectId!!
 
-        findViewById<SwitchCompat>(R.id.reminderSwitch)
-            .setOnCheckedChangeListener { buttonView, isChecked ->
+        reminderSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
-                    findViewById<LinearLayout>(R.id.enterDateLinearLayout)
-                        .visibility = View.VISIBLE
+                    enterDateLinearLayout.visibility = View.VISIBLE
                 } else {
-                    findViewById<LinearLayout>(R.id.enterDateLinearLayout)
-                        .visibility = View.GONE
+                    enterDateLinearLayout.visibility = View.GONE
                 }
             }
-
-        findViewById<TextInputEditText>(R.id.reminderDateEditText)
-            .setOnClickListener {
+        reminderDateEditText.setOnClickListener {
                 val now = Calendar.getInstance()
                 val dateChooseDialog = DatePickerDialog.newInstance(
                     this,
@@ -119,8 +104,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
                 dateChooseDialog.setCancelText("CANCEL")
                 dateChooseDialog.show(supportFragmentManager, "DateChooseDialog")
             }
-        findViewById<TextInputEditText>(R.id.reminderTimeEditText)
-            .setOnClickListener {
+        reminderTimeEditText.setOnClickListener {
                 val now = Calendar.getInstance()
                 val timeChooseDialog = TimePickerDialog.newInstance(
                     this,
@@ -169,15 +153,13 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         val dateFormat = "d MMM, yyyy"
         val dateAndTimeFormat = "d MMM, yyyy, h:mm a"
         if (reminderDate > Calendar.getInstance().time) {
-            findViewById<TextView>(R.id.reminderTimeTextView).text =
+            reminderTimeTextView.text =
                     "将在" + formatDate(dateAndTimeFormat) + "提醒您"
-            findViewById<TextInputEditText>(R.id.reminderDateEditText).
-                setText(formatDate(dateFormat))
+            reminderDateEditText.setText(formatDate(dateFormat))
         } else {
-            findViewById<TextView>(R.id.reminderTimeTextView).text =
-                    "不能将提醒设在过去"
-            if (findViewById<TextInputEditText>(R.id.reminderDateEditText).text != null)
-                findViewById<TextInputEditText>(R.id.reminderDateEditText).text!!.clear()
+            reminderTimeTextView.text = "不能将提醒设在过去"
+            if (reminderDateEditText.text != null)
+                reminderDateEditText.text!!.clear()
         }
     }
 
@@ -185,15 +167,14 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         val timeFormat = "h:mm a"
         val dateAndTimeFormat = "d MMM, yyyy, h:mm a"
         if (reminderDate > Calendar.getInstance().time) {
-            findViewById<TextView>(R.id.reminderTimeTextView).text =
+            reminderTimeTextView.text =
                     "将在" + formatDate(dateAndTimeFormat) + "提醒您"
-            findViewById<TextInputEditText>(R.id.reminderTimeEditText).
-                setText(formatDate(timeFormat))
+            reminderTimeEditText.setText(formatDate(timeFormat))
         } else {
-            findViewById<TextView>(R.id.reminderTimeTextView).text =
-                    "不能将提醒设在过去"
-            if (findViewById<TextInputEditText>(R.id.reminderTimeEditText).text != null)
-                findViewById<TextInputEditText>(R.id.reminderTimeEditText).text!!.clear()
+            reminderTimeTextView.text = "不能将提醒设在过去"
+
+            if (reminderTimeEditText.text != null)
+                reminderTimeEditText.text!!.clear()
         }
     }
 
@@ -203,40 +184,69 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         return true
     }
 
+    private fun successAddPersonal(title: String, description:String) {
+        val cardDao = (application as ComfyApp)
+            .daoSession.gdPersonalCardDao
+        cardDao.insertOrReplace(GDPersonalCard(title, description, taskId))
+        val taskDao = (application as ComfyApp)
+            .daoSession.gdPersonalTaskDao
+        val personalTaskList = taskDao.loadAll()
+        //多表链接时，GreenDao不会实时更新
+        for (task in personalTaskList) {
+            task.resetPersonalCardList()
+        }
+        presenter.setLocalReminder(reminderLayout)
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
+    private fun successAddTeam(title: String, description: String) {
+        presenter.postCard(title, description, executorObjectId, stageObjectId)
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.plus_success -> {
-                val titleView = findViewById<TextView>(R.id.input_card_title)
-                val descriptionView = findViewById<TextView>(R.id.input_card_description)
-                val title = titleView.text.toString()
-                val description = descriptionView.text.toString()
+                val title = input_card_title.text.toString()
+                val description = input_card_description.text.toString()
                 if (type == 0) {
-                    //TODO: 此时只在本地添加一条card，暂时觉得没有必要开多线程，但以后服务端同步要开
-                    val cardDao = (application as ComfyApp)
-                        .daoSession.gdPersonalCardDao
-                    cardDao.insertOrReplace(GDPersonalCard(title, description, taskId))
-                    val taskDao = (application as ComfyApp)
-                        .daoSession.gdPersonalTaskDao
-                    val personalTaskList = taskDao.loadAll()
-                    //多表链接时，GreenDao不会实时更新
-                    for (task in personalTaskList) {
-                        task.resetPersonalCardList()
-                    }
-                    presenter.setLocalReminder(findViewById(R.id.reminderLayout))
-                    val intent = Intent()
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+                    successAddPersonal(title, description)
                 } else {
-                    //TODO:默认执行者为用户自己
-                    presenter.postCard(title, description, executorObjectId, stageObjectId)
-                    val intent = Intent()
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+                    successAddTeam(title, description)
                 }
-                return true
+                true
             }
 
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
+    }
+
+
+    override fun uploadAvatarFinish(url: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun downloadAvatarFinish(urlPairs: MutableList<Pair<String, String>>) {
+        if (urlPairs.isEmpty()) {
+            personal_plus_card_layout.yum("Mistake").show()
+        }
+        executorName = urlPairs[0].first
+        Glide.with(this).load(urlPairs[0].second)
+    }
+
+    override fun uploadProgressUpdate(progress: Int?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setProgressBarVisible() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun downloadAvatarFinish(url: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

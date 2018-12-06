@@ -89,6 +89,7 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView , AvatarView{
         intent.putExtra("sessionToken", user.sessionToken)
         val userDao = (application as ComfyApp).daoSession.gdUserDao
         userDao.insert(GDUser(user))
+        val st = user.comfyUserObjectId
         startActivity(intent)
         val defaulticBitmap = BitmapFactory.decodeResource(resources, R.drawable.default_avatar)
         val dir = File(cacheDir, "temp_avatar")
