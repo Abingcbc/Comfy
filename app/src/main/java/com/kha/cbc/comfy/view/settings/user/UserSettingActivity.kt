@@ -35,6 +35,12 @@ import java.io.File
 
 class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServiceView{
 
+    override fun downloadAvatarFinish(urlPairs: MutableList<Pair<String, String>>) {
+        for(pair in urlPairs){
+            Log.d("UserSettingAct", pair.first + pair.second)
+        }
+    }
+
     override fun passwordChangeFailed() {
         user_setting_layout.yum("Old Password Not Correct").show()
     }
@@ -91,6 +97,7 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServic
         avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
         initUserSettingView()
         presenter.loadAvatar()
+//        presenter.loadAvatar(mutableListOf("classq", "a4"))
         ActivityManager += this
     }
 

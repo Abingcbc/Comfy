@@ -8,6 +8,7 @@ import com.kha.cbc.comfy.entity.GDUser
 object User {
     var username: String? = null
     var sessionToken: String? = null
+    var comfyUserObjectId: String? = null
 
     fun fromUserInfoDto(dto: UserInfoDto): User {
         username = dto.username
