@@ -2,23 +2,53 @@ package com.kha.cbc.comfy.view.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.entity.GDUser
+import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
 import com.kha.cbc.comfy.model.User
+import com.kha.cbc.comfy.presenter.AvatarPresenter
 import com.kha.cbc.comfy.presenter.LoginPresenter
 import com.kha.cbc.comfy.view.common.ActivityManager
+import com.kha.cbc.comfy.view.common.AvatarView
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter
 import com.kha.cbc.comfy.view.common.yum
 import com.kha.cbc.comfy.view.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_user_setting.*
 import shem.com.materiallogin.DefaultLoginView
 import shem.com.materiallogin.DefaultRegisterView
 import shem.com.materiallogin.MaterialLoginView
+import android.content.ContentResolver
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Environment
+import com.tencent.qc.stat.StatConfig.e
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
 
-class LoginActivity : BaseActivityWithPresenter(), LoginView {
+
+class LoginActivity : BaseActivityWithPresenter(), LoginView , AvatarView{
+
+    override lateinit var avatarDao: GDAvatarDao
+
+    override fun uploadAvatarFinish(url: String) {}
+
+    override fun downloadAvatarFinish(urlPairs: MutableList<Pair<String, String>>) {}
+
+    override fun uploadProgressUpdate(progress: Int?) {}
+
+    override fun setProgressBarVisible() {}
+
+    override fun downloadAvatarFinish(url: String) {}
 
     override val presenter = LoginPresenter(this)
+
+    val avatarPresenter = AvatarPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +83,28 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView {
         login.yum("Successfully registered, auto login").show()
         User.username = user.username
         User.sessionToken = user.sessionToken
-        presenter.uploadComfyUser(User.username!!)
+        User.comfyUserObjectId = user.comfyUserObjectId
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("username", user.username)
         intent.putExtra("sessionToken", user.sessionToken)
         val userDao = (application as ComfyApp).daoSession.gdUserDao
         userDao.insert(GDUser(user))
         startActivity(intent)
+        val defaulticBitmap = BitmapFactory.decodeResource(resources, R.drawable.default_avatar)
+        val dir = File(cacheDir, "temp_avatar")
+        if(!dir.exists()){
+            dir.mkdir()
+        }
+        val file = File(dir, "temp_avatar.jpg")
+        try {
+            val fos = FileOutputStream(file)
+            defaulticBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+            fos.flush()
+            fos.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        avatarPresenter.initiateAvatar(file)
         this.finish()
     }
 

@@ -12,6 +12,13 @@
     <com.leon.lib.settingview.LSettingItem
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/recent_graph"
+        app:leftText="Recent Usage Graph"
+        android:layout_below="@id/recent_app"/>
+
+    <com.leon.lib.settingview.LSettingItem
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:leftText="More Information Using RescueTime "
         android:layout_below="@id/recent_app"
         android:id="@+id/with_rescue"/>
