@@ -19,6 +19,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "LEANCLOUDAPPID", "\"${leancloudAppid}\"")
         buildConfigField("String", "LEANCLOUDAPPKEY", "\"${leancloudAppkey}\"")
+        buildConfigField("String", "COMFYAPPKEY", "\"${comfyAmapAndroidKey}\"")
+        buildConfigField("String", "COMFYAPPKEY", "\"${comfyAmapWebkey}\"")
+        buildConfigField("String", "COMFYAPPKEY", "\"${amapGroupTrackSID}\"")
     }
     buildTypes {
         release {

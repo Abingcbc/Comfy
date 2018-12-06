@@ -1,6 +1,5 @@
 package com.kha.cbc.comfy.view.common
 
-import android.content.SharedPreferences
 import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
 
 
