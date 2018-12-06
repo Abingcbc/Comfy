@@ -124,8 +124,6 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:2.0.0-rc1'
     implementation 'com.afollestad.material-dialogs:input:2.0.0-rc1'
 
-    implementation 'com.github.AnJiaoDe:RecyclerViewAdapter:V2.3.0'
-
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
 
     implementation('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
@@ -133,6 +131,9 @@ dependencies {
     }
 
     implementation 'pub.devrel:easypermissions:2.0.0'
+    implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
+
+    implementation 'com.wdullaer:materialdatetimepicker:4.1.0'
 }
 
 greendao {

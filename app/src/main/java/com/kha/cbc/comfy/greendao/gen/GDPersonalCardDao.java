@@ -18,7 +18,7 @@ import com.kha.cbc.comfy.entity.GDPersonalCard;
 /** 
  * DAO for table "GDPERSONAL_CARD".
 */
-public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, Void> {
+public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, String> {
 
     public static final String TABLENAME = "GDPERSONAL_CARD";
 
@@ -27,9 +27,10 @@ public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Title = new Property(0, String.class, "title", false, "TITLE");
-        public final static Property Description = new Property(1, String.class, "description", false, "DESCRIPTION");
-        public final static Property TaskId = new Property(2, String.class, "taskId", false, "TASK_ID");
+        public final static Property Id = new Property(0, String.class, "id", true, "ID");
+        public final static Property Title = new Property(1, String.class, "title", false, "TITLE");
+        public final static Property Description = new Property(2, String.class, "description", false, "DESCRIPTION");
+        public final static Property TaskId = new Property(3, String.class, "taskId", false, "TASK_ID");
     }
 
     private Query<GDPersonalCard> gDPersonalTask_PersonalCardListQuery;
@@ -46,9 +47,10 @@ public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"GDPERSONAL_CARD\" (" + //
-                "\"TITLE\" TEXT," + // 0: title
-                "\"DESCRIPTION\" TEXT," + // 1: description
-                "\"TASK_ID\" TEXT);"); // 2: taskId
+                "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
+                "\"TITLE\" TEXT," + // 1: title
+                "\"DESCRIPTION\" TEXT," + // 2: description
+                "\"TASK_ID\" TEXT);"); // 3: taskId
     }
 
     /** Drops the underlying database table. */
@@ -61,19 +63,24 @@ public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, Void> {
     protected final void bindValues(DatabaseStatement stmt, GDPersonalCard entity) {
         stmt.clearBindings();
  
+        String id = entity.getId();
+        if (id != null) {
+            stmt.bindString(1, id);
+        }
+ 
         String title = entity.getTitle();
         if (title != null) {
-            stmt.bindString(1, title);
+            stmt.bindString(2, title);
         }
  
         String description = entity.getDescription();
         if (description != null) {
-            stmt.bindString(2, description);
+            stmt.bindString(3, description);
         }
  
         String taskId = entity.getTaskId();
         if (taskId != null) {
-            stmt.bindString(3, taskId);
+            stmt.bindString(4, taskId);
         }
     }
 
@@ -81,59 +88,68 @@ public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, Void> {
     protected final void bindValues(SQLiteStatement stmt, GDPersonalCard entity) {
         stmt.clearBindings();
  
+        String id = entity.getId();
+        if (id != null) {
+            stmt.bindString(1, id);
+        }
+ 
         String title = entity.getTitle();
         if (title != null) {
-            stmt.bindString(1, title);
+            stmt.bindString(2, title);
         }
  
         String description = entity.getDescription();
         if (description != null) {
-            stmt.bindString(2, description);
+            stmt.bindString(3, description);
         }
  
         String taskId = entity.getTaskId();
         if (taskId != null) {
-            stmt.bindString(3, taskId);
+            stmt.bindString(4, taskId);
         }
     }
 
     @Override
-    public Void readKey(Cursor cursor, int offset) {
-        return null;
+    public String readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0);
     }    
 
     @Override
     public GDPersonalCard readEntity(Cursor cursor, int offset) {
         GDPersonalCard entity = new GDPersonalCard( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // title
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // description
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // taskId
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // title
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // description
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // taskId
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, GDPersonalCard entity, int offset) {
-        entity.setTitle(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setDescription(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setTaskId(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setTitle(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setDescription(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setTaskId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
      }
     
     @Override
-    protected final Void updateKeyAfterInsert(GDPersonalCard entity, long rowId) {
-        // Unsupported or missing PK type
-        return null;
+    protected final String updateKeyAfterInsert(GDPersonalCard entity, long rowId) {
+        return entity.getId();
     }
     
     @Override
-    public Void getKey(GDPersonalCard entity) {
-        return null;
+    public String getKey(GDPersonalCard entity) {
+        if(entity != null) {
+            return entity.getId();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public boolean hasKey(GDPersonalCard entity) {
-        // TODO
-        return false;
+        return entity.getId() != null;
     }
 
     @Override

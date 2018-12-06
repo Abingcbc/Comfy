@@ -18,6 +18,8 @@ import com.kha.cbc.comfy.model.TeamCard
 import com.kha.cbc.comfy.presenter.StageFragPresenter
 import com.kha.cbc.comfy.view.common.BaseRefreshView
 import com.kha.cbc.comfy.view.plus.PlusCardActivity
+import kotlinx.android.synthetic.main.stage_fragment.view.*
+import kotlinx.android.synthetic.main.team_plus_frag.view.*
 import java.util.*
 
 /**
@@ -49,7 +51,7 @@ class StageFragment : Fragment(), BaseRefreshView{
         if (stageTitle === "plus") {
             var index = bundle.getInt("index")
             view = inflater.inflate(R.layout.team_plus_frag, container, false)
-            val button = view.findViewById<Button>(R.id.team_plus_button)
+            val button = view.team_plus_button
             button.setOnClickListener {
                 val materialDialog = MaterialDialog(context!!)
                 materialDialog.input { _, charSequence ->
@@ -60,14 +62,14 @@ class StageFragment : Fragment(), BaseRefreshView{
         } else {
             view = inflater.inflate(R.layout.stage_fragment, container, false)
             teamCardList = bundle.getParcelableArrayList("TeamCardList")
-            val textView = view.findViewById<TextView>(R.id.stage_name)
+            val textView = view.stage_name
 
-            recyclerView = view.findViewById(R.id.stage_recycler)
+            recyclerView = view.stage_recycler
             recyclerView.layoutManager = LinearLayoutManager(this.context)
             recyclerView.adapter = StageRecyclerAdapter(teamCardList)
 
             textView.text = stageTitle
-            var plusTextView = view.findViewById<TextView>(R.id.team_plus_card)
+            var plusTextView = view.team_plus_card
             plusTextView.setOnClickListener{
                 var intent = Intent(activity, PlusCardActivity::class.java)
                 intent.putExtra("type", 1)

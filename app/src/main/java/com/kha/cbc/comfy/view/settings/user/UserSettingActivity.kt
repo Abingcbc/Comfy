@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
+import com.kha.cbc.comfy.entity.GDUser
 import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.AvatarPresenter
@@ -140,6 +141,10 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServic
             userDao.deleteAll()
             User.username = null
             User.sessionToken = null
+            val taskDao = (application as ComfyApp).daoSession.gdPersonalTaskDao
+            taskDao.deleteAll()
+            val cardDao = (application as ComfyApp).daoSession.gdPersonalCardDao
+            cardDao.deleteAll()
             ActivityManager.finishAll()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

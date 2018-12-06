@@ -11,18 +11,21 @@ public class GDUser {
     @Id
     String username;
     String sessionToken;
+    String objectId;
 
 
     public GDUser(User user) {
         username = user.getUsername();
         sessionToken = user.getSessionToken();
+        objectId = user.getComfyUserObjectId();
     }
 
 
-    @Generated(hash = 1833295239)
-    public GDUser(String username, String sessionToken) {
+    @Generated(hash = 1938864627)
+    public GDUser(String username, String sessionToken, String objectId) {
         this.username = username;
         this.sessionToken = sessionToken;
+        this.objectId = objectId;
     }
 
 
@@ -48,5 +51,15 @@ public class GDUser {
 
     public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
+    }
+
+
+    public String getObjectId() {
+        return this.objectId;
+    }
+
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 }

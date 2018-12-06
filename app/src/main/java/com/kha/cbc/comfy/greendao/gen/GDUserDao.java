@@ -26,6 +26,7 @@ public class GDUserDao extends AbstractDao<GDUser, String> {
     public static class Properties {
         public final static Property Username = new Property(0, String.class, "username", true, "USERNAME");
         public final static Property SessionToken = new Property(1, String.class, "sessionToken", false, "SESSION_TOKEN");
+        public final static Property ObjectId = new Property(2, String.class, "objectId", false, "OBJECT_ID");
     }
 
 
@@ -42,7 +43,8 @@ public class GDUserDao extends AbstractDao<GDUser, String> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"GDUSER\" (" + //
                 "\"USERNAME\" TEXT PRIMARY KEY NOT NULL ," + // 0: username
-                "\"SESSION_TOKEN\" TEXT);"); // 1: sessionToken
+                "\"SESSION_TOKEN\" TEXT," + // 1: sessionToken
+                "\"OBJECT_ID\" TEXT);"); // 2: objectId
     }
 
     /** Drops the underlying database table. */
@@ -64,6 +66,11 @@ public class GDUserDao extends AbstractDao<GDUser, String> {
         if (sessionToken != null) {
             stmt.bindString(2, sessionToken);
         }
+ 
+        String objectId = entity.getObjectId();
+        if (objectId != null) {
+            stmt.bindString(3, objectId);
+        }
     }
 
     @Override
@@ -79,6 +86,11 @@ public class GDUserDao extends AbstractDao<GDUser, String> {
         if (sessionToken != null) {
             stmt.bindString(2, sessionToken);
         }
+ 
+        String objectId = entity.getObjectId();
+        if (objectId != null) {
+            stmt.bindString(3, objectId);
+        }
     }
 
     @Override
@@ -90,7 +102,8 @@ public class GDUserDao extends AbstractDao<GDUser, String> {
     public GDUser readEntity(Cursor cursor, int offset) {
         GDUser entity = new GDUser( //
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // username
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // sessionToken
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // sessionToken
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // objectId
         );
         return entity;
     }
@@ -99,6 +112,7 @@ public class GDUserDao extends AbstractDao<GDUser, String> {
     public void readEntity(Cursor cursor, GDUser entity, int offset) {
         entity.setUsername(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
         entity.setSessionToken(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setObjectId(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
      }
     
     @Override

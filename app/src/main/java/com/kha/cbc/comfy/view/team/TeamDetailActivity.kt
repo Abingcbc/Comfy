@@ -17,6 +17,7 @@ import com.kha.cbc.comfy.presenter.TeamDetailPresenter
 import com.kha.cbc.comfy.view.common.BaseRefreshView
 import com.tmall.ultraviewpager.UltraViewPager
 import com.tmall.ultraviewpager.UltraViewPagerAdapter
+import kotlinx.android.synthetic.main.activity_team_detail.*
 import java.util.*
 
 class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView {
@@ -33,16 +34,15 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team_detail)
 
-        bar = findViewById(R.id.loading_progressBar)
-        viewPager = findViewById(R.id.stage_viewpager)
+        bar = loading_progressBar
+        viewPager = stage_viewpager
         viewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL)
 
-        val toolbar = findViewById<Toolbar>(R.id.team_detail_toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(team_detail_toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         val intent = intent
-        val taskTitleView = findViewById<TextView>(R.id.task_detail_name)
+        val taskTitleView = task_detail_name
         taskTitle = intent.getStringExtra("taskTitle")
         objectId = intent.getStringExtra("objectId")
         taskTitleView.text = taskTitle

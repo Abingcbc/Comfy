@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.entity.GDUser;
+import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.greendao.gen.GDUserDao;
 import com.kha.cbc.comfy.model.TabEntity;
@@ -80,12 +81,11 @@ public class MainActivity extends BaseActivityWithPresenter
         setContentView(R.layout.activity_main);
         Intent intentFrom = getIntent();
 
-
-
         GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
         List<GDUser> userList = userDao.loadAll();
         if (userList.size() != 1 || userList.get(0) == null ||
-                userList.get(0).getUsername() == null || userList.get(0).getSessionToken() == null) {
+                userList.get(0).getUsername() == null || userList.get(0).getSessionToken() == null
+                || userList.get(0).getObjectId() == null) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             this.finish();
@@ -113,21 +113,10 @@ public class MainActivity extends BaseActivityWithPresenter
         initNavigationView();
 
         init();
-        //LeanCloud Test Code
-//        AVObject testObject = new AVObject("TestObject");
-//        testObject.put("words","Hello World!");
-//        testObject.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(AVException e) {
-//                if(e == null){
-//                    Log.d("saved","success!");
-//                }
-//            }
-//        });
-        init();
 
         ActivityManager.INSTANCE.plusAssign(this);
     }
+
 
     void initNavigationView(){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -140,6 +129,8 @@ public class MainActivity extends BaseActivityWithPresenter
         usernameTextView.setText(User.INSTANCE.getUsername());
         sessionTokenTextView.setText(User.INSTANCE.getSessionToken());
     }
+
+
 
     void init() {
 
@@ -181,6 +172,20 @@ public class MainActivity extends BaseActivityWithPresenter
             }
         });
     }
+
+//    @Override
+//    protected void onStop() {
+//        GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
+//        List<GDUser> userList = userDao.loadAll();
+//        if(userList != null && userList.size() > 0){
+//            for(GDUser item : userList){
+//                userDao.delete(item);
+//            }
+//        }
+//        GDUser newUser = new GDUser(User.INSTANCE.getUsername(), User.INSTANCE.getSessionToken());
+//        userDao.insert(newUser);
+//        super.onStop();
+//    }
 
     //--------------------------------------------
 
@@ -240,20 +245,6 @@ public class MainActivity extends BaseActivityWithPresenter
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    protected void onStop() {
-        GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
-        List<GDUser> userList = userDao.loadAll();
-        if(userList != null && userList.size() > 0){
-            for(GDUser item : userList){
-                userDao.delete(item);
-            }
-        }
-        GDUser newUser = new GDUser(User.INSTANCE.getUsername(), User.INSTANCE.getSessionToken());
-        userDao.insert(newUser);
-        super.onStop();
     }
 
     @Override

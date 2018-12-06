@@ -1,11 +1,14 @@
 package com.kha.cbc.comfy.presenter;
 
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.avos.avoscloud.*;
+import com.kha.cbc.comfy.view.common.AvatarView;
 import com.kha.cbc.comfy.view.plus.PlusCardActivity;
 import com.kha.cbc.comfy.view.plus.PlusCardView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,11 +16,12 @@ import java.util.List;
  * on 2018/11/5
  */
 
-public class PlusCardPresenter extends BasePresenter {
+public class PlusCardPresenter extends AvatarPresenter {
 
     PlusCardView view;
 
     public PlusCardPresenter(PlusCardView view) {
+        super((AvatarView) view);
         this.view = view;
     }
 
@@ -45,7 +49,17 @@ public class PlusCardPresenter extends BasePresenter {
         });
     }
 
+    public void setLocalReminder(LinearLayout linearLayout) {
+
+    }
+
+    public void setCloudReminder(LinearLayout linearLayout) {
+
+    }
+
     public void queryMember(String memberName) {
-        //TODO:更新view中的objectId
+        List<String> nameList = new ArrayList<>();
+        nameList.add(memberName);
+        super.loadAvatar(nameList);
     }
 }

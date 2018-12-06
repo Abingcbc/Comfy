@@ -8,7 +8,7 @@ import com.kha.cbc.comfy.view.common.AvatarView
 import java.io.File
 
 
-class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(view){
+open class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(view){
     //TODO: Structure not perfect
     //TODO: Check the cache function
     fun loadAvatar(usernames: MutableList<String>){
