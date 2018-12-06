@@ -129,6 +129,8 @@ dependencies {
 
     implementation 'pub.devrel:easypermissions:2.0.0'
     implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
+
+    implementation 'com.wdullaer:materialdatetimepicker:4.1.0'
 }
 
 greendao {

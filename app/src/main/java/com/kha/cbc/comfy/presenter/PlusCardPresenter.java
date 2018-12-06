@@ -1,6 +1,7 @@
 package com.kha.cbc.comfy.presenter;
 
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.avos.avoscloud.*;
 import com.kha.cbc.comfy.view.plus.PlusCardActivity;
@@ -43,6 +44,14 @@ public class PlusCardPresenter extends BasePresenter {
                 Log.d("sss", "success");
             }
         });
+    }
+
+    public void setLocalReminder(LinearLayout linearLayout) {
+
+    }
+
+    public void setCloudReminder(LinearLayout linearLayout) {
+
     }
 
     public void queryMember(String memberName) {
