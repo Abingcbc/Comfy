@@ -53,5 +53,6 @@ class LaunchTimesFragment : Fragment(){
 
         val barData = BarData(dataSet)
         chart.data = barData
+        chart.animateXY(1500, 3000)
     }
 }
