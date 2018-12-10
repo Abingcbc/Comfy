@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.kha.cbc.comfy.R
+import com.kha.cbc.comfy.view.efficient.chart.EfficientChartActivity
 import com.leon.lib.settingview.LSettingItem
 
 class EfficientFragment : Fragment(){
@@ -21,6 +22,11 @@ class EfficientFragment : Fragment(){
         val appUsageItem = fragmentView.findViewById<LSettingItem>(R.id.recent_app)
         appUsageItem.setmOnLSettingItemClick {
             val intent = Intent(activity, UsageActivity::class.java)
+            startActivity(intent)
+        }
+        val appUsageChartItem = fragmentView.findViewById<LSettingItem>(R.id.recent_graph)
+        appUsageItem.setmOnLSettingItemClick {
+            val intent = Intent(activity, EfficientChartActivity::class.java)
             startActivity(intent)
         }
     }

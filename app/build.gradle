@@ -19,9 +19,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "LEANCLOUDAPPID", "\"${leancloudAppid}\"")
         buildConfigField("String", "LEANCLOUDAPPKEY", "\"${leancloudAppkey}\"")
-        buildConfigField("String", "COMFYAPPKEY", "\"${comfyAmapAndroidKey}\"")
-        buildConfigField("String", "COMFYAPPKEY", "\"${comfyAmapWebkey}\"")
-        buildConfigField("String", "COMFYAPPKEY", "\"${amapGroupTrackSID}\"")
+        buildConfigField("String", "COMFYAMAPANDROIDKEY", "\"${comfyAmapAndroidKey}\"")
+        buildConfigField("String", "COMFYWEBSERVICEKEY", "\"${comfyAmapWebkey}\"")
+        buildConfigField("String", "COMFYGROUPTRACKSERVICEID", "\"${amapGroupTrackSID}\"")
     }
     buildTypes {
         release {
@@ -94,6 +94,9 @@ dependencies {
 
     //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('./jar/weibo-sdk-android-sso-3.0.1-leancloud.jar')
+    implementation files(
+            './jar/AMap3DMap_6.5.0_AMapNavi_6.5.0_AMapSearch_6.5.0_AMapTrack_1.0.0_AMapLocation_4.4.0_20181122.jar'
+    )
 
     //Conflict?
 

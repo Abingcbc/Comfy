@@ -114,6 +114,153 @@ public class MainActivity extends BaseActivityWithPresenter
         init();
 
         ActivityManager.INSTANCE.plusAssign(this);
+
+//        AMAP Test
+
+//        final long serviceId = Long.parseLong(BuildConfig.COMFYGROUPTRACKSERVICEID);  // 这里填入前面创建的服务id
+//        final String terminalName = "testglobal";   // 唯一标识某个用户或某台设备的名称，可根据您的业务自行选择
+//        final AMapTrackClient aMapTrackClient = new AMapTrackClient(getApplicationContext());
+//        final OnTrackLifecycleListener onTrackLifecycleListener = new OnTrackLifecycleListener() {
+//
+//            @Override
+//            public void onBindServiceCallback(int i, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onStopGatherCallback(int i, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackCallback(int i, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onStartGatherCallback(int status, String msg) {
+//                if (status == ErrorCode.TrackListen.START_GATHER_SUCEE ||
+//                        status == ErrorCode.TrackListen.START_GATHER_ALREADY_STARTED) {
+//                    Toast.makeText(MainActivity.this, "定位采集开启成功！", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(MainActivity.this, "定位采集启动异常，" + msg, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onStartTrackCallback(int status, String msg) {
+//                if (status == ErrorCode.TrackListen.START_TRACK_SUCEE ||
+//                        status == ErrorCode.TrackListen.START_TRACK_SUCEE_NO_NETWORK ||
+//                        status == ErrorCode.TrackListen.START_TRACK_ALREADY_STARTED) {
+//                    // 服务启动成功，继续开启收集上报
+//                    aMapTrackClient.startGather(this);
+//                } else {
+//                    Toast.makeText(MainActivity.this, "轨迹上报服务服务启动异常，" + msg, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        };
+//        aMapTrackClient.queryTerminal(new QueryTerminalRequest(serviceId, terminalName), new OnTrackListener() {
+//
+//            @Override
+//            public void onCreateTerminalCallback(AddTerminalResponse addTerminalResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onDistanceCallback(DistanceResponse distanceResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onLatestPointCallback(LatestPointResponse latestPointResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onHistoryTrackCallback(HistoryTrackResponse historyTrackResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onQueryTrackCallback(QueryTrackResponse queryTrackResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onAddTrackCallback(AddTrackResponse addTrackResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onParamErrorCallback(ParamErrorResponse paramErrorResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onQueryTerminalCallback(QueryTerminalResponse queryTerminalResponse) {
+//                if (queryTerminalResponse.isSuccess()) {
+//                    if (queryTerminalResponse.getTid() <= 0) {
+//                        // terminal还不存在，先创建
+//                        aMapTrackClient.addTerminal(new AddTerminalRequest(terminalName, serviceId), new OnTrackListener() {
+//
+//                            @Override
+//                            public void onQueryTerminalCallback(QueryTerminalResponse queryTerminalResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onDistanceCallback(DistanceResponse distanceResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onLatestPointCallback(LatestPointResponse latestPointResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onHistoryTrackCallback(HistoryTrackResponse historyTrackResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onQueryTrackCallback(QueryTrackResponse queryTrackResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onAddTrackCallback(AddTrackResponse addTrackResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onParamErrorCallback(ParamErrorResponse paramErrorResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onCreateTerminalCallback(AddTerminalResponse addTerminalResponse) {
+//                                if (addTerminalResponse.isSuccess()) {
+//                                    // 创建完成，开启猎鹰服务
+//                                    long terminalId = addTerminalResponse.getTid();
+//                                    aMapTrackClient.startTrack(new TrackParam(serviceId, terminalId), onTrackLifecycleListener);
+//                                } else {
+//                                    // 请求失败
+//                                    Toast.makeText(MainActivity.this, "请求失败，" + addTerminalResponse.getErrorMsg(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
+//                    } else {
+//                        // terminal已经存在，直接开启猎鹰服务
+//                        long terminalId = queryTerminalResponse.getTid();
+//                        aMapTrackClient.startTrack(new TrackParam(serviceId, terminalId), onTrackLifecycleListener);
+//                    }
+//                } else {
+//                    // 请求失败
+//                    Toast.makeText(MainActivity.this, "请求失败，" + queryTerminalResponse.getErrorMsg(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 
 
