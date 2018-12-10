@@ -25,7 +25,7 @@ class EfficientFragment : Fragment(){
             startActivity(intent)
         }
         val appUsageChartItem = fragmentView.findViewById<LSettingItem>(R.id.recent_graph)
-        appUsageItem.setmOnLSettingItemClick {
+        appUsageChartItem.setmOnLSettingItemClick {
             val intent = Intent(activity, EfficientChartActivity::class.java)
             startActivity(intent)
         }

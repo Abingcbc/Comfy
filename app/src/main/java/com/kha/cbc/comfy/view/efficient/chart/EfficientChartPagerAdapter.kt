@@ -1,24 +1,16 @@
 package com.kha.cbc.comfy.view.efficient.chart
 
-import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.PagerAdapter
 
-class EfficientChartPagerAdapter: FragmentPagerAdapter(){
+class EfficientChartPagerAdapter(val fragmentList: MutableList<Fragment>, val fragmentManager: FragmentManager)
+    : FragmentPagerAdapter(fragmentManager){
 
     //TODO:Top Five Used Apps + 启动次数
     override fun getItem(position: Int): Fragment {
-//        val fragment: Fragment
-//        when(position){
-//            0 -> {
-//
-//            }
-//        }
-//        return fragment
+        return fragmentList[position]
     }
 
-    override fun getCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getCount(): Int = fragmentList.size
 }
