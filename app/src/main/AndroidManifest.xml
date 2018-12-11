@@ -120,7 +120,13 @@
         <service android:name="com.amap.api.track.AMapTrackService" />
         <service android:name="com.amap.api.location.APSService" />
 
-        <activity android:name=".view.efficient.chart.EfficientChartActivity"></activity>
+        <activity android:name=".view.efficient.chart.EfficientChartActivity" />
+
+        <service
+            android:name=".service.AmapTrackUploadService"
+            android:exported="false" />
+
+        <activity android:name=".view.team.grouptrack.GroupTrackActivity"></activity>
     </application>
 
 </manifest>
