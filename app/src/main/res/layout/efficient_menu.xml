@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:leftText="More Information Using RescueTime "
-        android:layout_below="@id/recent_app"
+        android:layout_below="@id/recent_graph"
         android:id="@+id/with_rescue"/>
 
 

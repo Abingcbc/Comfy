@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.model.CustomUsageStats
 import de.hdodenhof.circleimageview.CircleImageView
-import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 

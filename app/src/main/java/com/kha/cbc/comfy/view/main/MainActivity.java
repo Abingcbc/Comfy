@@ -14,6 +14,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import com.amap.api.maps.model.Circle;
+import com.bumptech.glide.Glide;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -22,20 +24,26 @@ import com.google.android.material.navigation.NavigationView;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.entity.GDUser;
+import com.kha.cbc.comfy.greendao.gen.GDAvatarDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.greendao.gen.GDUserDao;
 import com.kha.cbc.comfy.model.TabEntity;
 import com.kha.cbc.comfy.model.User;
+import com.kha.cbc.comfy.presenter.AvatarPresenter;
 import com.kha.cbc.comfy.presenter.MainPresenter;
 import com.kha.cbc.comfy.presenter.Presenter;
 import com.kha.cbc.comfy.view.common.ActivityManager;
+import com.kha.cbc.comfy.view.common.AvatarView;
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter;
 import com.kha.cbc.comfy.view.efficient.EfficientFragment;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
 import com.kha.cbc.comfy.view.settings.SettingsActivity;
 import com.kha.cbc.comfy.view.team.TeamFragment;
+import de.hdodenhof.circleimageview.CircleImageView;
+import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import java.util.ArrayList;
@@ -43,7 +51,7 @@ import java.util.List;
 
 public class MainActivity extends BaseActivityWithPresenter
         implements MainView,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, AvatarView {
 
     CommonTabLayout commonTabLayout;
     ArrayList<CustomTabEntity> tabEntityList;
@@ -61,11 +69,55 @@ public class MainActivity extends BaseActivityWithPresenter
     String sessionToken;
 
     MainPresenter presenter;
+    AvatarPresenter avatartPresenter;
 
     @Override
     protected void onResume() {
         super.onResume();
         initNavigationView();
+    }
+
+    GDAvatarDao avatarDao;
+
+    @NotNull
+    @Override
+    public GDAvatarDao getAvatarDao() {
+        return avatarDao;
+    }
+
+    @Override
+    public void setAvatarDao(@NotNull GDAvatarDao gdAvatarDao) {
+        avatarDao = gdAvatarDao;
+    }
+
+    @Override
+    public void uploadAvatarFinish(@NotNull String url) {
+
+    }
+
+    @Override
+    public void downloadAvatarFinish(@NotNull List<Pair<String, String>> urlPairs) {
+
+    }
+
+    @Override
+    public void uploadProgressUpdate(@Nullable Integer progress) {
+
+    }
+
+    @Override
+    public void setProgressBarVisible() {
+
+    }
+
+    @Override
+    public void downloadAvatarFinish(@NotNull String url) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        CircleImageView avatarImageView = headerView.findViewById(R.id.drawer_avatar_imageView);
+        Glide.with(this).load(url).into(avatarImageView);
     }
 
     @Override
@@ -80,6 +132,10 @@ public class MainActivity extends BaseActivityWithPresenter
         setContentView(R.layout.activity_main);
         Intent intentFrom = getIntent();
 
+        setAvatarDao(((ComfyApp)getApplication()).getDaoSession().getGDAvatarDao());
+        avatartPresenter = new AvatarPresenter(this);
+        presenter = new MainPresenter(this);
+
         GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
         List<GDUser> userList = userDao.loadAll();
         if (userList.size() != 1 || userList.get(0) == null ||
@@ -90,30 +146,181 @@ public class MainActivity extends BaseActivityWithPresenter
             this.finish();
         } else {
             User.INSTANCE.fromGDUser(userList.get(0));
+            Toolbar toolbar = findViewById(R.id.main_toolbar);
+            setSupportActionBar(toolbar);
+
+            fab = findViewById(R.id.main_plus_fab);
+            fab.setOnClickListener(view -> {
+                if (currentPosition == 0)
+                    personalFragment.plusTask();
+                else
+                    teamFragment.plusTask();
+            });
+
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    avatartPresenter.loadAvatar();
+                }
+            };
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+
+            initNavigationView();
+
+            init();
+
+            ActivityManager.INSTANCE.plusAssign(this);
         }
 
-        Toolbar toolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
+//        AMAP Test
 
-        fab = findViewById(R.id.main_plus_fab);
-        fab.setOnClickListener(view -> {
-            if (currentPosition == 0)
-                personalFragment.plusTask();
-            else
-                teamFragment.plusTask();
-        });
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        initNavigationView();
-
-        init();
-
-        ActivityManager.INSTANCE.plusAssign(this);
+//        final long serviceId = Long.parseLong(BuildConfig.COMFYGROUPTRACKSERVICEID);  // 这里填入前面创建的服务id
+//        final String terminalName = "testglobal";   // 唯一标识某个用户或某台设备的名称，可根据您的业务自行选择
+//        final AMapTrackClient aMapTrackClient = new AMapTrackClient(getApplicationContext());
+//        final OnTrackLifecycleListener onTrackLifecycleListener = new OnTrackLifecycleListener() {
+//
+//            @Override
+//            public void onBindServiceCallback(int i, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onStopGatherCallback(int i, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackCallback(int i, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onStartGatherCallback(int status, String msg) {
+//                if (status == ErrorCode.TrackListen.START_GATHER_SUCEE ||
+//                        status == ErrorCode.TrackListen.START_GATHER_ALREADY_STARTED) {
+//                    Toast.makeText(MainActivity.this, "定位采集开启成功！", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(MainActivity.this, "定位采集启动异常，" + msg, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onStartTrackCallback(int status, String msg) {
+//                if (status == ErrorCode.TrackListen.START_TRACK_SUCEE ||
+//                        status == ErrorCode.TrackListen.START_TRACK_SUCEE_NO_NETWORK ||
+//                        status == ErrorCode.TrackListen.START_TRACK_ALREADY_STARTED) {
+//                    // 服务启动成功，继续开启收集上报
+//                    aMapTrackClient.startGather(this);
+//                } else {
+//                    Toast.makeText(MainActivity.this, "轨迹上报服务服务启动异常，" + msg, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        };
+//        aMapTrackClient.queryTerminal(new QueryTerminalRequest(serviceId, terminalName), new OnTrackListener() {
+//
+//            @Override
+//            public void onCreateTerminalCallback(AddTerminalResponse addTerminalResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onDistanceCallback(DistanceResponse distanceResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onLatestPointCallback(LatestPointResponse latestPointResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onHistoryTrackCallback(HistoryTrackResponse historyTrackResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onQueryTrackCallback(QueryTrackResponse queryTrackResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onAddTrackCallback(AddTrackResponse addTrackResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onParamErrorCallback(ParamErrorResponse paramErrorResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onQueryTerminalCallback(QueryTerminalResponse queryTerminalResponse) {
+//                if (queryTerminalResponse.isSuccess()) {
+//                    if (queryTerminalResponse.getTid() <= 0) {
+//                        // terminal还不存在，先创建
+//                        aMapTrackClient.addTerminal(new AddTerminalRequest(terminalName, serviceId), new OnTrackListener() {
+//
+//                            @Override
+//                            public void onQueryTerminalCallback(QueryTerminalResponse queryTerminalResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onDistanceCallback(DistanceResponse distanceResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onLatestPointCallback(LatestPointResponse latestPointResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onHistoryTrackCallback(HistoryTrackResponse historyTrackResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onQueryTrackCallback(QueryTrackResponse queryTrackResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onAddTrackCallback(AddTrackResponse addTrackResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onParamErrorCallback(ParamErrorResponse paramErrorResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onCreateTerminalCallback(AddTerminalResponse addTerminalResponse) {
+//                                if (addTerminalResponse.isSuccess()) {
+//                                    // 创建完成，开启猎鹰服务
+//                                    long terminalId = addTerminalResponse.getTid();
+//                                    aMapTrackClient.startTrack(new TrackParam(serviceId, terminalId), onTrackLifecycleListener);
+//                                } else {
+//                                    // 请求失败
+//                                    Toast.makeText(MainActivity.this, "请求失败，" + addTerminalResponse.getErrorMsg(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
+//                    } else {
+//                        // terminal已经存在，直接开启猎鹰服务
+//                        long terminalId = queryTerminalResponse.getTid();
+//                        aMapTrackClient.startTrack(new TrackParam(serviceId, terminalId), onTrackLifecycleListener);
+//                    }
+//                } else {
+//                    // 请求失败
+//                    Toast.makeText(MainActivity.this, "请求失败，" + queryTerminalResponse.getErrorMsg(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 
 
@@ -122,7 +329,6 @@ public class MainActivity extends BaseActivityWithPresenter
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
-        ImageView avatarImageView = (ImageView) headerView.findViewById(R.id.drawer_avatar_imageView);
         TextView usernameTextView = headerView.findViewById(R.id.drawer_username_textView);
         TextView sessionTokenTextView = headerView.findViewById(R.id.drawer_sessionToken_textView);
         usernameTextView.setText(User.INSTANCE.getUsername());
@@ -136,7 +342,6 @@ public class MainActivity extends BaseActivityWithPresenter
         //TODO: Add Charted App Usage View
         taskDao = ((ComfyApp) getApplication())
                 .getDaoSession().getGDPersonalTaskDao();
-        presenter = new MainPresenter(this);
         commonTabLayout = findViewById(R.id.tabLayout);
 
         fragmentList = new ArrayList<>();

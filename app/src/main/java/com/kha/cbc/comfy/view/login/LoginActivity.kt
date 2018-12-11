@@ -1,8 +1,9 @@
 package com.kha.cbc.comfy.view.login
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.PersistableBundle
 import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.entity.GDUser
@@ -16,20 +17,11 @@ import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter
 import com.kha.cbc.comfy.view.common.yum
 import com.kha.cbc.comfy.view.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_user_setting.*
 import shem.com.materiallogin.DefaultLoginView
 import shem.com.materiallogin.DefaultRegisterView
 import shem.com.materiallogin.MaterialLoginView
-import android.content.ContentResolver
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.Environment
-import com.tencent.qc.stat.StatConfig.e
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.Exception
 
 
 class LoginActivity : BaseActivityWithPresenter(), LoginView , AvatarView{
