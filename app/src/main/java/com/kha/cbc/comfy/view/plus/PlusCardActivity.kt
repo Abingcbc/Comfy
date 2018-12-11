@@ -16,13 +16,9 @@ import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.view.common.*
 import com.kha.cbc.comfy.entity.GDPersonalCard
-import com.kha.cbc.comfy.entity.GDPersonalTask
 import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
-import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao
-import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.PlusCardPresenter
-import com.kha.cbc.comfy.presenter.Presenter
 import com.kha.cbc.comfy.view.common.AvatarView
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
@@ -47,10 +43,11 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     override var presenter = PlusCardPresenter(this)
     internal var taskId: String? = null
     internal var type: Int = 0
-    lateinit var executorName: String
-    lateinit var executorObjectId: String
-    lateinit var stageObjectId: String
-     var reminderDate = Calendar.getInstance().time
+    private lateinit var executorName: String
+    private lateinit var executorObjectId: String
+    private lateinit var stageObjectId: String
+    private lateinit var taskObjectId: String
+    private var reminderDate = Calendar.getInstance().time
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +66,8 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         val bundle = intentType.extras
         type = bundle!!.getInt("type")
         if (type == 1) {
-            stageObjectId = bundle.getString("objectId")
+            stageObjectId = bundle.getString("stageObjectId")
+            taskObjectId = bundle.getString("taskObjectId")
             executor_assign.visibility = View.VISIBLE
             assign_button.setOnClickListener {
                 val materialDialog = MaterialDialog(this)
@@ -85,37 +83,40 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         }
         executorObjectId = User.comfyUserObjectId!!
 
+//        presenter.setListeners(personal_plus_card_layout)
         reminderSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked) {
-                    enterDateLinearLayout.visibility = View.VISIBLE
-                } else {
-                    enterDateLinearLayout.visibility = View.GONE
-                }
+            if (isChecked) {
+                enterDateLinearLayout.visibility = View.VISIBLE
+            } else {
+                enterDateLinearLayout.visibility = View.INVISIBLE
             }
+        }
         reminderDateEditText.setOnClickListener {
-                val now = Calendar.getInstance()
-                val dateChooseDialog = DatePickerDialog.newInstance(
-                    this,
-                    now.get(Calendar.YEAR),
-                    now.get(Calendar.MONTH),
-                    now.get(Calendar.DAY_OF_MONTH)
-                )
-                dateChooseDialog.setOkText("OK")
-                dateChooseDialog.setCancelText("CANCEL")
-                dateChooseDialog.show(supportFragmentManager, "DateChooseDialog")
-            }
+            val now = Calendar.getInstance()
+            val dateChooseDialog = DatePickerDialog.newInstance(
+                this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+            )
+            //dateChooseDialog.setOkText("OK")
+            //字体颜色和按钮颜色一样。。。
+            dateChooseDialog.setOkColor(resources.getColor(R.color.black))
+            dateChooseDialog.setCancelColor(resources.getColor(R.color.black))
+            dateChooseDialog.show(supportFragmentManager, "DateChooseDialog")
+        }
         reminderTimeEditText.setOnClickListener {
-                val now = Calendar.getInstance()
-                val timeChooseDialog = TimePickerDialog.newInstance(
-                    this,
-                    now.get(Calendar.HOUR_OF_DAY),
-                    now.get(Calendar.MINUTE),
-                    false
-                )
-                timeChooseDialog.setOkText("OK")
-                timeChooseDialog.setCancelText("CANCEL")
-                timeChooseDialog.show(supportFragmentManager, "TimeChooseDialog")
-            }
+            val now = Calendar.getInstance()
+            val timeChooseDialog = TimePickerDialog.newInstance(
+                this,
+                now.get(Calendar.HOUR_OF_DAY),
+                now.get(Calendar.MINUTE),
+                false
+            )
+            timeChooseDialog.setOkText("OK")
+            timeChooseDialog.setCancelText("CANCEL")
+            timeChooseDialog.show(supportFragmentManager, "TimeChooseDialog")
+        }
     }
 
     override fun onTimeSet(view: TimePickerDialog?, hourOfDay: Int, minute: Int, second: Int) {
@@ -220,11 +221,9 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
                 }
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
     override fun uploadAvatarFinish(url: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -235,7 +234,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
             personal_plus_card_layout.yum("Mistake").show()
         }
         executorName = urlPairs[0].first
-        Glide.with(this).load(urlPairs[0].second)
+        Glide.with(this).load(urlPairs[0].second).into(member_portrait)
     }
 
     override fun uploadProgressUpdate(progress: Int?) {

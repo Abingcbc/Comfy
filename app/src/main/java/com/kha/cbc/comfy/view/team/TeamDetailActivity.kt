@@ -28,7 +28,7 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
     lateinit var fragmentList: MutableList<StageFragment>
     lateinit var stageList: List<Stage>
     lateinit var taskTitle: String
-    lateinit var objectId: String
+    lateinit var taskObjectId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,7 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
         val intent = intent
         val taskTitleView = task_detail_name
         taskTitle = intent.getStringExtra("taskTitle")
-        objectId = intent.getStringExtra("objectId")
+        taskObjectId = intent.getStringExtra("taskObjectId")
         taskTitleView.text = taskTitle
 
         presenter = TeamDetailPresenter(this)
@@ -55,7 +55,7 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
     internal fun reload() {
         stageList = ArrayList()
         fragmentList = ArrayList()
-        presenter.loadAllStages(objectId, stageList)
+        presenter.loadAllStages(taskObjectId, stageList)
     }
 
     override fun refresh(b: Boolean) {
@@ -71,7 +71,7 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
         var stageFragment =
             StageFragment.getInstance(
                 "plus",
-                ArrayList(), objectId, stageList.size
+                ArrayList(), taskObjectId, stageList.size
             )
         fragmentList.add(stageFragment)
         var pagerAdapter = TeamDetailFragAdapter(

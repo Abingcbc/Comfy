@@ -80,7 +80,7 @@ public class TeamFragment extends Fragment
     void goToDetail(String title, String objectId) {
         Intent intent = new Intent(this.getContext(), TeamDetailActivity.class);
         intent.putExtra("taskTitle", title);
-        intent.putExtra("objectId", objectId);
+        intent.putExtra("taskObjectId", objectId);
         startActivity(intent);
     }
 

@@ -35,7 +35,7 @@ class StageFragment : Fragment(), BaseRefreshView{
         activity!!.recreate()
     }
 
-    private var teamCardList: List<TeamCard>? = null
+    private var stageList: List<TeamCard>? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var stageTitle: String
     var presenter: StageFragPresenter = StageFragPresenter(this)
@@ -61,19 +61,20 @@ class StageFragment : Fragment(), BaseRefreshView{
             }
         } else {
             view = inflater.inflate(R.layout.stage_fragment, container, false)
-            teamCardList = bundle.getParcelableArrayList("TeamCardList")
+            stageList = bundle.getParcelableArrayList("TeamCardList")
             val textView = view.stage_name
 
             recyclerView = view.stage_recycler
             recyclerView.layoutManager = LinearLayoutManager(this.context)
-            recyclerView.adapter = StageRecyclerAdapter(teamCardList)
+            recyclerView.adapter = StageRecyclerAdapter(stageList)
 
             textView.text = stageTitle
             var plusTextView = view.team_plus_card
             plusTextView.setOnClickListener{
                 var intent = Intent(activity, PlusCardActivity::class.java)
                 intent.putExtra("type", 1)
-                intent.putExtra("objectId", objectId)
+                intent.putExtra("stageObjectId", objectId)
+                intent.putExtra("taskObjectId", )
                 startActivityForResult(intent, 1)
             }
         }
@@ -91,12 +92,12 @@ class StageFragment : Fragment(), BaseRefreshView{
 
     companion object {
 
-        internal fun getInstance(stageName: String, list: ArrayList<TeamCard>, objectId: String, index: Int): StageFragment {
+        internal fun getInstance(stageName: String, list: ArrayList<TeamCard>, taskObjectId: String, index: Int): StageFragment {
             val stageFragment = StageFragment()
             val bundle = Bundle()
             bundle.putString("stageName", stageName)
             bundle.putParcelableArrayList("TeamCardList", list)
-            bundle.putString("objectId", objectId)
+            bundle.putString("taskObjectId", taskObjectId)
             bundle.putInt("index", index)
             stageFragment.arguments = bundle
             return stageFragment
