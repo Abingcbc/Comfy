@@ -74,7 +74,7 @@ class StageFragment : Fragment(), BaseRefreshView{
                 var intent = Intent(activity, PlusCardActivity::class.java)
                 intent.putExtra("type", 1)
                 intent.putExtra("stageObjectId", objectId)
-                intent.putExtra("taskObjectId", )
+//                intent.putExtra("taskObjectId", )
                 startActivityForResult(intent, 1)
             }
         }

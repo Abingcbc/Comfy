@@ -39,9 +39,9 @@ class LoginPresenter(override val view: LoginView) : LeanCloudPresenter(view) {
         })
     }
 
-    fun requeryComfyUserForLogin(username: String, user: User){
+    fun requeryComfyUserForLogin(user: User){
         val query = AVQuery<AVObject>("ComfyUser")
-        query.whereEqualTo("username", username)
+        query.whereEqualTo("username", user.username)
         query.findInBackground(object: FindCallback<AVObject>(){
             override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
                 val queryUesr = p0!![0]
@@ -51,21 +51,21 @@ class LoginPresenter(override val view: LoginView) : LeanCloudPresenter(view) {
         })
     }
 
-    fun reConfirmComfyUser(user: User){
-        val comfyUser = AVObject("ComfyUser")
-        comfyUser.put("username", user.username)
-        comfyUser.saveInBackground(object: SaveCallback(){
-            override fun done(p0: AVException?) {
-                requeryComfyUserForLogin(user.username!!, user)
-            }
-        })
-    }
+//    fun reConfirmComfyUser(user: User){
+//        val comfyUser = AVObject("ComfyUser")
+//        comfyUser.put("username", user.username)
+//        comfyUser.saveInBackground(object: SaveCallback(){
+//            override fun done(p0: AVException?) {
+//                requeryComfyUserForLogin(user.username!!, user)
+//            }
+//        })
+//    }
 
     fun onLogin(user: String, password: String){
         subscriptions += repository.login(user, password)
             .applySchedulers()
             .subscribeBy(
-                onSuccess = ::reConfirmComfyUser,
+                onSuccess = ::requeryComfyUserForLogin,
                 onError = view::onLoginError
             )
     }

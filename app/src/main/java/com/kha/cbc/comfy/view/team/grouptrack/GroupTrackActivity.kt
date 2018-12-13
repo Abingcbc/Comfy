@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -29,9 +30,13 @@ class GroupTrackActivity : AppCompatActivity() {
 
     lateinit var map: AMap
 
-    val aMapTrackClient = AMapTrackClient(applicationContext)
 
-    val onTrackLifecycleListener = object: OnTrackLifecycleListener(){
+    lateinit var aMapTrackClient: AMapTrackClient
+
+    var terminalId: Long = 0
+
+
+    val onTrackLifecycleListener = object: OnTrackLifecycleListener{
         override fun onStartGatherCallback(p0: Int, p1: String?) {
             if (p0 == ErrorCode.TrackListen.START_GATHER_SUCEE ||
                 p0 == ErrorCode.TrackListen.START_GATHER_ALREADY_STARTED) {
@@ -42,15 +47,15 @@ class GroupTrackActivity : AppCompatActivity() {
         }
 
         override fun onStopTrackCallback(p0: Int, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
         }
 
         override fun onBindServiceCallback(p0: Int, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
         }
 
         override fun onStopGatherCallback(p0: Int, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
         }
 
         override fun onStartTrackCallback(p0: Int, p1: String?) {
@@ -67,54 +72,79 @@ class GroupTrackActivity : AppCompatActivity() {
 
     private fun initService(){
         map = group_track_amap.map
+        aMapTrackClient = AMapTrackClient(applicationContext)
+        var myTrackId: Long
         aMapTrackClient.queryTerminal(QueryTerminalRequest(BuildConfig.COMFYGROUPTRACKSERVICEID.toLong(),
             User.comfyUserObjectId), object: OnTrackListener {
 
             override fun onLatestPointCallback(p0: LatestPointResponse?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onCreateTerminalCallback(p0: AddTerminalResponse?) {
+
+            }
+
+            override fun onQueryTrackCallback(p0: QueryTrackResponse?) {
+
+            }
+
+            override fun onDistanceCallback(p0: DistanceResponse?) {
+
+            }
+
+            override fun onQueryTerminalCallback(p0: QueryTerminalResponse?) {
                 if(p0 != null && p0.isSuccess){
                     if(p0.tid <= 0){
                         //terminal 不存在，先创建
                         aMapTrackClient.addTerminal(AddTerminalRequest(User.comfyUserObjectId,
                             BuildConfig.COMFYGROUPTRACKSERVICEID.toLong()), object: OnTrackListener{
                             override fun onLatestPointCallback(p0: LatestPointResponse?) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                             }
 
                             override fun onCreateTerminalCallback(p0: AddTerminalResponse?) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                                if (p0 != null && p0.isSuccess) {
+                                    // 创建完成，开启猎鹰服务
+                                    terminalId = p0.tid
+                                    aMapTrackClient.startTrack(
+                                        TrackParam(BuildConfig.COMFYGROUPTRACKSERVICEID.toLong(), terminalId),
+                                        onTrackLifecycleListener
+                                    )
+                                } else {
+                                    // 请求失败
+                                    group_track_layout.yum("请求失败.").show()
+                                }
                             }
 
                             override fun onQueryTrackCallback(p0: QueryTrackResponse?) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                             }
 
                             override fun onDistanceCallback(p0: DistanceResponse?) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                             }
 
                             override fun onQueryTerminalCallback(p0: QueryTerminalResponse?) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                             }
 
                             override fun onHistoryTrackCallback(p0: HistoryTrackResponse?) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                             }
 
                             override fun onParamErrorCallback(p0: ParamErrorResponse?) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                             }
 
                             override fun onAddTrackCallback(p0: AddTrackResponse?) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                             }
                         })
                     }
                     else{
                         val lastTerminalId = p0.tid
+                        terminalId = p0.tid
                         aMapTrackClient.startTrack(TrackParam(BuildConfig.COMFYGROUPTRACKSERVICEID.toLong(),
                             lastTerminalId),
                             onTrackLifecycleListener)
@@ -122,32 +152,28 @@ class GroupTrackActivity : AppCompatActivity() {
                 }
                 else{
                     //请求失败
-                    group_track_layout.yum("请求失败." + p0.errorMsg).show()
+                    Toast.makeText(this@GroupTrackActivity, "请求失败，" + p0!!.getErrorMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
 
-            override fun onQueryTrackCallback(p0: QueryTrackResponse?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onDistanceCallback(p0: DistanceResponse?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onQueryTerminalCallback(p0: QueryTerminalResponse?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
             override fun onHistoryTrackCallback(p0: HistoryTrackResponse?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onParamErrorCallback(p0: ParamErrorResponse?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onAddTrackCallback(p0: AddTrackResponse?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                if (p0 != null && p0.isSuccess) {
+                    myTrackId = p0.trid
+                    val trackParam = TrackParam(BuildConfig.COMFYGROUPTRACKSERVICEID.toLong(), terminalId)
+                    trackParam.trackId = myTrackId
+                    aMapTrackClient.startTrack(trackParam, onTrackLifecycleListener)
+                } else {
+                    Toast.makeText(this@GroupTrackActivity, "网络请求失败，" +
+                            p0?.errorMsg, Toast.LENGTH_SHORT).show()
+                }
             }
 
         })
