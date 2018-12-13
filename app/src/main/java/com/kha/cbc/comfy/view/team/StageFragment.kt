@@ -35,18 +35,19 @@ class StageFragment : Fragment(), BaseRefreshView{
         activity!!.recreate()
     }
 
-    private var stageList: List<TeamCard>? = null
+    private var teamCardList: List<TeamCard>? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var stageTitle: String
     var presenter: StageFragPresenter = StageFragPresenter(this)
-    //当非plus页时为stage
-    private var objectId: String? = null
+    private var taskObjectId: String? = null
+    private var stageObjectId: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val bundle = arguments
         stageTitle = bundle!!.getString("stageName")!!
-        objectId = bundle.getString("objectId")
+        taskObjectId = bundle.getString("taskObjectId")
+        stageObjectId = bundle.getString("stageObjectId")
         val view: View
         if (stageTitle === "plus") {
             var index = bundle.getInt("index")
@@ -55,26 +56,26 @@ class StageFragment : Fragment(), BaseRefreshView{
             button.setOnClickListener {
                 val materialDialog = MaterialDialog(context!!)
                 materialDialog.input { _, charSequence ->
-                    presenter.postStage(objectId, charSequence.toString(), index)
+                    presenter.postStage(taskObjectId, charSequence.toString(), index)
                 }.positiveButton(R.string.submit)
                     .show()
             }
         } else {
             view = inflater.inflate(R.layout.stage_fragment, container, false)
-            stageList = bundle.getParcelableArrayList("TeamCardList")
+            teamCardList = bundle.getParcelableArrayList("TeamCardList")
             val textView = view.stage_name
 
             recyclerView = view.stage_recycler
             recyclerView.layoutManager = LinearLayoutManager(this.context)
-            recyclerView.adapter = StageRecyclerAdapter(stageList)
+            recyclerView.adapter = StageRecyclerAdapter(teamCardList)
 
             textView.text = stageTitle
             var plusTextView = view.team_plus_card
             plusTextView.setOnClickListener{
                 var intent = Intent(activity, PlusCardActivity::class.java)
                 intent.putExtra("type", 1)
-                intent.putExtra("stageObjectId", objectId)
-                intent.putExtra("taskObjectId", )
+                intent.putExtra("stageObjectId", stageObjectId)
+                intent.putExtra("taskObjectId", taskObjectId)
                 startActivityForResult(intent, 1)
             }
         }
@@ -92,11 +93,14 @@ class StageFragment : Fragment(), BaseRefreshView{
 
     companion object {
 
-        internal fun getInstance(stageName: String, list: ArrayList<TeamCard>, taskObjectId: String, index: Int): StageFragment {
+        internal fun getInstance(stageName: String, list: ArrayList<TeamCard>,
+                                 taskObjectId: String, stageObjectId: String,
+                                 index: Int): StageFragment {
             val stageFragment = StageFragment()
             val bundle = Bundle()
             bundle.putString("stageName", stageName)
             bundle.putParcelableArrayList("TeamCardList", list)
+            bundle.putString("stageObjectId", stageObjectId)
             bundle.putString("taskObjectId", taskObjectId)
             bundle.putInt("index", index)
             stageFragment.arguments = bundle

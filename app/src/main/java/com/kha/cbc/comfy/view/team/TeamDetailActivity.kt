@@ -66,12 +66,12 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
         stageList = stageList.sortedBy { it.index }
         for (stage in stageList) {
             fragmentList.add(StageFragment.getInstance(stage.title,
-                stage.teamCardList, stage.objectId, stageList.size))
+                stage.teamCardList, taskObjectId, stage.objectId, stageList.size))
         }
         var stageFragment =
             StageFragment.getInstance(
                 "plus",
-                ArrayList(), taskObjectId, stageList.size
+                ArrayList(), taskObjectId, taskObjectId, stageList.size
             )
         fragmentList.add(stageFragment)
         var pagerAdapter = TeamDetailFragAdapter(

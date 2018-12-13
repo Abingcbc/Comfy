@@ -36,7 +36,8 @@ public class PlusCardPresenter extends AvatarPresenter {
     public void postCard(String title,
                          String description,
                          String executorObjectId,
-                         String stageObjectId) {
+                         String stageObjectId,
+                         String taskObjectId) {
         AVObject card = new AVObject("TeamCard");
         AVObject user = AVObject.createWithoutData("ComfyUser",
                 executorObjectId);
@@ -46,15 +47,12 @@ public class PlusCardPresenter extends AvatarPresenter {
         card.put("Stage", stage);
         card.put("CardTitle", title);
         card.put("Description", description);
-        card.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e != null)
-                    e.printStackTrace();
-            }
-        });
-
+        card.saveInBackground();
         AVObject map = new AVObject("UserTaskMap");
+        AVObject teamTask = AVObject.createWithoutData("TeamTask", taskObjectId);
+        map.put("TeamTask", teamTask);
+        map.put("Member", user);
+        map.saveInBackground();
     }
 
 

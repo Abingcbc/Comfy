@@ -48,6 +48,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     private lateinit var stageObjectId: String
     private lateinit var taskObjectId: String
     private var reminderDate = Calendar.getInstance().time
+    private var isReminderSet = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,11 +85,13 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         executorObjectId = User.comfyUserObjectId!!
 
 //        presenter.setListeners(personal_plus_card_layout)
-        reminderSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        reminderSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 enterDateLinearLayout.visibility = View.VISIBLE
+                isReminderSet = true
             } else {
                 enterDateLinearLayout.visibility = View.INVISIBLE
+                isReminderSet = false
             }
         }
         reminderDateEditText.setOnClickListener {
@@ -203,7 +206,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     }
 
     private fun successAddTeam(title: String, description: String) {
-        presenter.postCard(title, description, executorObjectId, stageObjectId)
+        presenter.postCard(title, description, executorObjectId, stageObjectId, taskObjectId)
         val intent = Intent()
         setResult(Activity.RESULT_OK, intent)
         finish()
@@ -216,6 +219,9 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
                 val description = input_card_description.text.toString()
                 if (type == 0) {
                     successAddPersonal(title, description)
+                    if (isReminderSet) {
+                        presenter.setLocalReminder(input_reminder_date)
+                    }
                 } else {
                     successAddTeam(title, description)
                 }

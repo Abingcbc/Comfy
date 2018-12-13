@@ -46,7 +46,8 @@ public class TeamFragPresenter extends BasePresenter {
                             teamTask.getObjectId()));
                 }
                 AVQuery<AVObject> queryP = new AVQuery<>("UserTaskMap");
-                queryP.whereEqualTo("ParticipateUser", AVUser.getCurrentUser());
+                AVObject user = AVObject.createWithoutData("ComfyUser", User.INSTANCE.getComfyUserObjectId());
+                queryP.whereEqualTo("Member", user);
                 queryP.findInBackground(new FindCallback<AVObject>() {
                     @Override
                     public void done(List<AVObject> list, AVException e) {
