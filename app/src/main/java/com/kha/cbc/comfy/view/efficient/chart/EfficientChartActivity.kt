@@ -35,14 +35,16 @@ class EfficientChartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_efficient_chart)
         usageStatsManager = this.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         usageListDaily = getUsageList(UsageStatsManager.INTERVAL_DAILY)
-        val fragmentList : MutableList<Fragment> = mutableListOf()
-        val launchTimesFragment = LaunchTimesFragment()
-        val launchTimesBundle = Bundle()
-        launchTimesBundle.putParcelableArrayList("clicks", getLaunchTimesList() as ArrayList<out Parcelable>)
-        launchTimesFragment.arguments = launchTimesBundle
-        fragmentList.add(launchTimesFragment)
-        val pagerAdapter = EfficientChartPagerAdapter(fragmentList, supportFragmentManager)
-        efficient_chart_viewpager.adapter = pagerAdapter
+        if(usageListDaily.isNotEmpty()){
+            val fragmentList : MutableList<Fragment> = mutableListOf()
+            val launchTimesFragment = LaunchTimesFragment()
+            val launchTimesBundle = Bundle()
+            launchTimesBundle.putParcelableArrayList("clicks", getLaunchTimesList() as ArrayList<out Parcelable>)
+            launchTimesFragment.arguments = launchTimesBundle
+            fragmentList.add(launchTimesFragment)
+            val pagerAdapter = EfficientChartPagerAdapter(fragmentList, supportFragmentManager)
+            efficient_chart_viewpager.adapter = pagerAdapter
+        }
     }
 
     private fun getLaunchTimesList(): ArrayList<ClickTimes>{
@@ -79,7 +81,7 @@ class EfficientChartActivity : AppCompatActivity() {
             )
 
         if (queryUsageStats.size == 0) {
-            app_usage_recycler.yum("App usage access not allowed").setAction("Go and Set") {
+            efficient_chart_layout.yum("App usage access not allowed").setAction("Go and Set") {
                 startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
             }.show()
         }
