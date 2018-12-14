@@ -2,39 +2,130 @@ package com.kha.cbc.comfy.view.team.grouptrack
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.graphics.PixelFormat
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.amap.api.maps.AMap
+import com.amap.api.maps.model.BitmapDescriptorFactory
+import com.amap.api.maps.model.LatLng
+import com.amap.api.maps.model.Marker
+import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.track.AMapTrackClient
 import com.amap.api.track.query.entity.Point
+import com.avos.avoscloud.AVException
+import com.avos.avoscloud.AVObject
+import com.avos.avoscloud.AVQuery
+import com.avos.avoscloud.FindCallback
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.Request
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.SizeReadyCallback
+import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
+import com.kha.cbc.comfy.ComfyApp
+import com.kha.cbc.comfy.GlideApp
 import com.kha.cbc.comfy.R
+import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
 import com.kha.cbc.comfy.model.User
+import com.kha.cbc.comfy.presenter.AvatarPresenter
 import com.kha.cbc.comfy.presenter.GroupTrackPresenter
+import com.kha.cbc.comfy.view.common.AvatarView
 import com.kha.cbc.comfy.view.common.GroupTrackView
 import com.kha.cbc.comfy.view.common.yum
 import kotlinx.android.synthetic.main.activity_group_track.*
 
 
-class GroupTrackActivity : AppCompatActivity() , GroupTrackView{
+class GroupTrackActivity : AppCompatActivity() , GroupTrackView, AvatarView{
 
+    lateinit var avatarPresenter: AvatarPresenter
+
+    val historyMarkerListPair = mutableListOf<Pair<String, Marker>>()
 
 
     override lateinit var yumLayout: View
 
+    //Pair<userId, avatarurl>
+    lateinit var userIdAvatarPairList: MutableList<Pair<String, String>>
+
     override fun onServiceStarted() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        yumLayout.yum("Self-Track Opened")
     }
 
     override fun onResultRetrieved(pair: Pair<String, Point>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val userId = pair.first
+        val point = pair.second
+        val query = AVQuery<AVObject>("ComfyUser")
+        query.whereEqualTo("objectId", userId)
+        query.findInBackground(object: FindCallback<AVObject>(){
+            override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
+                if(p0 != null && p0.size > 0){
+                    val username = p0[0].getString("username")
+                    val markerOptions = MarkerOptions()
+                    val avatarUrlPair = userIdAvatarPairList.find {
+                        it.first == userId
+                    }
+                    if(avatarUrlPair != null){
+                        val avatarUrl = avatarUrlPair.second
+                        GlideApp.with(this@GroupTrackActivity).asBitmap().load(avatarUrl).into(
+                            object: SimpleTarget<Bitmap>(){
+                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                    val matrix = Matrix()
+                                    matrix.setScale(0.08f, 0.08f)
+                                    val bitmap = Bitmap.createBitmap(
+                                        resource, 0, 0, resource.width, resource.height, matrix, true
+                                    )
+                                    val historyMarker = historyMarkerListPair.find {
+                                        it.first == userId
+                                    }
+                                    historyMarker?.second?.destroy()
+                                    if(historyMarker != null){
+                                        historyMarkerListPair.remove(historyMarker)
+                                    }
+                                    markerOptions.position(LatLng(point.lat, point.lng))
+                                        .title(username)
+                                        .snippet(username + "(" + point.lat.toString() + " " + point.lng.toString() + ")")
+                                        .draggable(false)
+                                        .visible(true)
+                                        .setFlat(true)
+                                        .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                                        .infoWindowEnable(true)
+                                    historyMarkerListPair.add(Pair(userId, map.addMarker(markerOptions)))
+                                }
+                            }
+                        )
+                    }
+
+                }
+            }
+        })
+
     }
 
     override fun onServiceBroken() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        groupTrackPresenter.onViewDestroyed()
     }
+
+    override fun onAvatarDownloadComplete(pairList: MutableList<Pair<String, String>>) {
+        userIdAvatarPairList = pairList
+        groupTrackPresenter.startService()
+    }
+
+    override lateinit var avatarDao: GDAvatarDao
+
+    override fun uploadAvatarFinish(url: String) {}
+    override fun downloadAvatarFinish(urlPairs: MutableList<Pair<String, String>>) {}
+    override fun uploadProgressUpdate(progress: Int?) {}
+    override fun setProgressBarVisible() {}
+    override fun downloadAvatarFinish(url: String) {}
 
     //TODO: 开启定位/蓝牙？
 
@@ -86,13 +177,14 @@ class GroupTrackActivity : AppCompatActivity() , GroupTrackView{
     private fun initService(){
         map = group_track_amap.map
         amapTrackClient = AMapTrackClient(applicationContext)
-        groupTrackPresenter.startService()
+        groupTrackPresenter.fetchAvatar()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         group_track_amap.onDestroy()
+        groupTrackPresenter.onViewDestroyed()
     }
 
     override fun onResume() {
@@ -138,9 +230,12 @@ class GroupTrackActivity : AppCompatActivity() , GroupTrackView{
         }
         else{
             groupTrackPresenter = GroupTrackPresenter(this)
+            avatarPresenter = AvatarPresenter(this)
+            avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
             yumLayout = group_track_layout
             //TODO: Simulation
             trackList = mutableListOf(User.comfyUserObjectId!!)
+            //
             initService()
         }
     }
@@ -158,6 +253,13 @@ class GroupTrackActivity : AppCompatActivity() , GroupTrackView{
                     }
                 }
                 if(isPermitted){
+                    groupTrackPresenter = GroupTrackPresenter(this)
+                    avatarPresenter = AvatarPresenter(this)
+                    avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
+                    yumLayout = group_track_layout
+                    //TODO: Simulation
+                    trackList = mutableListOf(User.comfyUserObjectId!!)
+                    //
                     initService()
                 }
             }

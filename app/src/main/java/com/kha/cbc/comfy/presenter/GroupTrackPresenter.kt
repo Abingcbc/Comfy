@@ -1,29 +1,65 @@
 package com.kha.cbc.comfy.presenter
 
 import android.os.AsyncTask
-import android.os.Build
-import android.widget.Toast
-import com.amap.api.track.AMapTrackClient
 import com.amap.api.track.ErrorCode
 import com.amap.api.track.OnTrackLifecycleListener
 import com.amap.api.track.TrackParam
-import com.amap.api.track.query.entity.Track
+import com.amap.api.track.query.entity.DriveMode
+import com.amap.api.track.query.entity.Point
 import com.amap.api.track.query.model.*
 import com.avos.avoscloud.*
 import com.kha.cbc.comfy.BuildConfig
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.view.common.GroupTrackView
 import com.kha.cbc.comfy.view.common.yum
-import com.amap.api.track.query.entity.DriveMode
-import com.amap.api.track.query.entity.Point
-import com.amap.api.track.query.model.QueryTrackRequest
-
-
+import java.security.acl.Group
+import java.util.*
 
 
 class GroupTrackPresenter(val view: GroupTrackView){
 
+    //STEPS: fetchAvatar -> startService -> startUploadTrack -> fetchDownloadPairs -> startDownloadAsyncTask
 
+    class DownloadPointTimer(val downloadTargets: MutableList<Pair<Long, Long>>,
+                             val view: GroupTrackView): TimerTask(){
+        override fun run() {
+            val targets = downloadTargets
+            for(target in targets){
+                val terminalId = target.first
+                view.amapTrackClient.queryLatestPoint(LatestPointRequest(BuildConfig.COMFYGROUPTRACKSERVICEID.toLong(),
+                    terminalId), object : OnTrackListener{
+                    override fun onLatestPointCallback(p0: LatestPointResponse?) {
+                        if (p0 != null && p0.isSuccess) {
+                            val point = p0.latestPoint.point
+                            val query = AVQuery<AVObject>("GroupTrack")
+                            query.whereEqualTo("terminalId", terminalId)
+                            query.findInBackground(object: FindCallback<AVObject>(){
+                                override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
+                                    if(p0 != null && p0.size > 0){
+                                        val userId = p0[0].getString("userId")
+                                        val newPair = Pair<String, Point>(userId, point)
+                                        view.onResultRetrieved(newPair)
+                                    }
+                                }
+                            })
+                            // 查询实时位置成功，point为实时位置信息
+                        } else {
+                            view.onServiceBroken()
+                        }
+                    }
+                    override fun onCreateTerminalCallback(p0: AddTerminalResponse?) {}
+                    override fun onQueryTrackCallback(p0: QueryTrackResponse?) {}
+                    override fun onDistanceCallback(p0: DistanceResponse?) {}
+                    override fun onQueryTerminalCallback(p0: QueryTerminalResponse?) {}
+                    override fun onHistoryTrackCallback(p0: HistoryTrackResponse?) {}
+                    override fun onParamErrorCallback(p0: ParamErrorResponse?) {}
+                    override fun onAddTrackCallback(p0: AddTrackResponse?) {}
+                })
+            }
+        }
+    }
+
+    //Pair: First:userId, Second:point
     class DownloadPointAsyncTask(val view: GroupTrackView) : AsyncTask<MutableList<Pair<Long, Long>>, Double, Unit>(){
 
         override fun doInBackground(vararg p0: MutableList<Pair<Long, Long>>?){
@@ -104,6 +140,7 @@ class GroupTrackPresenter(val view: GroupTrackView){
                             })
                         } else {
                             view.onServiceBroken()
+
                         }
                     }
                     override fun onDistanceCallback(p0: DistanceResponse?) {}
@@ -120,13 +157,49 @@ class GroupTrackPresenter(val view: GroupTrackView){
 
     lateinit var terminalName : String
 
-    lateinit var downloadPairs: MutableList<Pair<Long, Long>>
+    val downloadPairs: MutableList<Pair<Long, Long>> = mutableListOf()
 
     var terminalId : Long = -1
 
     var trackId : Long = -1
 
     var serviceId : Long = BuildConfig.COMFYGROUPTRACKSERVICEID.toLong()
+
+    lateinit var groupTrackAsyncTask: AsyncTask<MutableList<Pair<Long, Long>>, Double, Unit>
+
+    lateinit var groupTrackTimerTask: TimerTask
+
+    lateinit var timer: Timer
+
+    fun fetchAvatar(){
+        val pairList = mutableListOf<Pair<String, String>>()
+        for(target in view.trackList){
+
+            val userQuery = AVQuery<AVObject>("ComfyUser")
+            userQuery.whereEqualTo("objectId", target)
+            userQuery.findInBackground(object: FindCallback<AVObject>(){
+                override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
+                    if(p0 != null && p0.size > 0){
+                        val user = p0[0]
+                        val query = AVQuery<AVObject>("ComfyUserInfoMap")
+                        query.whereEqualTo("user", user)
+                        query.include("avatar")
+                        query.findInBackground(object: FindCallback<AVObject>(){
+                            override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
+                                if(p0 != null && p0.size > 0){
+                                    val avatarFile = p0[0].getAVFile<AVFile>("avatar")
+                                    pairList.add(Pair(target, avatarFile.url))
+                                    if(pairList.size == view.trackList.size){
+                                        view.onAvatarDownloadComplete(pairList)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        }
+    }
 
     fun startService(){
 
@@ -279,7 +352,7 @@ class GroupTrackPresenter(val view: GroupTrackView){
                                 val trackParam = TrackParam(serviceId, terminalId)
                                 trackParam.trackId = trackId
                                 view.amapTrackClient.startTrack(trackParam, onTrackLifecycleListener)
-                                startDownloadAsyncTask()
+                                fetchDownloadPairs()
                             }
                             else{
                                 view.onServiceBroken()
@@ -292,14 +365,14 @@ class GroupTrackPresenter(val view: GroupTrackView){
                     previous.put("trackId", trackId)
                     previous.saveInBackground(object : SaveCallback(){
                         override fun done(p0: AVException?) {
-                            if(p0 != null){
+                            if(p0 == null){
                                 val trackParam = TrackParam(serviceId, terminalId)
                                 trackParam.trackId = trackId
                                 view.amapTrackClient.startTrack(trackParam, onTrackLifecycleListener)
+                                fetchDownloadPairs()
                             }
                             else{
                                 view.onServiceBroken()
-                                startDownloadAsyncTask()
                             }
                         }
                     })
@@ -309,9 +382,11 @@ class GroupTrackPresenter(val view: GroupTrackView){
     }
 
     fun startDownloadAsyncTask(){
-
-
-
+//        groupTrackAsyncTask = DownloadPointAsyncTask(view)
+//        groupTrackAsyncTask.execute(downloadPairs)
+        groupTrackTimerTask = DownloadPointTimer(downloadPairs, view)
+        timer = Timer()
+        timer.schedule(groupTrackTimerTask, 0, 5000)
     }
 
     private fun fetchDownloadPairs(){
@@ -334,6 +409,11 @@ class GroupTrackPresenter(val view: GroupTrackView){
                 }
             }
         })
+    }
+
+    fun onViewDestroyed(){
+//        groupTrackAsyncTask.cancel(true)
+        timer.cancel()
     }
 
 }
