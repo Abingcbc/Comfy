@@ -28,7 +28,7 @@
                 android:layout_gravity="center"
                 android:textSize="30dp"/>
     </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>>
+    </com.google.android.material.appbar.AppBarLayout>
 
 <RelativeLayout
         android:layout_width="match_parent"

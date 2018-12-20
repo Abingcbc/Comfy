@@ -2,8 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-            android:id="@+id/plus_success"
-            android:icon="@drawable/check_outline"
+            android:id="@+id/location_sharing"
+            android:icon="@drawable/map_marker_multiple"
             android:title="plus_success"
             app:showAsAction="ifRoom"/>
+
 </menu>

@@ -132,6 +132,16 @@
                 android:name=".presenter.Notification.AlarmIntentService"
                 android:exported="false">
         </service>
+
+        <receiver android:name="com.kha.cbc.comfy.presenter.Notification.CloudReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.kha.cbc.comfy.NEWCLOUDMESSAGE" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

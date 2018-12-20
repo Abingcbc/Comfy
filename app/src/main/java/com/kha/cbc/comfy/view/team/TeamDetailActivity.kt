@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -50,6 +52,20 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
         presenter = TeamDetailPresenter(this)
 
         reload()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.location_sharing, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.location_sharing -> {
+
+            }
+        }
+        return true
     }
 
     internal fun reload() {

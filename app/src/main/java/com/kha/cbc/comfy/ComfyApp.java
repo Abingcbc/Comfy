@@ -19,13 +19,15 @@ public class ComfyApp extends Application {
         // 初始化参数依次为 this, AppId, AppKey
         AVOSCloud.initialize(this, BuildConfig.LEANCLOUDAPPID, BuildConfig.LEANCLOUDAPPKEY);
 
-        AVInstallation.getCurrentInstallation().saveInBackground();
 
         //LeanCloud debug log
         AVOSCloud.setDebugLogEnabled(true);
 
         //初始化本地数据库
         initGreenDao();
+
+
+        AVInstallation.getCurrentInstallation().saveInBackground();
     }
 
     private void initGreenDao() {
