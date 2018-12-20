@@ -22,6 +22,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import com.avos.avoscloud.AVInstallation;
+import com.avos.avoscloud.PushService;
 import com.bumptech.glide.Glide;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -38,6 +40,7 @@ import com.kha.cbc.comfy.model.TabEntity;
 import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.presenter.AvatarPresenter;
 import com.kha.cbc.comfy.presenter.MainPresenter;
+import com.kha.cbc.comfy.presenter.Notification.AlarmIntentService;
 import com.kha.cbc.comfy.presenter.Presenter;
 import com.kha.cbc.comfy.view.common.ActivityManager;
 import com.kha.cbc.comfy.view.common.AvatarView;
@@ -161,8 +164,11 @@ public class MainActivity extends BaseActivityWithPresenter
                 if (currentPosition == 0) {
                     personalFragment.plusTask();
                 }
-                else
+                else {
                     teamFragment.plusTask();
+                    PushService.subscribe(this, "aaaa", MainActivity.class);
+                    AVInstallation.getCurrentInstallation().saveInBackground();
+                }
             });
 
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
