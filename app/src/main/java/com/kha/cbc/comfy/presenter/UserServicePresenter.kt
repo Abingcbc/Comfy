@@ -55,7 +55,7 @@ class UserServicePresenter(val view: UserServiceView){
         AVUser.logInInBackground(User.username, oldPassword, object : LogInCallback<AVUser>() {
             override fun done(avUser: AVUser?, p1: AVException?) {
                 if(avUser != null && p1 == null){
-                    avUser!!.put("password", newPassword)
+                    avUser.put("password", newPassword)
                     avUser.saveInBackground(object: SaveCallback(){
                         override fun done(e: AVException?) {
                             User.username = avUser.username

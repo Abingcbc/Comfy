@@ -102,7 +102,7 @@ class GroupTrackActivity : AppCompatActivity() , GroupTrackView, AvatarView{
     }
 
     override fun onServiceBroken() {
-        groupTrackPresenter.onViewDestroyed()
+
     }
 
     override fun onAvatarDownloadComplete(pairList: MutableList<Pair<String, String>>) {

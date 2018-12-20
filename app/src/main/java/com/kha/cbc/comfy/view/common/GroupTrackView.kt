@@ -5,6 +5,7 @@ import android.widget.ImageView
 import com.amap.api.maps.AMap
 import com.amap.api.track.AMapTrackClient
 import com.amap.api.track.query.entity.Point
+import com.avos.avoscloud.AVException
 
 interface GroupTrackView{
     var yumLayout: View
@@ -14,5 +15,6 @@ interface GroupTrackView{
     fun onServiceStarted()
     fun onResultRetrieved(pair: Pair<String, Point>)
     fun onServiceBroken()
+//    fun onServiceBroken(e: AVException?)
     fun onAvatarDownloadComplete(pairList: MutableList<Pair<String, String>>)
 }

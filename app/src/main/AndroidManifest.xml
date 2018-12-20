@@ -122,10 +122,6 @@
 
         <activity android:name=".view.efficient.chart.EfficientChartActivity"/>
 
-        <service
-                android:name=".service.AmapTrackUploadService"
-                android:exported="false"/>
-
         <activity android:name=".view.team.grouptrack.GroupTrackActivity"/>
 
         <service

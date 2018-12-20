@@ -10,6 +10,16 @@ import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.view.efficient.chart.EfficientChartActivity
 import com.kha.cbc.comfy.view.team.grouptrack.GroupTrackActivity
 import com.leon.lib.settingview.LSettingItem
+import android.widget.Toast
+import com.kha.cbc.comfy.view.main.MainActivity
+import cn.leancloud.chatkit.utils.LCIMConstants
+import cn.leancloud.chatkit.activity.LCIMConversationActivity
+import com.avos.avoscloud.im.v2.AVIMException
+import com.avos.avoscloud.im.v2.AVIMClient
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback
+import cn.leancloud.chatkit.LCChatKit
+import com.ldoublem.loadingviewlib.view.LVGhost
+
 
 class EfficientFragment : Fragment(){
     lateinit var fragmentView: View
@@ -35,5 +45,24 @@ class EfficientFragment : Fragment(){
             val intent = Intent(activity, GroupTrackActivity::class.java)
             startActivity(intent)
         }
+
+        val chat_test = fragmentView.findViewById<LSettingItem>(R.id.chat)
+        chat_test.setmOnLSettingItemClick {
+            LCChatKit.getInstance().open("Tom", object : AVIMClientCallback() {
+                override fun done(avimClient: AVIMClient, e: AVIMException?) {
+                    if (null == e) {
+                        val intent = Intent(activity, LCIMConversationActivity::class.java)
+                        intent.putExtra(LCIMConstants.PEER_ID, "Jerry")
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
     }
 }
