@@ -18,7 +18,7 @@ import java.util.*
 
 class GroupTrackPresenter(val view: GroupTrackView){
 
-    //STEPS: fetchAvatar -> startService -> startUploadTrack -> fetchDownloadPairs -> startDownloadAsyncTask
+    //STEPS: fetchMembers -> fetchAvatar -> startService -> startUploadTrack -> fetchDownloadPairs -> startDownloadAsyncTask
 
     class DownloadPointTimer(val downloadTargets: MutableList<Pair<Long, Long>>,
                              val view: GroupTrackView): TimerTask(){
@@ -170,6 +170,25 @@ class GroupTrackPresenter(val view: GroupTrackView){
     lateinit var groupTrackTimerTask: TimerTask
 
     lateinit var timer: Timer
+
+    fun fetchMembers(){
+        view.trackList = mutableListOf()
+        val query = AVQuery<AVObject>("UserTaskMap")
+        val task = AVObject.createWithoutData("TeamTask", view.taskObjectId)
+        query.whereEqualTo("TeamTask", task)
+        query.findInBackground(object: FindCallback<AVObject>(){
+            override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
+                if(p1 == null){
+                    if(p0 != null && p0.size > 0){
+                        for (map in p0) {
+                            view.trackList.add(map.getAVObject<AVObject>("Member").objectId)
+                        }
+                        fetchAvatar()
+                    }
+                }
+            }
+        })
+    }
 
     fun fetchAvatar(){
         val pairList = mutableListOf<Pair<String, String>>()

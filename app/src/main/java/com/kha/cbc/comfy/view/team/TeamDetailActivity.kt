@@ -1,5 +1,6 @@
 package com.kha.cbc.comfy.view.team
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.TypedValue
@@ -17,6 +18,7 @@ import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.model.Stage
 import com.kha.cbc.comfy.presenter.TeamDetailPresenter
 import com.kha.cbc.comfy.view.common.BaseRefreshView
+import com.kha.cbc.comfy.view.team.grouptrack.GroupTrackActivity
 import com.tmall.ultraviewpager.UltraViewPager
 import com.tmall.ultraviewpager.UltraViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_team_detail.*
@@ -62,7 +64,9 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.location_sharing -> {
-
+                val intent = Intent(this, GroupTrackActivity::class.java)
+                intent.putExtra("taskObjectId", taskObjectId)
+                startActivity(intent)
             }
         }
         return true
