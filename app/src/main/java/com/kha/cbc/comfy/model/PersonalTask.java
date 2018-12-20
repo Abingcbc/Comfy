@@ -29,8 +29,7 @@ public class PersonalTask extends BaseTaskModel {
         this.id = task.getId();
         this.cardModelList = new LinkedList<>();
         for (GDPersonalCard card : task.getPersonalCardList()) {
-            this.cardModelList.add(new PersonalCard(card.getTitle(),
-                    card.getDescription(), card.getTaskId()));
+            this.cardModelList.add(new PersonalCard(card));
         }
         cardModelList.add(new PlusCard(id));
     }

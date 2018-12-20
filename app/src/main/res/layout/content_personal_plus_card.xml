@@ -169,7 +169,8 @@
             android:id="@+id/executor_assign"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="invisible">
 
         <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/member_portrait"

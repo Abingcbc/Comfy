@@ -18,31 +18,49 @@ public class GDPersonalCard {
     String title;
     String description;
     String taskId;
+    String remindDate;
+    boolean isRemind;
 
     public GDPersonalCard(BaseCardModel cardModel) {
         this.title = cardModel.getTitle();
         this.description = cardModel.getDescription();
         this.taskId = cardModel.getTaskId();
-        this.id = title + taskId;
+        this.id = cardModel.getId();
+        this.remindDate = cardModel.getRemindDate();
+        this.isRemind = cardModel.isRemind();
     }
 
 
     public GDPersonalCard(String title, String description,
-                          String taskId) {
+                           String taskId) {
         this.id = title + taskId;
         this.title = title;
         this.description = description;
         this.taskId = taskId;
+        this.isRemind = false;
     }
 
-    @Generated(hash = 1897112959)
+    public GDPersonalCard(String title, String description,
+                          String taskId, String remindDate) {
+        this.id = title + taskId;
+        this.title = title;
+        this.description = description;
+        this.taskId = taskId;
+        this.remindDate = remindDate;
+        this.isRemind = true;
+    }
+
+    @Generated(hash = 541645808)
     public GDPersonalCard(String id, String title, String description,
-            String taskId) {
+            String taskId, String remindDate, boolean isRemind) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.taskId = taskId;
+        this.remindDate = remindDate;
+        this.isRemind = isRemind;
     }
+
 
     @Generated(hash = 806343092)
     public GDPersonalCard() {
@@ -79,4 +97,26 @@ public class GDPersonalCard {
     public void setId(String id) {
         this.id = id;
     }
+
+
+    public String getRemindDate() {
+        return this.remindDate;
+    }
+
+
+    public void setRemindDate(String remindDate) {
+        this.remindDate = remindDate;
+    }
+
+
+    public boolean getIsRemind() {
+        return this.isRemind;
+    }
+
+
+    public void setIsRemind(boolean isRemind) {
+        this.isRemind = isRemind;
+    }
+
+
 }

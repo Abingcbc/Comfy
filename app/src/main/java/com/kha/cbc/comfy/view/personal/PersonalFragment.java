@@ -2,6 +2,7 @@ package com.kha.cbc.comfy.view.personal;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.google.android.material.snackbar.Snackbar;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.entity.GDPersonalCard;
@@ -19,6 +21,7 @@ import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.model.PersonalCard;
 import com.kha.cbc.comfy.model.PersonalTask;
+import com.kha.cbc.comfy.presenter.Notification.AlarmHelper;
 import com.kha.cbc.comfy.presenter.PersonalFragPresenter;
 import com.kha.cbc.comfy.view.plus.PlusCardActivity;
 import com.kha.cbc.comfy.view.plus.PlusTaskActivity;
@@ -26,7 +29,6 @@ import com.loopeer.cardstack.AllMoveDownAnimatorAdapter;
 import com.loopeer.cardstack.CardStackView;
 import com.loopeer.cardstack.UpDownAnimatorAdapter;
 import com.loopeer.cardstack.UpDownStackAnimatorAdapter;
-import org.greenrobot.greendao.query.Query;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +56,7 @@ public class PersonalFragment extends Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.personal_fragment, container, false);
+        view = inflater.inflate(R.layout.personal_fragment, container, false);
         init();
         return view;
     }
@@ -105,6 +107,19 @@ public class PersonalFragment extends Fragment
         Bundle bundle = new Bundle();
         bundle.putInt("type", 0);
         bundle.putString("taskId", taskId);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, 2);
+    }
+
+    public void plusCard(PersonalCard card) {
+        if (cardStackView.isExpending()) {
+            cardStackView.clearSelectPosition();
+        }
+        Intent intent = new Intent(getContext(), PlusCardActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", 2);
+        bundle.putString("taskId", card.getTaskId());
+        bundle.putString("cardId", card.getId());
         intent.putExtras(bundle);
         startActivityForResult(intent, 2);
     }
@@ -174,7 +189,11 @@ public class PersonalFragment extends Fragment
     public void onDeleteItemInDB (PersonalCard card) {
         GDPersonalCardDao cardDao = ((ComfyApp) getActivity().getApplication())
                 .getDaoSession().getGDPersonalCardDao();
-        cardDao.delete(new GDPersonalCard(card));
+        GDPersonalCard gdPersonalCard = new GDPersonalCard(card);
+        if (gdPersonalCard.getIsRemind()) {
+            AlarmHelper.deleteLocalReminder(gdPersonalCard);
+        }
+        cardDao.delete(gdPersonalCard);
     }
 
     public void deleteTaskFromDB(PersonalTask task) {
@@ -183,12 +202,21 @@ public class PersonalFragment extends Fragment
         taskDao.delete(new GDPersonalTask(task));
         GDPersonalCardDao cardDao = ((ComfyApp) getActivity().getApplication())
                 .getDaoSession().getGDPersonalCardDao();
-        cardDao.queryBuilder().where(GDPersonalCardDao.Properties.TaskId.eq(task.getId()))
-                .buildDelete().executeDeleteWithoutDetachingEntities();
+        List<GDPersonalCard> cardList = cardDao.queryBuilder().
+                where(GDPersonalCardDao.Properties.TaskId.eq(task.getId())).list();
+        for (GDPersonalCard card : cardList) {
+            if (card.getIsRemind()) {
+                AlarmHelper.deleteLocalReminder(card);
+            }
+        }
+        cardDao.queryBuilder().
+                where(GDPersonalCardDao.Properties.TaskId.eq(task.getId())).
+                buildDelete().executeDeleteWithoutDetachingEntities();
         presenter.loadAllTasksFromDB(taskDao);
     }
 
     public void onCompleteCard (PersonalCard card) {
         onDeleteItemInDB(card);
+        Snackbar.make(view, "恭喜你 完成任务！", Snackbar.LENGTH_SHORT).show();
     }
 }

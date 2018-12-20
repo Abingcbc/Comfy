@@ -31,6 +31,8 @@ public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, String> {
         public final static Property Title = new Property(1, String.class, "title", false, "TITLE");
         public final static Property Description = new Property(2, String.class, "description", false, "DESCRIPTION");
         public final static Property TaskId = new Property(3, String.class, "taskId", false, "TASK_ID");
+        public final static Property RemindDate = new Property(4, String.class, "remindDate", false, "REMIND_DATE");
+        public final static Property IsRemind = new Property(5, boolean.class, "isRemind", false, "IS_REMIND");
     }
 
     private Query<GDPersonalCard> gDPersonalTask_PersonalCardListQuery;
@@ -50,7 +52,9 @@ public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, String> {
                 "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
                 "\"TITLE\" TEXT," + // 1: title
                 "\"DESCRIPTION\" TEXT," + // 2: description
-                "\"TASK_ID\" TEXT);"); // 3: taskId
+                "\"TASK_ID\" TEXT," + // 3: taskId
+                "\"REMIND_DATE\" TEXT," + // 4: remindDate
+                "\"IS_REMIND\" INTEGER NOT NULL );"); // 5: isRemind
     }
 
     /** Drops the underlying database table. */
@@ -82,6 +86,12 @@ public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, String> {
         if (taskId != null) {
             stmt.bindString(4, taskId);
         }
+ 
+        String remindDate = entity.getRemindDate();
+        if (remindDate != null) {
+            stmt.bindString(5, remindDate);
+        }
+        stmt.bindLong(6, entity.getIsRemind() ? 1L: 0L);
     }
 
     @Override
@@ -107,6 +117,12 @@ public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, String> {
         if (taskId != null) {
             stmt.bindString(4, taskId);
         }
+ 
+        String remindDate = entity.getRemindDate();
+        if (remindDate != null) {
+            stmt.bindString(5, remindDate);
+        }
+        stmt.bindLong(6, entity.getIsRemind() ? 1L: 0L);
     }
 
     @Override
@@ -120,7 +136,9 @@ public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, String> {
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // title
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // description
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // taskId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // taskId
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // remindDate
+            cursor.getShort(offset + 5) != 0 // isRemind
         );
         return entity;
     }
@@ -131,6 +149,8 @@ public class GDPersonalCardDao extends AbstractDao<GDPersonalCard, String> {
         entity.setTitle(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setDescription(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setTaskId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setRemindDate(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setIsRemind(cursor.getShort(offset + 5) != 0);
      }
     
     @Override

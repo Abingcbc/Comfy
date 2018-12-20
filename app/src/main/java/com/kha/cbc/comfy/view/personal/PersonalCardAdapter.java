@@ -58,6 +58,9 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapte
     public void onBindViewHolder(@NonNull PersonalCardViewHolder holder, final int position) {
         PersonalCardViewHolder cardViewHolder = holder;
         if (position != personalCardList.size() - 1) {
+            if (personalCardList.get(position).isRemind()) {
+                cardViewHolder.alarmView.setVisibility(View.VISIBLE);
+            }
             cardViewHolder.name.setText(personalCardList.get(position).getTitle());
             cardViewHolder.description.setText(personalCardList.get(position).getDescription());cardViewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
             cardViewHolder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
@@ -93,12 +96,19 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapte
             });
             cardViewHolder.checkView.setOnClickListener(v -> {
                 fragment.onCompleteCard((PersonalCard) personalCardList.get(position));
+                personalCardList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(0, getItemCount());
             });
             cardViewHolder.deleteView.setOnClickListener(v -> {
                 fragment.onDeleteItemInDB((PersonalCard) personalCardList.get(position));
                 personalCardList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(0, getItemCount());
+            });
+            cardViewHolder.changeView.setOnClickListener(v -> {
+                fragment.plusCard((PersonalCard) personalCardList.get(position));
+                notifyItemChanged(position);
             });
         } else {
             holder.itemView.setOnClickListener(view
@@ -111,7 +121,6 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapte
         return personalCardList.size();
     }
 
-
     public class PersonalCardViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
@@ -119,6 +128,8 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapte
         SwipeLayout swipeLayout;
         ImageView checkView;
         ImageView deleteView;
+        ImageView alarmView;
+        ImageView changeView;
 
         public PersonalCardViewHolder(View itemView) {
             super(itemView);
@@ -127,6 +138,8 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapte
             swipeLayout = itemView.findViewById(R.id.personal_card_swipe_layout);
             checkView = itemView.findViewById(R.id.personal_card_check);
             deleteView = itemView.findViewById(R.id.personal_card_delete);
+            alarmView = itemView.findViewById(R.id.alarmImage);
+            changeView = itemView.findViewById(R.id.personal_card_change);
         }
     }
 }

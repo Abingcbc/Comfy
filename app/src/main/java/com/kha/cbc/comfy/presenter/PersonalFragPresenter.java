@@ -1,9 +1,6 @@
 package com.kha.cbc.comfy.presenter;
 
-import com.kha.cbc.comfy.ComfyApp;
-import com.kha.cbc.comfy.entity.GDPersonalCard;
 import com.kha.cbc.comfy.entity.GDPersonalTask;
-import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalTaskDao;
 import com.kha.cbc.comfy.model.PersonalTask;
 import com.kha.cbc.comfy.view.personal.PersonalFragView;
@@ -30,7 +27,6 @@ public class PersonalFragPresenter extends BasePresenter {
     public List loadAllTasksFromDB(GDPersonalTaskDao taskDao) {
         getSubscriptions().add(Observable.just("load")
                 .map(s -> {
-                    //TODO:可在此添加网路的检测及同步
                     List<GDPersonalTask> gdPersonalTasks = taskDao.loadAll();
                     return gdPersonalTasks;
                 }).map(gdPersonalTasks -> {

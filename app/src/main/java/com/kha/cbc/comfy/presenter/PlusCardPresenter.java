@@ -1,21 +1,22 @@
 package com.kha.cbc.comfy.presenter;
 
-import android.util.Log;
-import android.view.View;
-import android.widget.CompoundButton;
+import android.app.AlarmManager;
+import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import androidx.appcompat.widget.SwitchCompat;
 import com.avos.avoscloud.*;
-import com.google.android.material.textfield.TextInputEditText;
-import com.kha.cbc.comfy.R;
+import com.kha.cbc.comfy.ComfyApp;
+import com.kha.cbc.comfy.entity.GDPersonalCard;
+import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
+import com.kha.cbc.comfy.model.PersonalCard;
 import com.kha.cbc.comfy.view.common.AvatarView;
 import com.kha.cbc.comfy.view.plus.PlusCardActivity;
 import com.kha.cbc.comfy.view.plus.PlusCardView;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,9 +56,10 @@ public class PlusCardPresenter extends AvatarPresenter {
         map.saveInBackground();
     }
 
-
-    public void setLocalReminder(LinearLayout linearLayout) {
-
+    public PersonalCard getLocalPersonalCard (String id, Application application) {
+        GDPersonalCardDao cardDao = ((ComfyApp) application).getDaoSession().getGDPersonalCardDao();
+        GDPersonalCard card = cardDao.queryBuilder().where(GDPersonalCardDao.Properties.Id.eq(id)).unique();
+        return new PersonalCard(card);
     }
 
     public void setCloudReminder(LinearLayout linearLayout) {
