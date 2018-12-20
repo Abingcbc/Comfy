@@ -44,6 +44,8 @@ class GroupTrackActivity : AppCompatActivity() , GroupTrackView, AvatarView{
 
     override lateinit var yumLayout: View
 
+    override lateinit var taskObjectId: String
+
     //Pair<userId, avatarurl>
     lateinit var userIdAvatarPairList: MutableList<Pair<String, String>>
 
@@ -168,7 +170,7 @@ class GroupTrackActivity : AppCompatActivity() , GroupTrackView, AvatarView{
     private fun initService(){
         map = group_track_amap.map
         amapTrackClient = AMapTrackClient(applicationContext)
-        groupTrackPresenter.fetchAvatar()
+        groupTrackPresenter.fetchMembers()
     }
 
     override fun onDestroy() {
@@ -200,6 +202,7 @@ class GroupTrackActivity : AppCompatActivity() , GroupTrackView, AvatarView{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_track)
         group_track_amap.onCreate(savedInstanceState)
+        taskObjectId = intent.getStringExtra("taskObjectId")
 
         if (
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -224,8 +227,6 @@ class GroupTrackActivity : AppCompatActivity() , GroupTrackView, AvatarView{
             avatarPresenter = AvatarPresenter(this)
             avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
             yumLayout = group_track_layout
-            //TODO: Simulation
-            trackList = mutableListOf(User.comfyUserObjectId!!)
             //
             initService()
         }
@@ -248,8 +249,6 @@ class GroupTrackActivity : AppCompatActivity() , GroupTrackView, AvatarView{
                     avatarPresenter = AvatarPresenter(this)
                     avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
                     yumLayout = group_track_layout
-                    //TODO: Simulation
-                    trackList = mutableListOf(User.comfyUserObjectId!!)
                     //
                     initService()
                 }

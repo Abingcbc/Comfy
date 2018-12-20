@@ -12,6 +12,7 @@ interface GroupTrackView{
     var amapTrackClient: AMapTrackClient
     var map: AMap
     var trackList: MutableList<String>
+    var taskObjectId: String
     fun onServiceStarted()
     fun onResultRetrieved(pair: Pair<String, Point>)
     fun onServiceBroken()

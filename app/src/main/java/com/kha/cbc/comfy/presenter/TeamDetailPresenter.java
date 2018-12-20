@@ -64,21 +64,4 @@ public class TeamDetailPresenter extends BasePresenter {
             }
         });
     }
-
-    public List<String> getAllMembersObjectId (String taskObjectId) {
-        List<String> membersObjectIdList = new ArrayList<>();
-        AVQuery<AVObject> query = new AVQuery<>("UserTaskMap");
-        AVObject task = AVObject.createWithoutData("TeamTask", taskObjectId);
-        query.whereEqualTo("TeamTask", task);
-        try {
-            List<AVObject> mapList = query.find();
-            for (AVObject map : mapList) {
-                membersObjectIdList.add(map.getAVObject("Member").getObjectId());
-            }
-        }
-        catch (AVException e) {
-            e.printStackTrace();
-        }
-        return membersObjectIdList;
-    }
 }
