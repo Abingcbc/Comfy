@@ -69,6 +69,14 @@ public class PlusCardPresenter extends AvatarPresenter {
     public void queryMember(String memberName) {
         List<String> nameList = new ArrayList<>();
         nameList.add(memberName);
+        AVQuery<AVObject> query = new AVQuery<>("ComfyUser");
+        query.whereEqualTo("username", memberName);
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                ((PlusCardActivity) plusCardView).setExecutor(list.get(0).getObjectId());
+            }
+        });
         super.loadAvatar(nameList);
     }
 }

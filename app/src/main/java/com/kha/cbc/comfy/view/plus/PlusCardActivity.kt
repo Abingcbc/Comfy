@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.bumptech.glide.Glide
@@ -43,7 +44,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
 
     override var presenter = PlusCardPresenter(this)
     lateinit var taskId: String
-    lateinit var cardId: String
+    private lateinit var cardId: String
     internal var type: Int = 0
     private lateinit var executorName: String
     private lateinit var executorObjectId: String
@@ -55,6 +56,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     private var DATEFORMAT = "d MMM, yyyy"
     private var DATEANDTIMEFORMAT = "d MMM, yyyy, h:mm a"
     private var TIMEFORMAT = "h:mm a"
+    private var successChangeExecutor = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +93,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
                     materialDialog.input { _, charSequence ->
                         executorName = charSequence.toString()
                         presenter.queryMember(charSequence.toString())
+                        successChangeExecutor = false
                     }.positiveButton(text = "确认")
                         .title(text = "输入要添加成员的名称")
                         .show()
@@ -298,7 +301,12 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
                 val newDescription = input_card_description.text.toString()
                 when (type) {
                     0 -> successAddPersonal(newTitle, newDescription)
-                    1 -> successAddTeam(newTitle, newDescription)
+                    1 -> {
+                        if (successChangeExecutor)
+                            successAddTeam(newTitle, newDescription)
+                        else
+                            Toast.makeText(this, "网络情况不佳", Toast.LENGTH_SHORT)
+                    }
                     2 -> successUpdatePersonal(newTitle, newDescription)
                     3 -> successUpdateTeam(newTitle, newDescription)
                 }
@@ -306,6 +314,11 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun setExecutor(executorId : String) {
+        executorObjectId = executorId
+        successChangeExecutor = true
     }
 
     override fun uploadAvatarFinish(url: String) {
