@@ -2,187 +2,180 @@ package com.kha.cbc.comfy.view.team.grouptrack
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.amap.api.maps.AMap
+import com.amap.api.maps.model.BitmapDescriptorFactory
+import com.amap.api.maps.model.LatLng
+import com.amap.api.maps.model.Marker
+import com.amap.api.maps.model.MarkerOptions
+import com.amap.api.track.AMapTrackClient
+import com.amap.api.track.query.entity.Point
+import com.avos.avoscloud.AVException
+import com.avos.avoscloud.AVObject
+import com.avos.avoscloud.AVQuery
+import com.avos.avoscloud.FindCallback
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
+import com.kha.cbc.comfy.ComfyApp
+import com.kha.cbc.comfy.GlideApp
 import com.kha.cbc.comfy.R
+import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
+import com.kha.cbc.comfy.model.User
+import com.kha.cbc.comfy.presenter.AvatarPresenter
+import com.kha.cbc.comfy.presenter.GroupTrackPresenter
+import com.kha.cbc.comfy.view.common.AvatarView
+import com.kha.cbc.comfy.view.common.GroupTrackView
 import com.kha.cbc.comfy.view.common.yum
 import kotlinx.android.synthetic.main.activity_group_track.*
-import com.amap.api.track.AMapTrackClient
-import com.amap.api.track.ErrorCode
-import com.amap.api.track.OnTrackLifecycleListener
-import com.amap.api.track.TrackParam
-import com.amap.api.track.query.model.*
-import com.kha.cbc.comfy.BuildConfig
-import com.kha.cbc.comfy.model.User
 
 
-class GroupTrackActivity : AppCompatActivity() {
+class GroupTrackActivity : AppCompatActivity() , GroupTrackView, AvatarView{
 
+    lateinit var avatarPresenter: AvatarPresenter
+
+    val historyMarkerListPair = mutableListOf<Pair<String, Marker>>()
+
+
+    override lateinit var yumLayout: View
+
+    //Pair<userId, avatarurl>
+    lateinit var userIdAvatarPairList: MutableList<Pair<String, String>>
+
+    override fun onServiceStarted() {
+        yumLayout.yum("Self-Track Opened")
+    }
+
+    override fun onResultRetrieved(pair: Pair<String, Point>) {
+        val userId = pair.first
+        val point = pair.second
+        val query = AVQuery<AVObject>("ComfyUser")
+        query.whereEqualTo("objectId", userId)
+        query.findInBackground(object: FindCallback<AVObject>(){
+            override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
+                if(p0 != null && p0.size > 0){
+                    val username = p0[0].getString("username")
+                    val markerOptions = MarkerOptions()
+                    val avatarUrlPair = userIdAvatarPairList.find {
+                        it.first == userId
+                    }
+                    if(avatarUrlPair != null){
+                        val avatarUrl = avatarUrlPair.second
+                        GlideApp.with(this@GroupTrackActivity).asBitmap().load(avatarUrl).into(
+                            object: SimpleTarget<Bitmap>(){
+                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                    val matrix = Matrix()
+                                    matrix.setScale(0.08f, 0.08f)
+                                    val bitmap = Bitmap.createBitmap(
+                                        resource, 0, 0, resource.width, resource.height, matrix, true
+                                    )
+                                    val historyMarker = historyMarkerListPair.find {
+                                        it.first == userId
+                                    }
+                                    historyMarker?.second?.destroy()
+                                    if(historyMarker != null){
+                                        historyMarkerListPair.remove(historyMarker)
+                                    }
+                                    markerOptions.position(LatLng(point.lat, point.lng))
+                                        .title(username)
+                                        .snippet(username + "(" + point.lat.toString() + " " + point.lng.toString() + ")")
+                                        .draggable(false)
+                                        .visible(true)
+                                        .setFlat(true)
+                                        .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                                        .infoWindowEnable(true)
+                                    historyMarkerListPair.add(Pair(userId, map.addMarker(markerOptions)))
+                                }
+                            }
+                        )
+                    }
+
+                }
+            }
+        })
+
+    }
+
+    override fun onServiceBroken() {
+        groupTrackPresenter.onViewDestroyed()
+    }
+
+    override fun onAvatarDownloadComplete(pairList: MutableList<Pair<String, String>>) {
+        userIdAvatarPairList = pairList
+        groupTrackPresenter.startService()
+    }
+
+    override lateinit var avatarDao: GDAvatarDao
+
+    override fun uploadAvatarFinish(url: String) {}
+    override fun downloadAvatarFinish(urlPairs: MutableList<Pair<String, String>>) {}
+    override fun uploadProgressUpdate(progress: Int?) {}
+    override fun setProgressBarVisible() {}
+    override fun downloadAvatarFinish(url: String) {}
 
     //TODO: 开启定位/蓝牙？
 
     val RC_PERMISSIONS = 1
 
-    lateinit var map: AMap
+    override lateinit var map: AMap
+
+    override lateinit var trackList: MutableList<String>
+
+    override lateinit var amapTrackClient: AMapTrackClient
+
+    lateinit var groupTrackPresenter: GroupTrackPresenter
 
 
-    lateinit var aMapTrackClient: AMapTrackClient
-
-    var terminalId: Long = 0
-
-
-    val onTrackLifecycleListener = object: OnTrackLifecycleListener{
-        override fun onStartGatherCallback(p0: Int, p1: String?) {
-            if (p0 == ErrorCode.TrackListen.START_GATHER_SUCEE ||
-                p0 == ErrorCode.TrackListen.START_GATHER_ALREADY_STARTED) {
-                group_track_layout.yum("定位采集开启成功！").show()
-            } else {
-                group_track_layout.yum("定位采集启动异常，").show()
-            }
-        }
-
-        override fun onStopTrackCallback(p0: Int, p1: String?) {
-
-        }
-
-        override fun onBindServiceCallback(p0: Int, p1: String?) {
-
-        }
-
-        override fun onStopGatherCallback(p0: Int, p1: String?) {
-
-        }
-
-        override fun onStartTrackCallback(p0: Int, p1: String?) {
-            if (p0 == ErrorCode.TrackListen.START_TRACK_SUCEE ||
-                p0 == ErrorCode.TrackListen.START_TRACK_SUCEE_NO_NETWORK ||
-                p0 == ErrorCode.TrackListen.START_TRACK_ALREADY_STARTED) {
-                // 服务启动成功，继续开启收集上报
-                aMapTrackClient.startGather(this)
-            } else {
-                group_track_layout.yum("轨迹上报服务服务启动异常，").show()
-            }
-        }
-    }
+//    val onTrackLifecycleListener = object: OnTrackLifecycleListener{
+//        override fun onStartGatherCallback(p0: Int, p1: String?) {
+//            if (p0 == ErrorCode.TrackListen.START_GATHER_SUCEE ||
+//                p0 == ErrorCode.TrackListen.START_GATHER_ALREADY_STARTED) {
+//                group_track_layout.yum("定位采集开启成功！").show()
+//            } else {
+//                group_track_layout.yum("定位采集启动异常，").show()
+//            }
+//        }
+//
+//        override fun onStopTrackCallback(p0: Int, p1: String?) {
+//
+//        }
+//
+//        override fun onBindServiceCallback(p0: Int, p1: String?) {
+//
+//        }
+//
+//        override fun onStopGatherCallback(p0: Int, p1: String?) {
+//
+//        }
+//
+//        override fun onStartTrackCallback(p0: Int, p1: String?) {
+//            if (p0 == ErrorCode.TrackListen.START_TRACK_SUCEE ||
+//                p0 == ErrorCode.TrackListen.START_TRACK_SUCEE_NO_NETWORK ||
+//                p0 == ErrorCode.TrackListen.START_TRACK_ALREADY_STARTED) {
+//                // 服务启动成功，继续开启收集上报
+//                aMapTrackClient.startGather(this)
+//            } else {
+//                group_track_layout.yum("轨迹上报服务服务启动异常，").show()
+//            }
+//        }
+//    }
 
     private fun initService(){
         map = group_track_amap.map
-        aMapTrackClient = AMapTrackClient(applicationContext)
-        var myTrackId: Long
-        aMapTrackClient.queryTerminal(QueryTerminalRequest(BuildConfig.COMFYGROUPTRACKSERVICEID.toLong(),
-            User.comfyUserObjectId), object: OnTrackListener {
-
-            override fun onLatestPointCallback(p0: LatestPointResponse?) {
-
-            }
-
-            override fun onCreateTerminalCallback(p0: AddTerminalResponse?) {
-
-            }
-
-            override fun onQueryTrackCallback(p0: QueryTrackResponse?) {
-
-            }
-
-            override fun onDistanceCallback(p0: DistanceResponse?) {
-
-            }
-
-            override fun onQueryTerminalCallback(p0: QueryTerminalResponse?) {
-                if(p0 != null && p0.isSuccess){
-                    if(p0.tid <= 0){
-                        //terminal 不存在，先创建
-                        aMapTrackClient.addTerminal(AddTerminalRequest(User.comfyUserObjectId,
-                            BuildConfig.COMFYGROUPTRACKSERVICEID.toLong()), object: OnTrackListener{
-                            override fun onLatestPointCallback(p0: LatestPointResponse?) {
-
-                            }
-
-                            override fun onCreateTerminalCallback(p0: AddTerminalResponse?) {
-                                if (p0 != null && p0.isSuccess) {
-                                    // 创建完成，开启猎鹰服务
-                                    terminalId = p0.tid
-                                    aMapTrackClient.startTrack(
-                                        TrackParam(BuildConfig.COMFYGROUPTRACKSERVICEID.toLong(), terminalId),
-                                        onTrackLifecycleListener
-                                    )
-                                } else {
-                                    // 请求失败
-                                    group_track_layout.yum("请求失败.").show()
-                                }
-                            }
-
-                            override fun onQueryTrackCallback(p0: QueryTrackResponse?) {
-
-                            }
-
-                            override fun onDistanceCallback(p0: DistanceResponse?) {
-
-                            }
-
-                            override fun onQueryTerminalCallback(p0: QueryTerminalResponse?) {
-
-                            }
-
-                            override fun onHistoryTrackCallback(p0: HistoryTrackResponse?) {
-
-                            }
-
-                            override fun onParamErrorCallback(p0: ParamErrorResponse?) {
-
-                            }
-
-                            override fun onAddTrackCallback(p0: AddTrackResponse?) {
-
-                            }
-                        })
-                    }
-                    else{
-                        val lastTerminalId = p0.tid
-                        terminalId = p0.tid
-                        aMapTrackClient.startTrack(TrackParam(BuildConfig.COMFYGROUPTRACKSERVICEID.toLong(),
-                            lastTerminalId),
-                            onTrackLifecycleListener)
-                    }
-                }
-                else{
-                    //请求失败
-                    Toast.makeText(this@GroupTrackActivity, "请求失败，" + p0!!.getErrorMsg(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            override fun onHistoryTrackCallback(p0: HistoryTrackResponse?) {
-
-            }
-
-            override fun onParamErrorCallback(p0: ParamErrorResponse?) {
-
-            }
-
-            override fun onAddTrackCallback(p0: AddTrackResponse?) {
-                if (p0 != null && p0.isSuccess) {
-                    myTrackId = p0.trid
-                    val trackParam = TrackParam(BuildConfig.COMFYGROUPTRACKSERVICEID.toLong(), terminalId)
-                    trackParam.trackId = myTrackId
-                    aMapTrackClient.startTrack(trackParam, onTrackLifecycleListener)
-                } else {
-                    Toast.makeText(this@GroupTrackActivity, "网络请求失败，" +
-                            p0?.errorMsg, Toast.LENGTH_SHORT).show()
-                }
-            }
-
-        })
+        amapTrackClient = AMapTrackClient(applicationContext)
+        groupTrackPresenter.fetchAvatar()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         group_track_amap.onDestroy()
+        groupTrackPresenter.onViewDestroyed()
     }
 
     override fun onResume() {
@@ -227,6 +220,13 @@ class GroupTrackActivity : AppCompatActivity() {
                 ,RC_PERMISSIONS)
         }
         else{
+            groupTrackPresenter = GroupTrackPresenter(this)
+            avatarPresenter = AvatarPresenter(this)
+            avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
+            yumLayout = group_track_layout
+            //TODO: Simulation
+            trackList = mutableListOf(User.comfyUserObjectId!!)
+            //
             initService()
         }
     }
@@ -244,6 +244,13 @@ class GroupTrackActivity : AppCompatActivity() {
                     }
                 }
                 if(isPermitted){
+                    groupTrackPresenter = GroupTrackPresenter(this)
+                    avatarPresenter = AvatarPresenter(this)
+                    avatarDao = (application as ComfyApp).daoSession.gdAvatarDao
+                    yumLayout = group_track_layout
+                    //TODO: Simulation
+                    trackList = mutableListOf(User.comfyUserObjectId!!)
+                    //
                     initService()
                 }
             }
