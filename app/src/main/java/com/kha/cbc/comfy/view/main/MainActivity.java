@@ -433,6 +433,16 @@ public class MainActivity extends BaseActivityWithPresenter
         return super.onOptionsItemSelected(item);
     }
 
+    //TODO: Test
+//    private void addShareIntent(List<Intent> list,ActivityInfo ainfo) {
+//        Intent target = new Intent(Intent.ACTION_SEND);
+//        target.setType("text/plain");
+//        target.putExtra(Intent.EXTRA_TEXT, "分享看看小可爱");
+//        target.setPackage(ainfo.packageName);
+//        target.setClassName(ainfo.packageName, ainfo.name);
+//        list.add(target);
+//    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -449,7 +459,30 @@ public class MainActivity extends BaseActivityWithPresenter
             final Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-
+            //TODO: Share
+//            Intent intent = new Intent(Intent.ACTION_SEND);
+//            intent.setType("text/plain");
+//            List<ResolveInfo> resolveInfos = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+//            if (!resolveInfos.isEmpty()) {
+//                List<Intent> targetIntents = new ArrayList<>();
+//                for (ResolveInfo info : resolveInfos) {
+//                    ActivityInfo ainfo = info.activityInfo;
+//                    addShareIntent(targetIntents, ainfo);
+//                }
+//                Intent chooserIntent = null;
+//                if (targetIntents.size() != 0) {
+//                    chooserIntent = Intent.createChooser(targetIntents.remove(0), "请选择分享平台");
+//                }
+//                if (chooserIntent != null) {
+//                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetIntents.toArray(new Parcelable[]{}));
+//                }
+//                try {
+//                    startActivity(chooserIntent);
+//                } catch (android.content.ActivityNotFoundException ex) {
+//                    Toast.makeText(MainActivity.this, "找不到该分享应用组件", Toast.LENGTH_SHORT).show();
+//                }
+//                //startActivity(Intent.createChooser(intent, getTitle()));
+//            }
         } else if (id == R.id.nav_send) {
 
         }
