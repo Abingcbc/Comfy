@@ -433,7 +433,7 @@ public class MainActivity extends BaseActivityWithPresenter
         return super.onOptionsItemSelected(item);
     }
 
-    //TODO: Test
+    //TODO: Share
 //    private void addShareIntent(List<Intent> list,ActivityInfo ainfo) {
 //        Intent target = new Intent(Intent.ACTION_SEND);
 //        target.setType("text/plain");
