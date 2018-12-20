@@ -348,7 +348,7 @@ class GroupTrackPresenter(val view: GroupTrackView){
                     newInfo.put("trackId", trackId)
                     newInfo.saveInBackground(object : SaveCallback(){
                         override fun done(p0: AVException?) {
-                            if(p0 != null){
+                            if(p0 == null){
                                 val trackParam = TrackParam(serviceId, terminalId)
                                 trackParam.trackId = trackId
                                 view.amapTrackClient.startTrack(trackParam, onTrackLifecycleListener)

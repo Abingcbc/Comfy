@@ -2,8 +2,10 @@ package com.kha.cbc.comfy;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
+import cn.leancloud.chatkit.LCChatKit;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
+import com.kha.cbc.comfy.data.network.providers.CustomUserProvider;
 import com.kha.cbc.comfy.greendao.gen.DaoMaster;
 import com.kha.cbc.comfy.greendao.gen.DaoSession;
 
@@ -19,6 +21,10 @@ public class ComfyApp extends Application {
         // 初始化参数依次为 this, AppId, AppKey
         AVOSCloud.initialize(this, BuildConfig.LEANCLOUDAPPID, BuildConfig.LEANCLOUDAPPKEY);
 
+
+        LCChatKit.getInstance().setProfileProvider(CustomUserProvider.Companion.getInstance());
+        LCChatKit.getInstance().init(getApplicationContext(), BuildConfig.LEANCLOUDAPPID,
+                BuildConfig.LEANCLOUDAPPKEY);
 
         //LeanCloud debug log
         AVOSCloud.setDebugLogEnabled(true);

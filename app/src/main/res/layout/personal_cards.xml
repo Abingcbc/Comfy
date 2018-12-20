@@ -98,7 +98,8 @@
                     android:scaleType="fitXY"
                     android:paddingLeft="10dp"
                     android:background="@drawable/share_variant"
-                    android:clickable="true"/>
+                    android:clickable="true"
+                android:focusable="true" />
 
 
         </LinearLayout>
