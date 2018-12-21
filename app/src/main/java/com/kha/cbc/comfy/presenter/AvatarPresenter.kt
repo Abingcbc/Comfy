@@ -111,15 +111,20 @@ open class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(vi
                                 mapObject.put("avatar", uploadFile)
                                 mapObject.saveInBackground(object :SaveCallback(){
                                     override fun done(p0: AVException?) {
-                                        view.uploadAvatarFinish(uploadFile.url)
-                                        try {
-                                            view.avatarDao.deleteAll()
-                                            val historyAvatar = GDAvatar(User.username, uploadFile.url)
-                                            view.avatarDao.insert(historyAvatar)
-                                        }
-                                        catch (e: Exception){
-                                            e.printStackTrace()
-                                        }
+                                        userObject.put("avatarUrl",uploadFile.url)
+                                        userObject.saveInBackground(object: SaveCallback(){
+                                            override fun done(p0: AVException?) {
+                                                view.uploadAvatarFinish(uploadFile.url)
+                                                try {
+                                                    view.avatarDao.deleteAll()
+                                                    val historyAvatar = GDAvatar(User.username, uploadFile.url)
+                                                    view.avatarDao.insert(historyAvatar)
+                                                }
+                                                catch (e: Exception){
+                                                    e.printStackTrace()
+                                                }
+                                            }
+                                        })
                                     }
                                 })
                             }
@@ -172,15 +177,20 @@ open class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(vi
                                 mapObject.put("avatar", uploadFile)
                                 mapObject.saveInBackground(object :SaveCallback(){
                                     override fun done(p0: AVException?) {
-                                        view.uploadAvatarFinish(uploadFile.url)
-                                        try {
-                                            view.avatarDao.deleteAll()
-                                            val historyAvatar = GDAvatar(User.username, uploadFile.url)
-                                            view.avatarDao.insert(historyAvatar)
-                                        }
-                                        catch (e: Exception){
-                                            e.printStackTrace()
-                                        }
+                                        userObject.put("avatarUrl",uploadFile.url)
+                                        userObject.saveInBackground(object: SaveCallback(){
+                                            override fun done(p0: AVException?) {
+                                                view.uploadAvatarFinish(uploadFile.url)
+                                                try {
+                                                    view.avatarDao.deleteAll()
+                                                    val historyAvatar = GDAvatar(User.username, uploadFile.url)
+                                                    view.avatarDao.insert(historyAvatar)
+                                                }
+                                                catch (e: Exception){
+                                                    e.printStackTrace()
+                                                }
+                                            }
+                                        })
                                     }
                                 })
                             }
