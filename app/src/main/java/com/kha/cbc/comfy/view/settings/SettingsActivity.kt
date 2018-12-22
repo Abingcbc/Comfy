@@ -1,26 +1,21 @@
 package com.kha.cbc.comfy.view.settings
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import com.bilibili.magicasakura.utils.ThemeUtils
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.view.common.ActivityManager
-import com.kha.cbc.comfy.view.settings.user.UserSettingActivity
-import com.nightonke.boommenu.BoomMenuButton
-import kotlinx.android.synthetic.main.activity_settings.*
-import com.nightonke.boommenu.BoomButtons.TextInsideCircleButton
-import com.nightonke.boommenu.Util.setText
-import android.widget.TextView
-import com.bilibili.magicasakura.utils.ThemeUtils
-import android.app.ActivityManager.TaskDescription
-import com.kha.cbc.comfy.view.main.MainActivity
-import android.os.Build
-import android.app.Activity
-import android.view.Gravity
-import android.view.View
 import com.kha.cbc.comfy.view.common.ThemeHelper
+import com.kha.cbc.comfy.view.settings.user.UserSettingActivity
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum
+import com.nightonke.boommenu.BoomButtons.TextInsideCircleButton
+import com.nightonke.boommenu.BoomMenuButton
 import com.nightonke.boommenu.Piece.PiecePlaceEnum
+import kotlinx.android.synthetic.main.activity_settings.*
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -31,8 +26,9 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         initSettingButtons()
+        currentTheme = ThemeHelper.getTheme(this)
+        ThemeHelper.commonRefresh(this)
         ActivityManager += this
-
     }
 
     private fun initSettingButtons(){
@@ -44,18 +40,14 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun changeTheme(){
         if (ThemeHelper.getTheme(this) != currentTheme) {
+//            if(ThemeHelper.isDarkThemeById(currentTheme)) {
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//            }
+//            else{
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//            }
             ThemeHelper.setTheme(this, currentTheme)
-            ThemeUtils.refreshUI(this, object : ThemeUtils.ExtraRefreshable {
-                override fun refreshGlobal(activity: Activity) {
-                    //for global setting, just do once
-                    window.statusBarColor = ThemeUtils.getColorById(this@SettingsActivity,
-                        R.color.theme_color_primary_dark)
-                }
-
-                override fun refreshSpecificView(view: View?) {
-
-                }
-            })
+            ThemeHelper.commonRefresh(this)
         }
     }
 
@@ -78,8 +70,9 @@ class SettingsActivity : AppCompatActivity() {
 //        } else if (ThemeHelper.getTheme(context) == ThemeHelper.CARD_FIREY) {
 //            return "red"
 //        }
-        changeThemeButton.piecePlaceEnum = PiecePlaceEnum.DOT_7_1
-        changeThemeButton.buttonPlaceEnum = ButtonPlaceEnum.SC_7_1
+        changeThemeButton.piecePlaceEnum = PiecePlaceEnum.DOT_8_1
+        changeThemeButton.buttonPlaceEnum = ButtonPlaceEnum.SC_8_1
+        changeThemeButton.clearBuilders()
         val blueBuilder = TextInsideCircleButton.Builder()
             .normalText("STORM")
             .rippleEffect(true)
@@ -143,6 +136,15 @@ class SettingsActivity : AppCompatActivity() {
                 changeTheme()
             }
         changeThemeButton.addBuilder(redBuilder)
+        val darkBuilder = TextInsideCircleButton.Builder()
+            .normalText("DARK")
+            .rippleEffect(true)
+            .normalColorRes(R.color.dark)
+            .listener{
+                currentTheme = ThemeHelper.CARD_DARK
+                changeTheme()
+            }
+        changeThemeButton.addBuilder(darkBuilder)
     }
 
     override fun onDestroy() {

@@ -48,6 +48,7 @@ import com.kha.cbc.comfy.presenter.Presenter;
 import com.kha.cbc.comfy.view.common.ActivityManager;
 import com.kha.cbc.comfy.view.common.AvatarView;
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter;
+import com.kha.cbc.comfy.view.common.ThemeHelper;
 import com.kha.cbc.comfy.view.efficient.EfficientFragment;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
@@ -87,33 +88,32 @@ public class MainActivity extends BaseActivityWithPresenter
     protected void onResume() {
         super.onResume();
         initNavigationView();
+        ThemeHelper.INSTANCE.commonRefresh(this);
         ThemeUtils.refreshUI(MainActivity.this, new ThemeUtils.ExtraRefreshable() {
-                    @Override
-                    public void refreshGlobal(Activity activity) {
-                        //for global setting, just do once
-                        final MainActivity context = MainActivity.this;
-                        getWindow().setStatusBarColor(
-                                ThemeUtils.getColorById(context, R.color.theme_color_primary_dark));
-                        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                        navigationView.setNavigationItemSelectedListener(MainActivity.this);
+                @Override
+                public void refreshGlobal(Activity activity) {
+                    //for global setting, just do once
+                    final MainActivity context = MainActivity.this;
+                    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                    navigationView.setNavigationItemSelectedListener(MainActivity.this);
 
-                        View headerView = navigationView.getHeaderView(0);
-                        View navLayout = headerView.findViewById(R.id.nav_layout);
-                        navLayout.setBackgroundColor(
-                                ThemeUtils.getColorById(context, R.color.theme_color_primary_dark)
-                        );
-                        Toolbar toolbar = findViewById(R.id.main_toolbar);
-                        toolbar.setBackgroundColor(
-                                ThemeUtils.getColorById(context, R.color.theme_color_primary_dark)
-                        );
+                    View headerView = navigationView.getHeaderView(0);
+                    View navLayout = headerView.findViewById(R.id.nav_layout);
+                    navLayout.setBackgroundColor(
+                            ThemeUtils.getColorById(context, R.color.theme_color_primary_dark)
+                    );
+                    Toolbar toolbar = findViewById(R.id.main_toolbar);
+                    toolbar.setBackgroundColor(
+                            ThemeUtils.getColorById(context, R.color.theme_color_primary_dark)
+                    );
 
-                    }
-
-                    @Override
-                    public void refreshSpecificView(View view) {
-                        //TODO: will do this for each traversal
-                    }
                 }
+
+                @Override
+                public void refreshSpecificView(View view) {
+                    //TODO: will do this for each traversal
+                }
+            }
         );
     }
 

@@ -1,9 +1,17 @@
 package com.kha.cbc.comfy.view.common
 
 import android.R.id.edit
+import android.app.Activity
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import com.bilibili.magicasakura.utils.ThemeUtils
+import com.google.android.material.navigation.NavigationView
+import com.kha.cbc.comfy.R
 
 
 object ThemeHelper {
@@ -17,6 +25,7 @@ object ThemeHelper {
     val CARD_THUNDER = 0x6
     val CARD_SAND = 0x7
     val CARD_FIREY = 0x8
+    val CARD_DARK = 0x9
 
     fun getSharePreference(context: Context): SharedPreferences {
         return context.getSharedPreferences("multiple_theme", Context.MODE_PRIVATE)
@@ -36,6 +45,31 @@ object ThemeHelper {
         return getTheme(context) == CARD_SAKURA
     }
 
+    fun commonRefresh(activity: Activity){
+        ThemeUtils.refreshUI(activity, object : ThemeUtils.ExtraRefreshable {
+            override fun refreshGlobal(activity: Activity) {
+                //for global setting, just do once
+
+                //dark Mode
+//                if(ThemeHelper.isDarkThemeById(getTheme(activity))) {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//                }
+//                else{
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//                }
+                activity.window.statusBarColor = ThemeUtils.getColorById(activity, R.color.theme_color_primary_dark)
+            }
+
+            override fun refreshSpecificView(view: View) {
+                //TODO: will do this for each traversal
+            }
+        })
+    }
+
+    fun isDarkThemeById(id: Int): Boolean{
+        return id == CARD_DARK
+    }
+
     fun getName(currentTheme: Int): String {
         when (currentTheme) {
             CARD_SAKURA -> return "THE SAKURA"
@@ -46,6 +80,7 @@ object ThemeHelper {
             CARD_THUNDER -> return "THE THUNDER"
             CARD_SAND -> return "THE SAND"
             CARD_FIREY -> return "THE FIREY"
+            CARD_DARK -> return "THE DARK"
         }
         return "THE RETURN"
     }

@@ -60,6 +60,8 @@ public class ComfyApp extends Application implements ThemeUtils.switchColor {
             return "orange";
         } else if (ThemeHelper.INSTANCE.getTheme(context) == ThemeHelper.INSTANCE.getCARD_FIREY()) {
             return "red";
+        } else if (ThemeHelper.INSTANCE.getTheme(context) == ThemeHelper.INSTANCE.getCARD_DARK()){
+            return "dark";
         }
         return null;
     }
