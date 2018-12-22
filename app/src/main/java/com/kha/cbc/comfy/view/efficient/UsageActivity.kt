@@ -1,5 +1,6 @@
 package com.kha.cbc.comfy.view.efficient
 
+import android.app.Activity
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
@@ -8,10 +9,15 @@ import android.icu.util.Calendar
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bilibili.magicasakura.utils.ThemeUtils
+import com.google.android.material.navigation.NavigationView
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.model.CustomUsageStats
+import com.kha.cbc.comfy.view.common.ThemeHelper
 import com.kha.cbc.comfy.view.common.yum
 import kotlinx.android.synthetic.main.activity_usage.*
 
@@ -26,6 +32,19 @@ class UsageActivity : AppCompatActivity() {
         usageStatsManager = this.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         app_usage_recycler.layoutManager = LinearLayoutManager(this)
         app_usage_recycler.adapter = UsageAdapter(getUsageList())
+        ThemeHelper.commonRefresh(this)
+        ThemeUtils.refreshUI(this@UsageActivity, object : ThemeUtils.ExtraRefreshable {
+            override fun refreshGlobal(activity: Activity) {
+                //for global setting, just do once
+                usage_bar.setBackgroundColor(ThemeUtils.getColorById(this@UsageActivity,
+                    R.color.theme_color_primary_dark))
+            }
+
+            override fun refreshSpecificView(view: View) {
+                //TODO: will do this for each traversal
+            }
+        }
+        )
     }
 
     private fun getUsageList(): MutableList<CustomUsageStats>{

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#b2ebf2</color>
-    <color name="colorPrimaryDark">#3f51b5</color>
-    <color name="colorAccent">#66bb6a</color>
+    <color name="colorPrimary">#2d2d2d</color>
+    <color name="colorPrimaryDark">#242424</color>
+    <color name="colorAccent">#992d2d2d</color>
 
     <color name="material_login_login_color">#fff</color>
     <color name="material_login_register_color">#3f51b5</color>
@@ -26,10 +26,9 @@
     <color name="yellow">#ffffff00</color>
 
     //Magic Sakura
-    <color name="theme_color_primary">#b2ebf2</color>
-    <color name="theme_color_primary_dark">#3f51b5</color>
-    <color name="theme_color_primary_trans">#66bb6a</color>
-    <color name="theme_color_secondary">#2EA200</color>
+    <color name="theme_color_primary">#2d2d2d</color>
+    <color name="theme_color_primary_dark">#242424</color>
+    <color name="theme_color_primary_trans">#992d2d2d</color>
 
     <!--<color name="gray">#bbbbbb</color>-->
     <color name="gray_dark">#999999</color>
@@ -70,6 +69,6 @@
     <color name="red_trans">#99F44336</color>
 
     <color name="dark">#2d2d2d</color>
-    <color name="dark_dark">#242424</color>
-    <color name="dark_trans">#992d2d2d</color>
+    <color name="dark_dark">#2d2d2d</color>
+    <color name="dark_trans">#2d2d2d</color>
 </resources>

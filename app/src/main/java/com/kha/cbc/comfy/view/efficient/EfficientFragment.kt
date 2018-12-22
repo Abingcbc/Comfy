@@ -40,11 +40,6 @@ class EfficientFragment : Fragment(){
             val intent = Intent(activity, EfficientChartActivity::class.java)
             startActivity(intent)
         }
-        val test = fragmentView.findViewById<LSettingItem>(R.id.test_button)
-        test.setmOnLSettingItemClick {
-            val intent = Intent(activity, GroupTrackActivity::class.java)
-            startActivity(intent)
-        }
 
         val chat_test = fragmentView.findViewById<LSettingItem>(R.id.chat)
         chat_test.setmOnLSettingItemClick {
@@ -60,9 +55,5 @@ class EfficientFragment : Fragment(){
                 }
             })
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 }

@@ -141,6 +141,8 @@ dependencies {
     implementation 'com.ldoublem.loadingview:loadingviewlib:1.0'
 
     implementation 'com.github.Mindinventory:OverlapImageGalleryView:1.0'
+    implementation 'com.bilibili:magicasakura:0.1.8@aar'
+    implementation 'com.nightonke:boommenu:2.1.1'
 }
 
 greendao {

@@ -1,6 +1,7 @@
 package com.kha.cbc.comfy.view.main;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.PushService;
+import com.bilibili.magicasakura.utils.ThemeUtils;
 import com.bumptech.glide.Glide;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -48,6 +51,7 @@ import com.kha.cbc.comfy.presenter.Presenter;
 import com.kha.cbc.comfy.view.common.ActivityManager;
 import com.kha.cbc.comfy.view.common.AvatarView;
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter;
+import com.kha.cbc.comfy.view.common.ThemeHelper;
 import com.kha.cbc.comfy.view.efficient.EfficientFragment;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
@@ -64,8 +68,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivityWithPresenter
-        implements MainView,
-        NavigationView.OnNavigationItemSelectedListener, AvatarView {
+        implements MainView, NavigationView.OnNavigationItemSelectedListener, AvatarView {
 
     CommonTabLayout commonTabLayout;
     ArrayList<CustomTabEntity> tabEntityList;
@@ -89,6 +92,33 @@ public class MainActivity extends BaseActivityWithPresenter
     protected void onResume() {
         super.onResume();
         initNavigationView();
+        ThemeHelper.INSTANCE.commonRefresh(this);
+        ThemeUtils.refreshUI(MainActivity.this, new ThemeUtils.ExtraRefreshable() {
+                @Override
+                public void refreshGlobal(Activity activity) {
+                    //for global setting, just do once
+                    final MainActivity context = MainActivity.this;
+                    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                    navigationView.setNavigationItemSelectedListener(MainActivity.this);
+
+                    View headerView = navigationView.getHeaderView(0);
+                    View navLayout = headerView.findViewById(R.id.nav_layout);
+                    navLayout.setBackgroundColor(
+                            ThemeUtils.getColorById(context, R.color.theme_color_primary_dark)
+                    );
+                    Toolbar toolbar = findViewById(R.id.main_toolbar);
+                    toolbar.setBackgroundColor(
+                            ThemeUtils.getColorById(context, R.color.theme_color_primary_dark)
+                    );
+
+                }
+
+                @Override
+                public void refreshSpecificView(View view) {
+                    //TODO: will do this for each traversal
+                }
+            }
+        );
     }
 
     GDAvatarDao avatarDao;

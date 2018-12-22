@@ -68,33 +68,38 @@ class GroupTrackActivity : AppCompatActivity() , GroupTrackView, AvatarView{
                     }
                     if(avatarUrlPair != null){
                         val avatarUrl = avatarUrlPair.second
-                        GlideApp.with(this@GroupTrackActivity).asBitmap().load(avatarUrl).into(
-                            object: SimpleTarget<Bitmap>(){
-                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                    val matrix = Matrix()
-                                    matrix.setScale(0.08f, 0.08f)
-                                    val bitmap = Bitmap.createBitmap(
-                                        resource, 0, 0, resource.width, resource.height, matrix, true
-                                    )
-                                    val historyMarker = historyMarkerListPair.find {
-                                        it.first == userId
+                        try{
+                            GlideApp.with(this@GroupTrackActivity).asBitmap().load(avatarUrl).into(
+                                object: SimpleTarget<Bitmap>(){
+                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                        val matrix = Matrix()
+                                        matrix.setScale(0.08f, 0.08f)
+                                        val bitmap = Bitmap.createBitmap(
+                                            resource, 0, 0, resource.width, resource.height, matrix, true
+                                        )
+                                        val historyMarker = historyMarkerListPair.find {
+                                            it.first == userId
+                                        }
+                                        historyMarker?.second?.destroy()
+                                        if(historyMarker != null){
+                                            historyMarkerListPair.remove(historyMarker)
+                                        }
+                                        markerOptions.position(LatLng(point.lat, point.lng))
+                                            .title(username)
+                                            .snippet(username + "(" + point.lat.toString() + " " + point.lng.toString() + ")")
+                                            .draggable(false)
+                                            .visible(true)
+                                            .setFlat(true)
+                                            .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                                            .infoWindowEnable(true)
+                                        historyMarkerListPair.add(Pair(userId, map.addMarker(markerOptions)))
                                     }
-                                    historyMarker?.second?.destroy()
-                                    if(historyMarker != null){
-                                        historyMarkerListPair.remove(historyMarker)
-                                    }
-                                    markerOptions.position(LatLng(point.lat, point.lng))
-                                        .title(username)
-                                        .snippet(username + "(" + point.lat.toString() + " " + point.lng.toString() + ")")
-                                        .draggable(false)
-                                        .visible(true)
-                                        .setFlat(true)
-                                        .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
-                                        .infoWindowEnable(true)
-                                    historyMarkerListPair.add(Pair(userId, map.addMarker(markerOptions)))
                                 }
-                            }
-                        )
+                            )
+                        }
+                        catch (e: Exception){
+                            e.printStackTrace()
+                        }
                     }
 
                 }

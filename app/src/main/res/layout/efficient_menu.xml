@@ -26,15 +26,8 @@
     <com.leon.lib.settingview.LSettingItem
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:leftText="Test Button for AMap"
-        android:layout_below="@+id/with_rescue"
-        android:id="@+id/test_button"/>
-
-    <com.leon.lib.settingview.LSettingItem
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         app:leftText="Chat"
-        android:layout_below="@+id/test_button"
+        android:layout_below="@+id/recent_graph"
         android:id="@+id/chat"/>
 
 
