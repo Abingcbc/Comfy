@@ -30,6 +30,7 @@ class UserServicePresenter(val view: UserServiceView){
                                         override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
                                             val oldComfyUser = p0!![0]
                                             oldComfyUser.put("username", username)
+                                            oldComfyUser.put("InstallationId", AVInstallation.getCurrentInstallation().installationId)
                                             oldComfyUser.saveInBackground(object : SaveCallback(){
                                                 override fun done(p0: AVException?) {
                                                     view.usernameChangeFinished()

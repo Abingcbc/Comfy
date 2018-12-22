@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/team_task_circle"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/account"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/avoscloud_blue"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"/>
+</LinearLayout>

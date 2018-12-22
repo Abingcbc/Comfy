@@ -6,11 +6,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import com.avos.avoscloud.*;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.entity.GDPersonalCard;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.model.PersonalCard;
+import com.kha.cbc.comfy.presenter.Notification.CloudPushHelper;
 import com.kha.cbc.comfy.view.common.AvatarView;
 import com.kha.cbc.comfy.view.plus.PlusCardActivity;
 import com.kha.cbc.comfy.view.plus.PlusCardView;
@@ -49,11 +51,33 @@ public class PlusCardPresenter extends AvatarPresenter {
         card.put("CardTitle", title);
         card.put("Description", description);
         card.saveInBackground();
-        AVObject map = new AVObject("UserTaskMap");
+        AVQuery<AVObject> queryMap = new AVQuery<>("UserTaskMap");
         AVObject teamTask = AVObject.createWithoutData("TeamTask", taskObjectId);
-        map.put("TeamTask", teamTask);
-        map.put("Member", user);
-        map.saveInBackground();
+        queryMap.whereEqualTo("TeamTask", teamTask);
+        queryMap.include("Member");
+        queryMap.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                boolean notFound = true;
+                for (AVObject object : list) {
+                    if (object.getAVObject("Member").equals(user)) {
+                        notFound = false;
+                        break;
+                    }
+                }
+                if (notFound) {
+                    AVObject map = new AVObject("UserTaskMap");
+                    map.put("TeamTask", teamTask);
+                    map.put("Member", user);
+                    map.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            CloudPushHelper.pushInvitation(taskObjectId, executorObjectId, title);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public PersonalCard getLocalPersonalCard (String id, Application application) {
@@ -74,7 +98,10 @@ public class PlusCardPresenter extends AvatarPresenter {
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
-                ((PlusCardActivity) plusCardView).setExecutor(list.get(0).getObjectId());
+                if (!list.isEmpty())
+                    ((PlusCardActivity) plusCardView).setExecutor(list.get(0).getObjectId());
+                else
+                    Toast.makeText((PlusCardActivity)plusCardView, "没有该用户", Toast.LENGTH_SHORT);
             }
         });
         super.loadAvatar(nameList);

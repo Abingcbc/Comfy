@@ -1,10 +1,12 @@
 package com.kha.cbc.comfy.view.team;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.model.TeamTask;
@@ -21,11 +23,14 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
     List<TeamTask> teamTaskList;
     TeamFragment fragment;
     int numOfCreate;
+    Context context;
 
-    TeamTaskAdapter(List<TeamTask> teamTaskList, TeamFragment fragment, int numOfCreate) {
+    TeamTaskAdapter(List<TeamTask> teamTaskList, TeamFragment fragment,
+                    int numOfCreate, Context context) {
         this.teamTaskList = teamTaskList;
         this.fragment = fragment;
         this.numOfCreate = numOfCreate;
+        this.context = context;
     }
 
     @Override
@@ -71,7 +76,8 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
                     fragment.goToDetail(teamTask.getTitle(), teamTask.getObjectId());
                 }
             });
-            //holder.circleImageView.setImageURI(teamTask.getImageUrl);
+            holder.memberView.setLayoutManager(new LinearLayoutManager(context));
+            holder.memberView.setAdapter(new TeamTaskMemberAdapter(teamTaskList.get(position)));
         }
     }
 
@@ -83,14 +89,14 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView titleView;
-        CircleImageView circleImageView;
         View itemView;
+        RecyclerView memberView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             titleView = itemView.findViewById(R.id.team_task_title);
-            circleImageView = itemView.findViewById(R.id.team_task_circle);
+            memberView = itemView.findViewById(R.id.team_task_member);
         }
     }
 }

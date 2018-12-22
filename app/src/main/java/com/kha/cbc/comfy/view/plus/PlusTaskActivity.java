@@ -46,7 +46,7 @@ public class PlusTaskActivity extends AppCompatActivity implements PlusTaskView 
                     GDPersonalTask personalTask = new GDPersonalTask(new PersonalTask(taskTitle));
                     taskDao.insert(personalTask);
                 } else {
-                    presenter.postTask(new TeamTask(taskTitle, User.INSTANCE.getUsername(), null, null));
+                    presenter.postTask(new TeamTask(taskTitle, User.INSTANCE.getUsername(),null), this);
                 }
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);

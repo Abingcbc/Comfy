@@ -20,6 +20,7 @@ class LoginPresenter(override val view: LoginView) : LeanCloudPresenter(view) {
     fun uploadComfyUser(user: User){
         val comfyUser = AVObject("ComfyUser")
         comfyUser.put("username", user.username)
+        comfyUser.put("InstallationId", AVInstallation.getCurrentInstallation().installationId)
         comfyUser.saveInBackground(object: SaveCallback(){
             override fun done(p0: AVException?) {
                 requeryComfyUserForRegistration(user.username!!, user)
@@ -35,6 +36,8 @@ class LoginPresenter(override val view: LoginView) : LeanCloudPresenter(view) {
                 val queryUesr = p0!![0]
                 user.comfyUserObjectId = queryUesr.objectId
                 view.onRegisterComplete(user)
+                queryUesr.put("InstallationId", AVInstallation.getCurrentInstallation().installationId)
+                queryUesr.saveInBackground()
             }
         })
     }
@@ -47,6 +50,8 @@ class LoginPresenter(override val view: LoginView) : LeanCloudPresenter(view) {
                 val queryUesr = p0!![0]
                 user.comfyUserObjectId = queryUesr.objectId
                 view.onLoginComplete(user)
+                queryUesr.put("InstallationId", AVInstallation.getCurrentInstallation().installationId)
+                queryUesr.saveInBackground()
             }
         })
     }

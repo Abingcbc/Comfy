@@ -121,7 +121,6 @@
         <service android:name="com.amap.api.location.APSService"/>
 
         <activity android:name=".view.efficient.chart.EfficientChartActivity"/>
-
         <activity android:name=".view.team.grouptrack.GroupTrackActivity"/>
 
         <service
@@ -129,15 +128,22 @@
                 android:exported="false">
         </service>
 
-        <receiver android:name="com.kha.cbc.comfy.presenter.Notification.CloudReceiver" android:exported="false">
+        <receiver
+                android:name=".presenter.Notification.CloudReceiver"
+                android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="com.kha.cbc.comfy.NEWCLOUDMESSAGE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="com.kha.cbc.comfy.NEWASSIGNMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.NEWADDMESSAGE"/>
             </intent-filter>
         </receiver>
 
+        <service
+                android:name=".presenter.Notification.CloudIntentService"
+                android:exported="false">
+        </service>
     </application>
 
 </manifest>

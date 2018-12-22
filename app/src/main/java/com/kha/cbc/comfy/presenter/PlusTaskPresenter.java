@@ -1,11 +1,11 @@
 package com.kha.cbc.comfy.presenter;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.PushService;
-import com.avos.avoscloud.SaveCallback;
+import android.content.Context;
+import com.avos.avoscloud.*;
+import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.model.TeamTask;
 import com.kha.cbc.comfy.model.User;
+import com.kha.cbc.comfy.view.main.MainActivity;
 import com.kha.cbc.comfy.view.plus.PlusTaskView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -25,7 +25,7 @@ public class PlusTaskPresenter extends BasePresenter {
         view = plusTaskView;
     }
 
-    public void postTask(TeamTask teamTask) {
+    public void postTask(TeamTask teamTask, Context context) {
         String title = teamTask.getTitle();
         String taskId = teamTask.getId();
         AVObject task = new AVObject("TeamTask");

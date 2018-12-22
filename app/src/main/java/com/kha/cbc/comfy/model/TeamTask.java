@@ -3,6 +3,8 @@ package com.kha.cbc.comfy.model;
 import com.kha.cbc.comfy.data.network.dto.TeamTaskDto;
 import com.kha.cbc.comfy.model.common.BaseTaskModel;
 
+import java.util.List;
+
 /**
  * Created by ABINGCBC
  * on 2018/11/19
@@ -10,13 +12,12 @@ import com.kha.cbc.comfy.model.common.BaseTaskModel;
 public class TeamTask extends BaseTaskModel {
 
     String founder;
-    String imageUrl;
     String objectId;
+    List<String> memberImageUrls;
 
-    public TeamTask(String title, String founder, String imageUrl, String objectId) {
+    public TeamTask(String title, String founder, String objectId) {
         this.title = title;
         this.founder = founder;
-        this.imageUrl = imageUrl;
         this.objectId = objectId;
     }
 
@@ -26,11 +27,15 @@ public class TeamTask extends BaseTaskModel {
         this.objectId = dto.objectId;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
     public String getObjectId() {
         return objectId;
+    }
+
+    public List<String> getMemberImageUrls() {
+        return memberImageUrls;
+    }
+
+    public void setMemberImageUrls(List<String> memberImageUrls) {
+        this.memberImageUrls = memberImageUrls;
     }
 }

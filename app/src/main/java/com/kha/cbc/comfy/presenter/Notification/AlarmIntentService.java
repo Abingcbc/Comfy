@@ -36,7 +36,6 @@ public class AlarmIntentService extends IntentService {
         if (intent != null) {
             isPersonal = intent.getBooleanExtra("isPersonal", false);
             id = intent.getStringExtra("id");
-            Log.d("alarmid", id);
             if (isPersonal) {
                 GDPersonalCardDao personalCardDao = ((ComfyApp) getApplication()).
                         getDaoSession().getGDPersonalCardDao();
@@ -52,7 +51,6 @@ public class AlarmIntentService extends IntentService {
         }
     }
     void show() {
-        Log.d("alarm", "success to alarm");
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);

@@ -139,6 +139,8 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:4.1.0'
     implementation 'cn.leancloud.android:chatkit:1.0.6'
     implementation 'com.ldoublem.loadingview:loadingviewlib:1.0'
+
+    implementation 'com.github.Mindinventory:OverlapImageGalleryView:1.0'
 }
 
 greendao {

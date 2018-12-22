@@ -100,7 +100,8 @@ public class TeamFragment extends Fragment
 
     @Override
     public void onComplete() {
-        recyclerView.setAdapter(new TeamTaskAdapter(teamTaskList, this, numOfCreate));
+        recyclerView.setAdapter(new TeamTaskAdapter(teamTaskList, this,
+                numOfCreate, getContext()));
     }
 
     class TeamItemDecoration extends RecyclerView.ItemDecoration {

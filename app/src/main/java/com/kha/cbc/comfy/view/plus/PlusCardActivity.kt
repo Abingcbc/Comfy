@@ -92,8 +92,8 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
                     val materialDialog = MaterialDialog(this)
                     materialDialog.input { _, charSequence ->
                         executorName = charSequence.toString()
-                        presenter.queryMember(charSequence.toString())
                         successChangeExecutor = false
+                        presenter.queryMember(charSequence.toString())
                     }.positiveButton(text = "确认")
                         .title(text = "输入要添加成员的名称")
                         .show()

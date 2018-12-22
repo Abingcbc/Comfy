@@ -23,6 +23,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import com.avos.avoscloud.AVInstallation;
+import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.PushService;
 import com.bumptech.glide.Glide;
 import com.flyco.tablayout.CommonTabLayout;
@@ -30,6 +31,7 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.kha.cbc.comfy.BuildConfig;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.entity.GDUser;
@@ -41,6 +43,7 @@ import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.presenter.AvatarPresenter;
 import com.kha.cbc.comfy.presenter.MainPresenter;
 import com.kha.cbc.comfy.presenter.Notification.AlarmIntentService;
+import com.kha.cbc.comfy.presenter.PlusTaskPresenter;
 import com.kha.cbc.comfy.presenter.Presenter;
 import com.kha.cbc.comfy.view.common.ActivityManager;
 import com.kha.cbc.comfy.view.common.AvatarView;
@@ -48,6 +51,7 @@ import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter;
 import com.kha.cbc.comfy.view.efficient.EfficientFragment;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
+import com.kha.cbc.comfy.view.plus.PlusTaskActivity;
 import com.kha.cbc.comfy.view.settings.SettingsActivity;
 import com.kha.cbc.comfy.view.team.TeamFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -140,6 +144,9 @@ public class MainActivity extends BaseActivityWithPresenter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PushService.subscribe(this, "public", PlusTaskActivity.class);
+        PushService.setDefaultPushCallback(this, MainActivity.class);
+
         Intent intentFrom = getIntent();
 
         setAvatarDao(((ComfyApp)getApplication()).getDaoSession().getGDAvatarDao());
@@ -166,8 +173,6 @@ public class MainActivity extends BaseActivityWithPresenter
                 }
                 else {
                     teamFragment.plusTask();
-                    PushService.subscribe(this, "aaaa", MainActivity.class);
-                    AVInstallation.getCurrentInstallation().saveInBackground();
                 }
             });
 

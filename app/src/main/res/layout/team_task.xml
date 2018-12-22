@@ -17,15 +17,14 @@
             android:textSize="48dp"
             android:layout_marginStart="10dp"/>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/team_task_circle"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/account"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/avoscloud_blue"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/team_task_member"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:layout_alignParentRight="true">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>
