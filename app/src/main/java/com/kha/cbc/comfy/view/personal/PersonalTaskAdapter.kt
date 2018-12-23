@@ -35,6 +35,7 @@ class PersonalTaskAdapter(
         this.personalTaskList = personalTaskList
         //通过基类调用notifyDataSetChanged()，才能有显示
         updateData(data)
+        notifyDataSetChanged()
     }
 
     override fun bindView(data: Int?, position: Int, holder: CardStackView.ViewHolder) {
@@ -76,6 +77,7 @@ class PersonalTaskAdapter(
                     .message(text = "删除任务列表将会删除其中所有的任务")
                     .positiveButton {
                         fragment.deleteTaskFromDB(dataList[position])
+                        cardStackView.removeViewAt(position)
                     }.positiveButton(text = "确认")
                     .negativeButton(text = "取消")
                     .show()

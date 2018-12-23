@@ -11,6 +11,7 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +53,7 @@ public class GDPersonalTask {
         this.id = personalTask.getId();
         this.title = personalTask.getTitle();
         List<BaseCardModel> cardModelList = personalTask.getCards();
+        this.personalCardList = new ArrayList<>();
         for (int i = 0; i < cardModelList.size() - 1; i++) {
             this.personalCardList.add(new GDPersonalCard(cardModelList.get(i)));
         }

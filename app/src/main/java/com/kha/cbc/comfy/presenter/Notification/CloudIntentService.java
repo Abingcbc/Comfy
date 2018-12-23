@@ -12,13 +12,22 @@ import com.kha.cbc.comfy.view.main.MainActivity;
 
 public class CloudIntentService extends IntentService {
 
-    String title;
-    Boolean isAssign;
+    String cardTitle;
+    String taskTitle;
+    String action;
 
     static final String HEADER = "团队项目变更提醒";
-    static final String ASSIGN = "您被分配了新的任务 ";
-    static final String ADD = "有新的项目加入了您的项目 ";
+    static final String ASSIGN = " 被分配了新的任务 ";
+    static final String ADDFRONT = "有新的任务 ";
+    static final String ADD = " 加入了您的项目 ";
     static final String COMMON = " 快去看看吧";
+
+    static final String ASSIGNMESSAGE = "com.kha.cbc.comfy.NEWASSIGNMESSAGE";
+    static final String ADDMESSAGE = "com.kha.cbc.comfy.NEWADDMESSAGE";
+    static final String DELETECARDMESSAGE = "com.kha.cbc.comfy.DELETECARDMESSAGE";
+    static final String DELETETASKMESSAGE = "com.kha.cbc.comfy.DELETETASKMESSAGE";
+    static final String COMPELTECARDMESSAGE = "com.kha.cbc.comfy.COMPELTECARDMESSAGE";
+    static final String UPDATEMESSAFE = "com.kha.cbc.comfy.UPDATEMESSAGE";
 
     public CloudIntentService() {
         super("CloudIntentService");
@@ -27,20 +36,23 @@ public class CloudIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            title = intent.getStringExtra("title");
-            isAssign = intent.getBooleanExtra("isAssign", true);
+            cardTitle = intent.getStringExtra("cardTitle");
+            taskTitle = intent.getStringExtra("taskTitle");
+            action = intent.getStringExtra("action");
+
             Intent intentMain = new Intent(this, MainActivity.class);
             PendingIntent pi = PendingIntent.getActivity(this, 0, intentMain, PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
             builder.setTicker(HEADER).setContentTitle(HEADER);
             String CHANNEL_ID = "comfy_cloud_channel";// The id of the channel.
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            Log.d("point4", "point4");
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, importance);
-                if (isAssign) {
-                    Notification notification = builder
-                            .setContentText(ASSIGN + title + COMMON)
+                Notification notification = new Notification();
+                switch (action) {
+                    case ASSIGNMESSAGE: {
+                        notification = builder
+                            .setContentText("您在项目 " + taskTitle + " 中" + ASSIGN + cardTitle + COMMON)
                             .setSmallIcon(R.drawable.default_avatar)
                             .setChannelId(CHANNEL_ID)
                             .setAutoCancel(true)
@@ -48,14 +60,12 @@ public class CloudIntentService extends IntentService {
                             .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
                             .setContentIntent(pi)
                             .build();
-                    NotificationManager mNotificationManager =
-                            (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-                    mNotificationManager.createNotificationChannel(mChannel);
-                    mNotificationManager.notify(title.hashCode(), notification);
-                    Log.d("point5", "point5");
-                } else {
-                    Notification notification = builder
-                            .setContentText(ADD + title + COMMON)
+                        Log.d("assign notification", cardTitle);
+                        break;
+                    }
+                    case ADDMESSAGE: {
+                        notification = builder
+                            .setContentText(ADDFRONT + cardTitle + ADD + taskTitle + COMMON)
                             .setSmallIcon(R.drawable.default_avatar)
                             .setChannelId(CHANNEL_ID)
                             .setAutoCancel(true)
@@ -63,12 +73,53 @@ public class CloudIntentService extends IntentService {
                             .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
                             .setContentIntent(pi)
                             .build();
-                    Log.d("point6", "point6");
-                    NotificationManager mNotificationManager =
-                            (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-                    mNotificationManager.createNotificationChannel(mChannel);
-                    mNotificationManager.notify(title.hashCode(), notification);
+                        Log.d("add notification", cardTitle);
+                        break;
+                    }
+                    case DELETECARDMESSAGE: {
+                        notification = builder
+                                .setContentText("您项目 " + taskTitle + " 中的任务 " + cardTitle + "被取消了" + COMMON)
+                                .setSmallIcon(R.drawable.default_avatar)
+                                .setChannelId(CHANNEL_ID)
+                                .setAutoCancel(true)
+                                .setWhen(System.currentTimeMillis())
+                                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
+                                .setContentIntent(pi)
+                                .build();
+                        Log.d("delete notification", cardTitle);
+                        break;
+                    }
+                    case COMPELTECARDMESSAGE: {
+                        notification = builder
+                                .setContentText("您项目 " + taskTitle + " 中的任务 " + cardTitle + "完成了" + COMMON)
+                                .setSmallIcon(R.drawable.default_avatar)
+                                .setChannelId(CHANNEL_ID)
+                                .setAutoCancel(true)
+                                .setWhen(System.currentTimeMillis())
+                                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
+                                .setContentIntent(pi)
+                                .build();
+                        Log.d("complete notification", cardTitle);
+                        break;
+                    }
+                    case UPDATEMESSAFE: {
+                        notification = builder
+                                .setContentText("您项目 " + taskTitle + " 中有任务更新了" + COMMON)
+                                .setSmallIcon(R.drawable.default_avatar)
+                                .setChannelId(CHANNEL_ID)
+                                .setAutoCancel(true)
+                                .setWhen(System.currentTimeMillis())
+                                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
+                                .setContentIntent(pi)
+                                .build();
+                        Log.d("update notification", cardTitle);
+                        break;
+                    }
                 }
+                NotificationManager mNotificationManager =
+                        (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.createNotificationChannel(mChannel);
+                mNotificationManager.notify(cardTitle.hashCode(), notification);
             }
         }
     }

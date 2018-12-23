@@ -12,6 +12,7 @@ import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.entity.GDPersonalCard;
 import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao;
 import com.kha.cbc.comfy.model.PersonalCard;
+import com.kha.cbc.comfy.model.TeamCard;
 import com.kha.cbc.comfy.presenter.Notification.CloudPushHelper;
 import com.kha.cbc.comfy.view.common.AvatarView;
 import com.kha.cbc.comfy.view.plus.PlusCardActivity;
@@ -75,7 +76,25 @@ public class PlusCardPresenter extends AvatarPresenter {
                             CloudPushHelper.pushInvitation(taskObjectId, executorObjectId, title);
                         }
                     });
+                } else {
+                    CloudPushHelper.pushInvitation(taskObjectId, executorObjectId, title);
                 }
+            }
+        });
+    }
+
+    public void pullCard(String cardObjectId) {
+        AVQuery<AVObject> query = new AVQuery<>("TeamCard");
+        query.include("Stage");
+        query.include("Executor");
+        query.getInBackground(cardObjectId, new GetCallback<AVObject>() {
+            @Override
+            public void done(AVObject avObject, AVException e) {
+                TeamCard card = new TeamCard(avObject.getAVObject("Stage").getString("TaskId"),
+                        avObject.getAVObject("Executor").getString("username"),
+                        avObject.getString("CardTitle"),
+                        avObject.getObjectId());
+                plusCardView.setSavedCard(card);
             }
         });
     }
@@ -86,9 +105,9 @@ public class PlusCardPresenter extends AvatarPresenter {
         return new PersonalCard(card);
     }
 
-    public void setCloudReminder(LinearLayout linearLayout) {
-
-    }
+//    public void setCloudReminder(LinearLayout linearLayout) {
+//
+//    }
 
     public void queryMember(String memberName) {
         List<String> nameList = new ArrayList<>();

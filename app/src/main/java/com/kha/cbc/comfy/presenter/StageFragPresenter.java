@@ -1,8 +1,7 @@
 package com.kha.cbc.comfy.presenter;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.*;
+import com.kha.cbc.comfy.presenter.Notification.CloudPushHelper;
 import com.kha.cbc.comfy.view.common.BaseRefreshView;
 
 /**
@@ -27,6 +26,34 @@ public class StageFragPresenter extends BasePresenter {
             @Override
             public void done(AVException e) {
                 view.refresh(true);
+            }
+        });
+    }
+
+    public void completeCard(String cardObjectId, String taskObjectId, String cardTitle) {
+        AVQuery<AVObject> query = new AVQuery<>("TeamCard");
+        query.getInBackground(cardObjectId, new GetCallback<AVObject>() {
+            @Override
+            public void done(AVObject avObject, AVException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                }
+                avObject.deleteInBackground();
+                CloudPushHelper.pushOperation(taskObjectId, cardTitle, true);
+            }
+        });
+    }
+
+    public void deleteCard(String cardObjectId, String taskObjectId, String cardTitle) {
+        AVQuery<AVObject> query = new AVQuery<>("TeamCard");
+        query.getInBackground(cardObjectId, new GetCallback<AVObject>() {
+            @Override
+            public void done(AVObject avObject, AVException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                }
+                avObject.deleteInBackground();
+                CloudPushHelper.pushOperation(taskObjectId, cardTitle, false);
             }
         });
     }

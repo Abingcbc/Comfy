@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
+import com.avos.avoscloud.AVObject
 import com.bumptech.glide.Glide
 import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
@@ -27,7 +28,9 @@ import kotlinx.android.synthetic.main.content_personal_plus_card.*
 import java.text.SimpleDateFormat
 import java.util.*
 import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao
+import com.kha.cbc.comfy.model.TeamCard
 import com.kha.cbc.comfy.presenter.Notification.AlarmHelper
+import com.kha.cbc.comfy.presenter.Notification.CloudPushHelper
 import kotlinx.android.synthetic.main.content_personal_plus_card.view.*
 
 
@@ -48,6 +51,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     internal var type: Int = 0
     private lateinit var executorName: String
     private lateinit var executorObjectId: String
+    private lateinit var cardOjectId: String
     private lateinit var stageObjectId: String
     private lateinit var taskObjectId: String
     private lateinit var preTitle: String
@@ -76,10 +80,12 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         type = bundle!!.getInt("type")
 
         /**
-         * 0为新增个人任务
-         * 1为新增团队任务
-         * 2为修改个人任务
-         * 3为修改团队任务
+         *                  Bundle
+         *                  type
+         * 0为新增个人任务    taskId
+         * 1为新增团队任务    stageObjectId taskObjectId
+         * 2为修改个人任务    taskId cardId
+         * 3为修改团队任务    cardObjectId
          */
         when (type) {
             0 ->
@@ -102,10 +108,14 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
             2 -> {
                 taskId = bundle.getString("taskId")
                 cardId = bundle.getString("cardId")
-                initialSavedCard(cardId)
+                input_reminder_date.visibility = View.INVISIBLE
+                initialSavedPersonalCard()
             }
             3 -> {
-
+                taskObjectId = bundle.getString("taskObjectId")
+                cardOjectId = bundle.getString("cardObjectId")
+                input_reminder_date.visibility = View.INVISIBLE
+                initialSavedTeamCard()
             }
 
         }
@@ -278,9 +288,18 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         finish()
     }
 
-    private fun successUpdateTeam(title: String, description: String){}
+    private fun successUpdateTeam(title: String, description: String){
+        val card = AVObject.createWithoutData("TeamCard", cardOjectId)
+        card.put("CardTitle", title)
+        card.put("Description", description)
+        card.saveInBackground()
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        CloudPushHelper.pushUpdate(taskObjectId)
+        finish()
+    }
 
-    private fun initialSavedCard(cardId: String) {
+    private fun initialSavedPersonalCard() {
         var personalCard = presenter.getLocalPersonalCard(cardId, application)
         input_card_title.setText(personalCard.title)
         input_card_description.setText(personalCard.description)
@@ -292,6 +311,18 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
             setDateText()
             setTimeText()
         }
+    }
+
+    private fun initialSavedTeamCard() {
+        presenter.pullCard(cardOjectId)
+    }
+
+    override fun setSavedCard(card: TeamCard?) {
+        input_card_title.setText(card!!.title)
+        input_card_description.setText(card.description)
+        preTitle = card.title
+        executorName = card.executor
+        presenter.queryMember(executorName)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

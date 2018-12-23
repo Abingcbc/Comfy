@@ -143,6 +143,9 @@ dependencies {
     implementation 'com.github.Mindinventory:OverlapImageGalleryView:1.0'
     implementation 'com.bilibili:magicasakura:0.1.8@aar'
     implementation 'com.nightonke:boommenu:2.1.1'
+
+    implementation 'com.pnikosis:materialish-progress:1.7'
+    implementation 'com.github.Kennyc1012:BottomSheet:2.4.1'
 }
 
 greendao {
