@@ -137,6 +137,10 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
                 <action android:name="com.kha.cbc.comfy.NEWASSIGNMESSAGE"/>
                 <action android:name="com.kha.cbc.comfy.NEWADDMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.DELETECARDMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.DELETETASKMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.COMPELTECARDMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.UPDATEMESSAGE"/>
             </intent-filter>
         </receiver>
 

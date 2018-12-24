@@ -67,7 +67,7 @@ class StageFragment : Fragment(), BaseRefreshView{
 
             recyclerView = view.stage_recycler
             recyclerView.layoutManager = LinearLayoutManager(this.context)
-            recyclerView.adapter = StageRecyclerAdapter(teamCardList)
+            recyclerView.adapter = StageRecyclerAdapter(teamCardList, this, taskObjectId)
 
             textView.text = stageTitle
             var plusTextView = view.team_plus_card

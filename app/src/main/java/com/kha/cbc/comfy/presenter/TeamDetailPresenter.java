@@ -133,6 +133,7 @@ public class TeamDetailPresenter extends BasePresenter {
                 }
                 for (AVObject stage : alist) {
                     AVQuery<AVObject> queryForCard = new AVQuery<>("TeamCard");
+                    queryForCard.include("Executor");
                     queryForCard.whereEqualTo("Stage", stage);
                     queryForCard.orderByAscending("createdAt");
                     queryForCard.findInBackground(new FindCallback<AVObject>() {
@@ -141,8 +142,9 @@ public class TeamDetailPresenter extends BasePresenter {
                             ArrayList<TeamCard> tempCardList = new ArrayList<>();
                             for (AVObject card : list) {
                                 tempCardList.add(new TeamCard(stage.getString("TaskId"),
-                                        card.getString("Executor"),
-                                        card.getString("CardTitle")));
+                                        card.getAVObject("Executor").getString("username"),
+                                        card.getString("CardTitle"),
+                                        card.getObjectId()));
                             }
                             stageList.add(new Stage(tempCardList,
                                     stage.getString("Title"),

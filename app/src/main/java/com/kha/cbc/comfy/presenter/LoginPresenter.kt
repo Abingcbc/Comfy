@@ -20,10 +20,14 @@ class LoginPresenter(override val view: LoginView) : LeanCloudPresenter(view) {
     fun uploadComfyUser(user: User){
         val comfyUser = AVObject("ComfyUser")
         comfyUser.put("username", user.username)
-        comfyUser.put("InstallationId", AVInstallation.getCurrentInstallation().installationId)
+        val map = AVObject("UserInstallationMap")
+        val userForId = AVObject.createWithoutData("ComfyUser", User.comfyUserObjectId)
+        map.put("User", userForId)
+        map.put("InstallationId", AVInstallation.getCurrentInstallation().installationId)
         comfyUser.saveInBackground(object: SaveCallback(){
             override fun done(p0: AVException?) {
                 requeryComfyUserForRegistration(user.username!!, user)
+                map.saveInBackground()
             }
         })
     }
@@ -36,7 +40,6 @@ class LoginPresenter(override val view: LoginView) : LeanCloudPresenter(view) {
                 val queryUesr = p0!![0]
                 user.comfyUserObjectId = queryUesr.objectId
                 view.onRegisterComplete(user)
-                queryUesr.put("InstallationId", AVInstallation.getCurrentInstallation().installationId)
                 queryUesr.saveInBackground()
             }
         })
@@ -50,8 +53,12 @@ class LoginPresenter(override val view: LoginView) : LeanCloudPresenter(view) {
                 val queryUesr = p0!![0]
                 user.comfyUserObjectId = queryUesr.objectId
                 view.onLoginComplete(user)
-                queryUesr.put("InstallationId", AVInstallation.getCurrentInstallation().installationId)
                 queryUesr.saveInBackground()
+                val map = AVObject("UserInstallationMap")
+                val userForId = AVObject.createWithoutData("ComfyUser", User.comfyUserObjectId)
+                map.put("User", userForId)
+                map.put("InstallationId", AVInstallation.getCurrentInstallation().installationId)
+                map.saveInBackground()
             }
         })
     }

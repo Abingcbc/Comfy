@@ -199,7 +199,8 @@ public class PersonalFragment extends Fragment
     public void deleteTaskFromDB(PersonalTask task) {
         GDPersonalTaskDao taskDao = ((ComfyApp) getActivity().getApplication())
                 .getDaoSession().getGDPersonalTaskDao();
-        taskDao.delete(new GDPersonalTask(task));
+        taskDao.queryBuilder().where(GDPersonalTaskDao.Properties.Id.eq(task.getId())).
+                buildDelete().executeDeleteWithoutDetachingEntities();
         GDPersonalCardDao cardDao = ((ComfyApp) getActivity().getApplication())
                 .getDaoSession().getGDPersonalCardDao();
         List<GDPersonalCard> cardList = cardDao.queryBuilder().

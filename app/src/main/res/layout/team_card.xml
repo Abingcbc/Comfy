@@ -1,17 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
 
-    <TextView
-            android:id="@+id/team_card_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <TextView
-            android:id="@+id/team_card_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+<com.daimajia.swipe.SwipeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="70dp"
+android:id="@+id/team_card_swipe_layout">
+<LinearLayout
+        android:id="@+id/team_card_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+    <ImageView
+            android:id="@+id/team_card_change"
+            android:src="@drawable/lead_pencil"
+            android:layout_width="70dp"
+            android:background="@color/yellow"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent"/>
+    <ImageView
+            android:id="@+id/team_card_check"
+            android:src="@drawable/check_outline"
+            android:layout_width="70dp"
+            android:background="#4cd964"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
+    <ImageView
+            android:id="@+id/team_card_delete"
+            android:src="@drawable/trash"
+            android:layout_width="70dp"
+            android:background="@color/red"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
 
 </LinearLayout>
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fake_cardview">
+
+        <TextView
+                android:id="@+id/team_card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/team_card_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</com.daimajia.swipe.SwipeLayout>
