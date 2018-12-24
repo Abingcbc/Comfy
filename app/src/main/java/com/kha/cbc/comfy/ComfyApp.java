@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import cn.leancloud.chatkit.LCChatKit;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.PushService;
 import com.bilibili.magicasakura.utils.ThemeUtils;
 import com.kha.cbc.comfy.data.network.providers.CustomUserProvider;
 import com.kha.cbc.comfy.greendao.gen.DaoMaster;

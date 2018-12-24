@@ -184,7 +184,7 @@
                 android:layout_weight="5"
                 />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
                 android:id="@+id/assign_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

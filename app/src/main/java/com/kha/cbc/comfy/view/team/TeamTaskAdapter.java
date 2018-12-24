@@ -1,15 +1,25 @@
 package com.kha.cbc.comfy.view.team;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import cn.yiiguxing.compositionavatar.CompositionAvatarView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.model.TeamTask;
+import com.kha.cbc.comfy.presenter.TeamDetailPresenter;
+import com.kha.cbc.comfy.view.common.BaseRefreshView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.util.List;
@@ -18,12 +28,20 @@ import java.util.List;
  * Created by ABINGCBC
  * on 2018/11/19
  */
-public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHolder> {
+public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHolder> implements BaseRefreshView {
+
+    @Override
+    public void refresh(boolean b) { }
+
+    @Override
+    public void onComplete() { }
 
     List<TeamTask> teamTaskList;
     TeamFragment fragment;
     int numOfCreate;
     Context context;
+    TeamDetailPresenter presenter;
+
 
     TeamTaskAdapter(List<TeamTask> teamTaskList, TeamFragment fragment,
                     int numOfCreate, Context context) {
@@ -31,6 +49,7 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
         this.fragment = fragment;
         this.numOfCreate = numOfCreate;
         this.context = context;
+        this.presenter = new TeamDetailPresenter(this);
     }
 
     @Override
@@ -76,9 +95,9 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
                     fragment.goToDetail(teamTask.getTitle(), teamTask.getObjectId());
                 }
             });
-            holder.memberView.setLayoutManager(new LinearLayoutManager(context));
-            holder.memberView.setAdapter(new TeamTaskMemberAdapter(teamTaskList.get(position)));
+            presenter.loadMembersAvatar(teamTask.getObjectId(), holder.memberView);
         }
+
     }
 
     @Override
@@ -90,13 +109,13 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
 
         TextView titleView;
         View itemView;
-        RecyclerView memberView;
+        CompositionAvatarView memberView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             titleView = itemView.findViewById(R.id.team_task_title);
-            memberView = itemView.findViewById(R.id.team_task_member);
+            memberView = itemView.findViewById(R.id.composition_avatar);
         }
     }
 }
