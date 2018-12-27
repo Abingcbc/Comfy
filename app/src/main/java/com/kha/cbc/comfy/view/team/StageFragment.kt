@@ -27,9 +27,10 @@ import java.util.*
  * on 2018/11/24
  */
 class StageFragment : Fragment(), BaseRefreshView{
-    override fun onComplete() {
 
-    }
+    override fun onChatReady(conversationId: String) {}
+
+    override fun onComplete() {}
 
     override fun refresh(b: Boolean) {
         activity!!.recreate()

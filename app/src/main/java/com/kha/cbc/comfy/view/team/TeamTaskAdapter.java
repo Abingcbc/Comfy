@@ -53,6 +53,11 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
     }
 
     @Override
+    public void onChatReady(String conversationId) {
+
+    }
+
+    @Override
     public int getItemViewType(int position) {
         if (position == 0)
             return 0;

@@ -7,7 +7,7 @@ import cn.leancloud.chatkit.LCChatProfileProvider
 
 class CustomUserProvider private constructor() : LCChatProfileProvider {
 
-    val allUsers: List<LCChatKitUser>
+    val allUsers: ArrayList<LCChatKitUser>
         get() = partUsers
 
     override fun fetchProfiles(list: List<String>, callBack: LCChatProfilesCallBack) {
@@ -32,21 +32,21 @@ class CustomUserProvider private constructor() : LCChatProfileProvider {
             return customUserProvider
         }
 
-        private val partUsers = ArrayList<LCChatKitUser>()
+        val partUsers = ArrayList<LCChatKitUser>()
 
         // 此数据均为模拟数据，仅供参考
-        init {
-            partUsers.add(LCChatKitUser("Tom", "Tom", "http://www.avatarsdb.com/avatars/tom_and_jerry2.jpg"))
-            partUsers.add(LCChatKitUser("Jerry", "Jerry", "http://www.avatarsdb.com/avatars/jerry.jpg"))
-            partUsers.add(LCChatKitUser("Harry", "Harry", "http://www.avatarsdb.com/avatars/young_harry.jpg"))
-            partUsers.add(
-                LCChatKitUser(
-                    "William",
-                    "William",
-                    "http://www.avatarsdb.com/avatars/william_shakespeare.jpg"
-                )
-            )
-            partUsers.add(LCChatKitUser("Bob", "Bob", "http://www.avatarsdb.com/avatars/bath_bob.jpg"))
-        }
+//        init {
+//            partUsers.add(LCChatKitUser("Tom", "Tom", "http://www.avatarsdb.com/avatars/tom_and_jerry2.jpg"))
+//            partUsers.add(LCChatKitUser("Jerry", "Jerry", "http://www.avatarsdb.com/avatars/jerry.jpg"))
+//            partUsers.add(LCChatKitUser("Harry", "Harry", "http://www.avatarsdb.com/avatars/young_harry.jpg"))
+//            partUsers.add(
+//                LCChatKitUser(
+//                    "William",
+//                    "William",
+//                    "http://www.avatarsdb.com/avatars/william_shakespeare.jpg"
+//                )
+//            )
+//            partUsers.add(LCChatKitUser("Bob", "Bob", "http://www.avatarsdb.com/avatars/bath_bob.jpg"))
+//        }
     }
 }

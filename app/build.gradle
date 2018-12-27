@@ -147,6 +147,7 @@ dependencies {
 
     implementation 'com.pnikosis:materialish-progress:1.7'
     implementation 'com.github.Kennyc1012:BottomSheet:2.4.1'
+    implementation 'com.ramotion.directselect:direct-select:0.1.0'
 }
 
 greendao {
