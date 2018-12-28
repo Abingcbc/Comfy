@@ -1,26 +1,17 @@
 package com.kha.cbc.comfy.view.team;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.yiiguxing.compositionavatar.CompositionAvatarView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.Request;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.model.TeamTask;
 import com.kha.cbc.comfy.presenter.TeamDetailPresenter;
 import com.kha.cbc.comfy.view.common.BaseRefreshView;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.util.List;
 
@@ -96,8 +87,6 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
             holder.titleView.setText(teamTask.getTitle());
             holder.itemView.setOnClickListener(v ->
                     fragment.goToDetail(teamTask.getTitle(), teamTask.getObjectId()));
-            holder.memberView.setLayoutManager(new LinearLayoutManager(context));
-            holder.memberView.setAdapter(new TeamTaskMemberAdapter(teamTaskList.get(position)));
             presenter.loadMembersAvatar(teamTask.getObjectId(), holder.memberView);
         }
 

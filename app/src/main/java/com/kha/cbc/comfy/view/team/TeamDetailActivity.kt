@@ -102,6 +102,7 @@ class TeamDetailActivity : AppCompatActivity(),
                     .grid()
                     .setListener(this)
                     .show()
+            }
             R.id.group_chat -> {
                 presenter.initiateGroupChat(taskObjectId, CustomUserProvider.getInstance())
             }
@@ -122,8 +123,12 @@ class TeamDetailActivity : AppCompatActivity(),
     override fun onComplete() {
         stageList = stageList.sortedBy { it.index }
         for (stage in stageList) {
-            fragmentList.add(StageFragment.getInstance(stage.title,
-                stage.teamCardList, taskObjectId, stage.objectId, stageList.size))
+            fragmentList.add(
+                StageFragment.getInstance(
+                    stage.title,
+                    stage.teamCardList, taskObjectId, stage.objectId, stageList.size
+                )
+            )
         }
         var stageFragment =
             StageFragment.getInstance(
@@ -132,7 +137,7 @@ class TeamDetailActivity : AppCompatActivity(),
             )
         fragmentList.add(stageFragment)
         var pagerAdapter = TeamDetailFragAdapter(
-                supportFragmentManager, fragmentList
+            supportFragmentManager, fragmentList
         )
         var ultraViewPagerAdapter = UltraViewPagerAdapter(pagerAdapter)
         viewPager.adapter = ultraViewPagerAdapter
