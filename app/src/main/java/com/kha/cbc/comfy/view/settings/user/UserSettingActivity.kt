@@ -14,6 +14,7 @@ import android.widget.EditText
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import com.avos.avoscloud.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -145,6 +146,13 @@ class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServic
             taskDao.deleteAll()
             val cardDao = (application as ComfyApp).daoSession.gdPersonalCardDao
             cardDao.deleteAll()
+            val query = AVQuery<AVObject>("UserInstallationMap")
+            query.whereEqualTo("InstallationId", AVInstallation.getCurrentInstallation().installationId)
+            query.findInBackground(object: FindCallback<AVObject>() {
+                override fun done(p0: MutableList<AVObject>?, p1: AVException?) {
+                    p0!![0].deleteInBackground()
+                }
+            })
             ActivityManager.finishAll()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

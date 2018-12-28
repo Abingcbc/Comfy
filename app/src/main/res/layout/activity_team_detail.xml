@@ -34,14 +34,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <ProgressBar
-            android:id="@+id/loading_progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="false"
-            android:indeterminateDrawable="@drawable/loading"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+    <!--<ProgressBar-->
+            <!--android:id="@+id/loading_progressBar"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:indeterminate="false"-->
+            <!--android:indeterminateDrawable="@drawable/loading"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_centerVertical="true"/>-->
+
+    <com.pnikosis.materialishprogress.ProgressWheel
+            android:id="@+id/team_detail_progress_wheel"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            app:matProg_barColor="#5588FF"
+            app:matProg_progressIndeterminate="true"
+            android:visibility="gone"/>
 
 
     <com.tmall.ultraviewpager.UltraViewPager

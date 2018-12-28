@@ -15,13 +15,17 @@ public class CloudReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         try {
             JSONObject jsonObject = new JSONObject(intent.getExtras().getString("com.avos.avoscloud.Data"));
-            String cardTitle = jsonObject.getString("cardTitle");
-            String taskTitle = jsonObject.getString("taskTitle");
+            String action = jsonObject.getString("action");
             Intent intentNotify = new Intent(context, CloudIntentService.class);
-            intentNotify.putExtra("cardTitle", cardTitle);
+            if (jsonObject.getBoolean("hasTitle")) {
+                String title = jsonObject.getString("title");
+                intentNotify.putExtra("title", title);
+            }
+            String taskTitle = jsonObject.getString("taskTitle");
             intentNotify.putExtra("taskTitle", taskTitle);
-            intentNotify.putExtra("action", jsonObject.getString("action"));
+            intentNotify.putExtra("action", action);
             context.startService(intentNotify);
+            Log.d(action, taskTitle);
         } catch (JSONException e) {
             e.printStackTrace();
         }

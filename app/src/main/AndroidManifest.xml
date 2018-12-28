@@ -138,9 +138,14 @@
                 <action android:name="com.kha.cbc.comfy.NEWASSIGNMESSAGE"/>
                 <action android:name="com.kha.cbc.comfy.NEWADDMESSAGE"/>
                 <action android:name="com.kha.cbc.comfy.DELETECARDMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.COMPLETECARDMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.UPDATECARDMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.DELETESTAGEMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.COMPLETESTAGEMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.UPDATESTAGEMESSAGE"/>
                 <action android:name="com.kha.cbc.comfy.DELETETASKMESSAGE"/>
-                <action android:name="com.kha.cbc.comfy.COMPELTECARDMESSAGE"/>
-                <action android:name="com.kha.cbc.comfy.UPDATEMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.COMPLETETASKMESSAGE"/>
+                <action android:name="com.kha.cbc.comfy.UPDATETASKMESSAGE"/>
             </intent-filter>
         </receiver>
 

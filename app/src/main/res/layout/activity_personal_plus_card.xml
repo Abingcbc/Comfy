@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/personal_plus_card_layout"
-        tools:context=".view.plus.PlusCardActivity">
+        tools:context=".view.plus.PlusCardActivity"
+        android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
             android:layout_height="wrap_content"
@@ -25,7 +26,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Add new personal task"
+                    android:text="Add new task"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
         </androidx.appcompat.widget.Toolbar>
 
@@ -33,4 +34,4 @@
 
     <include layout="@layout/content_personal_plus_card"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

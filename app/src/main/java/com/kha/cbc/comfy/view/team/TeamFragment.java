@@ -21,6 +21,7 @@ import com.kha.cbc.comfy.view.plus.PlusTaskActivity;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -72,7 +73,7 @@ public class TeamFragment extends Fragment
         startActivityForResult(intent, 1);
     }
 
-    void reload() {
+    public void reload() {
         teamTaskList = new LinkedList<>();
         presenter.getAllCreateTask(teamTaskList);
     }
@@ -81,7 +82,7 @@ public class TeamFragment extends Fragment
         Intent intent = new Intent(this.getContext(), TeamDetailActivity.class);
         intent.putExtra("taskTitle", title);
         intent.putExtra("taskObjectId", objectId);
-        startActivity(intent);
+        startActivityForResult(intent, 2);
     }
 
     @Override
@@ -90,6 +91,10 @@ public class TeamFragment extends Fragment
             case 1:
                 if (resultCode == RESULT_OK)
                     reload();
+            case 2:
+                if (resultCode == RESULT_CANCELED) {
+                    presenter.deleteTask(data.getStringExtra("taskObjectId"));
+                }
         }
     }
 

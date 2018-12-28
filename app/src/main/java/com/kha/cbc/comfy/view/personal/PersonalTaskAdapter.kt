@@ -3,6 +3,7 @@ package com.kha.cbc.comfy.view.personal
 import android.content.Context
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -12,6 +13,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
+import com.kennyc.bottomsheet.BottomSheet
+import com.kennyc.bottomsheet.BottomSheetListener
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.model.PersonalTask
 import com.loopeer.cardstack.CardStackView
@@ -27,9 +31,10 @@ class PersonalTaskAdapter(
     context: Context,
     internal var cardStackView: CardStackView,
     internal var fragment: PersonalFragment
-) : StackAdapter<Int>(context) {
+) : StackAdapter<Int>(context), BottomSheetListener {
 
     lateinit var personalTaskList: List<PersonalTask>
+    var selectedPosition: Int = 0
 
     fun updateData(data: List<Int>, personalTaskList: List<PersonalTask>) {
         this.personalTaskList = personalTaskList
@@ -73,13 +78,11 @@ class PersonalTaskAdapter(
                 cardStackView.performItemClick(this)
             }
             header.setOnLongClickListener {
-                MaterialDialog(context).title(text = "确认删除此任务列表？")
-                    .message(text = "删除任务列表将会删除其中所有的任务")
-                    .positiveButton {
-                        fragment.deleteTaskFromDB(dataList[position])
-                        cardStackView.removeViewAt(position)
-                    }.positiveButton(text = "确认")
-                    .negativeButton(text = "取消")
+                selectedPosition = position
+                BottomSheet.Builder(this.context)
+                    .setSheet(R.menu.bottom_grid)
+                    .grid()
+                    .setListener(this@PersonalTaskAdapter)
                     .show()
                 return@setOnLongClickListener true
             }
@@ -93,5 +96,38 @@ class PersonalTaskAdapter(
         override fun onItemExpand(b: Boolean) {
             cardsListView.visibility = if (b) View.VISIBLE else View.GONE
         }
+    }
+
+
+    override fun onSheetItemSelected(p0: BottomSheet, item: MenuItem?, p2: Any?) {
+        when (item!!.itemId) {
+            R.id.edit_item -> {
+                MaterialDialog(this.context!!)
+                    .input { materialDialog, charSequence ->
+                        fragment.onUpdateTask(PersonalTask(charSequence.toString()),
+                            personalTaskList[selectedPosition].id)
+                    }
+                    .positiveButton()
+                    .negativeButton()
+                    .show()
+            }
+
+            R.id.delete_item -> {
+                MaterialDialog(context).title(text = "确认删除此任务列表？")
+                    .message(text = "删除任务列表将会删除其中所有的任务")
+                    .positiveButton {
+                        fragment.deleteTaskFromDB(personalTaskList[selectedPosition])
+                        cardStackView.removeViewAt(selectedPosition)
+                    }.positiveButton(text = "确认")
+                    .negativeButton(text = "取消")
+                    .show()
+            }
+        }
+    }
+
+    override fun onSheetDismissed(p0: BottomSheet, p1: Any?, p2: Int) {
+    }
+
+    override fun onSheetShown(p0: BottomSheet, p1: Any?) {
     }
 }

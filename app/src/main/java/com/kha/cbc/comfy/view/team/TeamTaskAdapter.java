@@ -70,12 +70,8 @@ public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHo
         if (position != 0 && position != numOfCreate) {
             TeamTask teamTask = teamTaskList.get(position);
             holder.titleView.setText(teamTask.getTitle());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fragment.goToDetail(teamTask.getTitle(), teamTask.getObjectId());
-                }
-            });
+            holder.itemView.setOnClickListener(v ->
+                    fragment.goToDetail(teamTask.getTitle(), teamTask.getObjectId()));
             holder.memberView.setLayoutManager(new LinearLayoutManager(context));
             holder.memberView.setAdapter(new TeamTaskMemberAdapter(teamTaskList.get(position)));
         }

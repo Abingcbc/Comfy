@@ -1,12 +1,12 @@
 package com.kha.cbc.comfy.presenter;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVQuery;
-import com.avos.avoscloud.FindCallback;
+import android.util.Log;
+import com.avos.avoscloud.*;
 import com.kha.cbc.comfy.model.Stage;
 import com.kha.cbc.comfy.model.TeamCard;
 import com.kha.cbc.comfy.view.common.BaseRefreshView;
+import com.kha.cbc.comfy.view.team.StageFragView;
+import com.kha.cbc.comfy.view.team.StageFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,8 @@ public class TeamDetailPresenter extends BasePresenter {
                                 tempCardList.add(new TeamCard(stage.getString("TaskId"),
                                         card.getAVObject("Executor").getString("username"),
                                         card.getString("CardTitle"),
-                                        card.getObjectId()));
+                                        card.getObjectId(),
+                                        card.getString("Description")));
                             }
                             stageList.add(new Stage(tempCardList,
                                     stage.getString("Title"),
@@ -65,5 +66,11 @@ public class TeamDetailPresenter extends BasePresenter {
                 }
             }
         });
+    }
+
+    public void editTask(String taskObjectId, String newTitle) {
+        AVObject stage = AVObject.createWithoutData("TeamTask", taskObjectId);
+        stage.put("TaskTitle", newTitle);
+        stage.saveInBackground();
     }
 }

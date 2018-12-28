@@ -31,6 +31,7 @@ import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao
 import com.kha.cbc.comfy.model.TeamCard
 import com.kha.cbc.comfy.presenter.Notification.AlarmHelper
 import com.kha.cbc.comfy.presenter.Notification.CloudPushHelper
+import com.pnikosis.materialishprogress.ProgressWheel
 import kotlinx.android.synthetic.main.content_personal_plus_card.view.*
 
 
@@ -51,10 +52,12 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     internal var type: Int = 0
     private lateinit var executorName: String
     private lateinit var executorObjectId: String
-    private lateinit var cardOjectId: String
+    private lateinit var executorImageUrl: String
+    private lateinit var cardObjectId: String
     private lateinit var stageObjectId: String
     private lateinit var taskObjectId: String
     private lateinit var preTitle: String
+    private lateinit var preDescription: String
     private var reminderDate = Calendar.getInstance().time
     private var isReminderSet = false
     private var DATEFORMAT = "d MMM, yyyy"
@@ -94,6 +97,9 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
                 stageObjectId = bundle.getString("stageObjectId")
                 taskObjectId = bundle.getString("taskObjectId")
                 executor_assign.visibility = View.VISIBLE
+                reminderLayout.visibility = View.INVISIBLE
+                executorName = User.username!!
+                presenter.queryMember(executorName)
                 assign_button.setOnClickListener {
                     val materialDialog = MaterialDialog(this)
                     materialDialog.input { _, charSequence ->
@@ -112,9 +118,20 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
                 initialSavedPersonalCard()
             }
             3 -> {
+                plus_card_progress_wheel.visibility = View.VISIBLE
+                plus_card_content.visibility = View.GONE
                 taskObjectId = bundle.getString("taskObjectId")
-                cardOjectId = bundle.getString("cardObjectId")
-                input_reminder_date.visibility = View.INVISIBLE
+                cardObjectId = bundle.getString("cardObjectId")
+                assign_button.setOnClickListener {
+                    val materialDialog = MaterialDialog(this)
+                    materialDialog.input { _, charSequence ->
+                        executorName = charSequence.toString()
+                        successChangeExecutor = false
+                        presenter.queryMember(charSequence.toString())
+                    }.positiveButton(text = "确认")
+                        .title(text = "输入要添加成员的名称")
+                        .show()
+                }
                 initialSavedTeamCard()
             }
 
@@ -289,13 +306,13 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     }
 
     private fun successUpdateTeam(title: String, description: String){
-        val card = AVObject.createWithoutData("TeamCard", cardOjectId)
+        val card = AVObject.createWithoutData("TeamCard", cardObjectId)
         card.put("CardTitle", title)
         card.put("Description", description)
         card.saveInBackground()
+        CloudPushHelper.pushUpdateOnCard(taskObjectId)
         val intent = Intent()
         setResult(Activity.RESULT_OK, intent)
-        CloudPushHelper.pushUpdate(taskObjectId)
         finish()
     }
 
@@ -314,15 +331,22 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     }
 
     private fun initialSavedTeamCard() {
-        presenter.pullCard(cardOjectId)
+        presenter.pullCard(cardObjectId)
     }
 
     override fun setSavedCard(card: TeamCard?) {
         input_card_title.setText(card!!.title)
-        input_card_description.setText(card.description)
+        if (card.description != null) {
+            input_card_description.setText(card.description)
+            preDescription = card.description
+        }
         preTitle = card.title
         executorName = card.executor
         presenter.queryMember(executorName)
+        plus_card_progress_wheel.visibility = View.GONE
+        plus_card_content.visibility = View.VISIBLE
+        reminderLayout.visibility = View.INVISIBLE
+        executor_assign.visibility = View.VISIBLE
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -361,6 +385,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
             personal_plus_card_layout.yum("Mistake").show()
         }
         executorName = urlPairs[0].first
+        executorImageUrl = urlPairs[0].second
         Glide.with(this).load(urlPairs[0].second).into(member_portrait)
     }
 

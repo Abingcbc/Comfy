@@ -17,11 +17,14 @@ public class TeamCard extends BaseCardModel implements Parcelable {
         super(taskId);
     }
 
-    public TeamCard(String taskId, String executor, String title, String objectId) {
+    public TeamCard(String taskId, String executor,
+                    String title, String objectId,
+                    String description) {
         super(taskId);
         this.title = title;
         this.executor = executor;
         this.objectId = objectId;
+        this.description = description;
     }
 
     @Override
@@ -29,6 +32,7 @@ public class TeamCard extends BaseCardModel implements Parcelable {
         dest.writeString(title);
         dest.writeString(executor);
         dest.writeString(objectId);
+        dest.writeString(description);
     }
 
     @Override
@@ -43,6 +47,7 @@ public class TeamCard extends BaseCardModel implements Parcelable {
             teamCard.title = in.readString();
             teamCard.executor = in.readString();
             teamCard.objectId = in.readString();
+            teamCard.description = in.readString();
             return teamCard;
         }
 

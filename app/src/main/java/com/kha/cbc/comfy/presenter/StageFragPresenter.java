@@ -1,8 +1,15 @@
 package com.kha.cbc.comfy.presenter;
 
 import com.avos.avoscloud.*;
+import com.kha.cbc.comfy.model.TeamCard;
 import com.kha.cbc.comfy.presenter.Notification.CloudPushHelper;
 import com.kha.cbc.comfy.view.common.BaseRefreshView;
+import com.kha.cbc.comfy.view.team.StageFragView;
+import com.kha.cbc.comfy.view.team.StageFragment;
+import com.kha.cbc.comfy.view.team.StageRecyclerAdapter;
+import com.kha.cbc.comfy.view.team.StageRecyclerView;
+
+import java.util.List;
 
 /**
  * Created by ABINGCBC
@@ -39,7 +46,7 @@ public class StageFragPresenter extends BasePresenter {
                     e.printStackTrace();
                 }
                 avObject.deleteInBackground();
-                CloudPushHelper.pushOperation(taskObjectId, cardTitle, true);
+                CloudPushHelper.pushOperationOnCard(taskObjectId, cardTitle, true);
             }
         });
     }
@@ -53,7 +60,59 @@ public class StageFragPresenter extends BasePresenter {
                     e.printStackTrace();
                 }
                 avObject.deleteInBackground();
-                CloudPushHelper.pushOperation(taskObjectId, cardTitle, false);
+                CloudPushHelper.pushOperationOnCard(taskObjectId, cardTitle, false);
+            }
+        });
+    }
+
+    public void editStage(String stageObjectId, String stageTitle) {
+        AVObject stage = AVObject.createWithoutData("Stage", stageObjectId);
+        stage.put("Title", stageTitle);
+        stage.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                ((StageFragView) (StageFragment) view).reload();
+            }
+        });
+    }
+
+    public void deleteStage(String stageObjectId) {
+        AVObject stage = AVObject.createWithoutData("Stage", stageObjectId);
+        AVQuery<AVObject> queryCard = new AVQuery<>("TeamCard");
+        queryCard.whereEqualTo("Stage", stage);
+        queryCard.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                AVObject.deleteAllInBackground(list, new DeleteCallback() {
+                    @Override
+                    public void done(AVException e) {
+
+                    }
+                });
+                stage.deleteInBackground(new DeleteCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        ((StageFragment) view).reload();
+                    }
+                });
+            }
+        });
+    }
+
+    public void getCardImageUrl(StageRecyclerView view,
+                                StageRecyclerAdapter.ViewHolderStage holder,
+                                TeamCard card) {
+        AVObject object = AVObject.createWithoutData("TeamCard", card.getObjectId());
+        object.fetchInBackground(new GetCallback<AVObject>() {
+            @Override
+            public void done(AVObject avObject, AVException e) {
+                avObject.getAVObject("Executor").fetchInBackground(new GetCallback<AVObject>() {
+                    @Override
+                    public void done(AVObject avObject, AVException e) {
+                        String imageUrl = avObject.getString("avatarUrl");
+                        view.onLoadImageCompleted(imageUrl, holder);
+                    }
+                });
             }
         });
     }

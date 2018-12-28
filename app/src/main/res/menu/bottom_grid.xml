@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/edit_item"
+            android:icon="@drawable/lead_pencil"
+            android:title="Edit" />
+
+    <item
+            android:id="@+id/delete_item"
+            android:icon="@drawable/delete"
+            android:title="Delete" />
+
+    <item
+            android:id="@+id/complete_item"
+            android:icon="@drawable/check_outline"
+            android:title="Complete"/>
+
+
+</menu>

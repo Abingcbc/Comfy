@@ -13,21 +13,29 @@
             android:layout_margin="20dp"
             android:background="@drawable/fake_cardview">
 
-    <TextView
-            android:id="@+id/stage_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="32dp"
-            android:text="task"/>
+        <TextView
+                android:id="@+id/stage_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="32dp"
+                android:text="task · number"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/stage_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:elevation="5dp"
-            android:layout_below="@id/stage_name">
-    </androidx.recyclerview.widget.RecyclerView>
+        <ImageButton
+                android:id="@+id/edit_stage"
+                android:src="@drawable/dots_horizontal"
+                android:background="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/stage_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:elevation="5dp"
+                android:layout_below="@id/stage_name">
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
                 android:id="@+id/team_plus_card"
@@ -36,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_alignParentBottom="true"/>
-        </RelativeLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

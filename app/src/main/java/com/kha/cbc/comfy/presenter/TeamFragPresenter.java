@@ -81,4 +81,52 @@ public class TeamFragPresenter extends BasePresenter {
         });
     }
 
+
+    public void deleteTask(String taskObjectId) {
+        view.refresh(true);
+        AVObject task = AVObject.createWithoutData("TeamTask", taskObjectId);
+        AVQuery<AVObject> queryStage = new AVQuery<>("Stage");
+        queryStage.whereEqualTo("TeamTask", task);
+        queryStage.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                for (AVObject stage: list) {
+                    AVQuery<AVObject> queryCard = new AVQuery<>("TeamCard");
+                    queryCard.whereEqualTo("Stage", stage);
+                    queryCard.findInBackground(new FindCallback<AVObject>() {
+                        @Override
+                        public void done(List<AVObject> list, AVException e) {
+                            AVObject.deleteAllInBackground(list, new DeleteCallback() {
+                                @Override
+                                public void done(AVException e) {
+
+                                }
+                            });
+                            stage.deleteInBackground();
+                        }
+                    });
+                }
+                task.deleteInBackground(new DeleteCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        ((TeamFragment) view).reload();
+                    }
+                });
+            }
+        });
+        AVQuery<AVObject> queryMap = new AVQuery<>("UserTaskMap");
+        queryMap.whereEqualTo("TeamTask", task);
+        queryMap.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                AVObject.deleteAllInBackground(list, new DeleteCallback() {
+                    @Override
+                    public void done(AVException e) {
+
+                    }
+                });
+            }
+        });
+    }
+
 }

@@ -12,7 +12,7 @@ import com.kha.cbc.comfy.view.main.MainActivity;
 
 public class CloudIntentService extends IntentService {
 
-    String cardTitle;
+    String title;
     String taskTitle;
     String action;
 
@@ -24,10 +24,18 @@ public class CloudIntentService extends IntentService {
 
     static final String ASSIGNMESSAGE = "com.kha.cbc.comfy.NEWASSIGNMESSAGE";
     static final String ADDMESSAGE = "com.kha.cbc.comfy.NEWADDMESSAGE";
+
     static final String DELETECARDMESSAGE = "com.kha.cbc.comfy.DELETECARDMESSAGE";
+    static final String UPDATECARDMESSAGE = "com.kha.cbc.comfy.UPDATECARDMESSAGE";
+    static final String COMPLETECARDMESSAGE = "com.kha.cbc.comfy.COMPLETECARDMESSAGE";
+
+    static final String DELETESTAGEMESSAGE = "com.kha.cbc.comfy.DELETESTAGEMESSAGE";
+    static final String UPDATESTAGEMESSAGE = "com.kha.cbc.comfy.UPDATESTAGEMESSAGE";
+    static final String COMPLETESTAGEMESSAGE = "com.kha.cbc.comfy.COMPLETESTAGEMESSAGE";
+
     static final String DELETETASKMESSAGE = "com.kha.cbc.comfy.DELETETASKMESSAGE";
-    static final String COMPELTECARDMESSAGE = "com.kha.cbc.comfy.COMPELTECARDMESSAGE";
-    static final String UPDATEMESSAFE = "com.kha.cbc.comfy.UPDATEMESSAGE";
+    static final String UPDATETASKMESSAGE = "com.kha.cbc.comfy.UPDATETASKMESSAGE";
+    static final String COMPLETETASKMESSAGE = "com.kha.cbc.comfy.COMPLETETASKMESSAGE";
 
     public CloudIntentService() {
         super("CloudIntentService");
@@ -36,8 +44,6 @@ public class CloudIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            cardTitle = intent.getStringExtra("cardTitle");
-            taskTitle = intent.getStringExtra("taskTitle");
             action = intent.getStringExtra("action");
 
             Intent intentMain = new Intent(this, MainActivity.class);
@@ -51,8 +57,10 @@ public class CloudIntentService extends IntentService {
                 Notification notification = new Notification();
                 switch (action) {
                     case ASSIGNMESSAGE: {
+                        title = intent.getStringExtra("title");
+                        taskTitle = intent.getStringExtra("taskTitle");
                         notification = builder
-                            .setContentText("您在项目 " + taskTitle + " 中" + ASSIGN + cardTitle + COMMON)
+                            .setContentText("您在项目 " + taskTitle + " 中" + ASSIGN + title + COMMON)
                             .setSmallIcon(R.drawable.default_avatar)
                             .setChannelId(CHANNEL_ID)
                             .setAutoCancel(true)
@@ -60,12 +68,13 @@ public class CloudIntentService extends IntentService {
                             .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
                             .setContentIntent(pi)
                             .build();
-                        Log.d("assign notification", cardTitle);
                         break;
                     }
                     case ADDMESSAGE: {
+                        title = intent.getStringExtra("title");
+                        taskTitle = intent.getStringExtra("taskTitle");
                         notification = builder
-                            .setContentText(ADDFRONT + cardTitle + ADD + taskTitle + COMMON)
+                            .setContentText(ADDFRONT + title + ADD + taskTitle + COMMON)
                             .setSmallIcon(R.drawable.default_avatar)
                             .setChannelId(CHANNEL_ID)
                             .setAutoCancel(true)
@@ -73,12 +82,13 @@ public class CloudIntentService extends IntentService {
                             .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
                             .setContentIntent(pi)
                             .build();
-                        Log.d("add notification", cardTitle);
                         break;
                     }
                     case DELETECARDMESSAGE: {
+                        title = intent.getStringExtra("title");
+                        taskTitle = intent.getStringExtra("taskTitle");
                         notification = builder
-                                .setContentText("您项目 " + taskTitle + " 中的任务 " + cardTitle + "被取消了" + COMMON)
+                                .setContentText("您项目 " + taskTitle + " 中的任务 " + title + "被取消了" + COMMON)
                                 .setSmallIcon(R.drawable.default_avatar)
                                 .setChannelId(CHANNEL_ID)
                                 .setAutoCancel(true)
@@ -86,12 +96,14 @@ public class CloudIntentService extends IntentService {
                                 .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
                                 .setContentIntent(pi)
                                 .build();
-                        Log.d("delete notification", cardTitle);
                         break;
                     }
-                    case COMPELTECARDMESSAGE: {
+                    case COMPLETECARDMESSAGE: {
+                        title = intent.getStringExtra("title");
+                        taskTitle = intent.getStringExtra("taskTitle");
+                        Log.d(COMPLETECARDMESSAGE, title);
                         notification = builder
-                                .setContentText("您项目 " + taskTitle + " 中的任务 " + cardTitle + "完成了" + COMMON)
+                                .setContentText("您项目 " + taskTitle + " 中的任务 " + title + "完成了" + COMMON)
                                 .setSmallIcon(R.drawable.default_avatar)
                                 .setChannelId(CHANNEL_ID)
                                 .setAutoCancel(true)
@@ -99,10 +111,10 @@ public class CloudIntentService extends IntentService {
                                 .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
                                 .setContentIntent(pi)
                                 .build();
-                        Log.d("complete notification", cardTitle);
                         break;
                     }
-                    case UPDATEMESSAFE: {
+                    case UPDATECARDMESSAGE: {
+                        taskTitle = intent.getStringExtra("taskTitle");
                         notification = builder
                                 .setContentText("您项目 " + taskTitle + " 中有任务更新了" + COMMON)
                                 .setSmallIcon(R.drawable.default_avatar)
@@ -112,14 +124,98 @@ public class CloudIntentService extends IntentService {
                                 .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
                                 .setContentIntent(pi)
                                 .build();
-                        Log.d("update notification", cardTitle);
+                        break;
+                    }
+                    case DELETESTAGEMESSAGE: {
+                        title = intent.getStringExtra("title");
+                        taskTitle = intent.getStringExtra("taskTitle");
+                        notification = builder
+                                .setContentText("您项目 " + taskTitle + " 中的任务列表 " +
+                                        title + " 被删除了"+ COMMON)
+                                .setSmallIcon(R.drawable.default_avatar)
+                                .setChannelId(CHANNEL_ID)
+                                .setAutoCancel(true)
+                                .setWhen(System.currentTimeMillis())
+                                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
+                                .setContentIntent(pi)
+                                .build();
+                        break;
+                    }
+                    case COMPLETESTAGEMESSAGE: {
+                        title = intent.getStringExtra("title");
+                        taskTitle = intent.getStringExtra("taskTitle");
+                        notification = builder
+                                .setContentText("您项目 " + taskTitle + " 中的任务列表 " +
+                                        title + " 完成了"+ COMMON)
+                                .setSmallIcon(R.drawable.default_avatar)
+                                .setChannelId(CHANNEL_ID)
+                                .setAutoCancel(true)
+                                .setWhen(System.currentTimeMillis())
+                                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
+                                .setContentIntent(pi)
+                                .build();
+                        break;
+                    }
+                    case UPDATESTAGEMESSAGE: {
+                        taskTitle = intent.getStringExtra("taskTitle");
+                        notification = builder
+                                .setContentText("您项目 " + taskTitle + " 中的有任务列表更新了"+ COMMON)
+                                .setSmallIcon(R.drawable.default_avatar)
+                                .setChannelId(CHANNEL_ID)
+                                .setAutoCancel(true)
+                                .setWhen(System.currentTimeMillis())
+                                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
+                                .setContentIntent(pi)
+                                .build();
+                        break;
+                    }
+                    case DELETETASKMESSAGE: {
+                        taskTitle = intent.getStringExtra("taskTitle");
+                        notification = builder
+                                .setContentText("您项目 " + taskTitle + " 删除了"+ COMMON)
+                                .setSmallIcon(R.drawable.default_avatar)
+                                .setChannelId(CHANNEL_ID)
+                                .setAutoCancel(true)
+                                .setWhen(System.currentTimeMillis())
+                                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
+                                .setContentIntent(pi)
+                                .build();
+                        break;
+                    }
+                    case COMPLETETASKMESSAGE: {
+                        taskTitle = intent.getStringExtra("taskTitle");
+                        notification = builder
+                                .setContentText("您项目 " + taskTitle + " 完成了"+ COMMON)
+                                .setSmallIcon(R.drawable.default_avatar)
+                                .setChannelId(CHANNEL_ID)
+                                .setAutoCancel(true)
+                                .setWhen(System.currentTimeMillis())
+                                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
+                                .setContentIntent(pi)
+                                .build();
+                        break;
+                    }
+                    case UPDATETASKMESSAGE: {
+                        taskTitle = intent.getStringExtra("taskTitle");
+                        notification = builder
+                                .setContentText("您项目 " + taskTitle + " 更新了"+ COMMON)
+                                .setSmallIcon(R.drawable.default_avatar)
+                                .setChannelId(CHANNEL_ID)
+                                .setAutoCancel(true)
+                                .setWhen(System.currentTimeMillis())
+                                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.default_avatar))
+                                .setContentIntent(pi)
+                                .build();
                         break;
                     }
                 }
                 NotificationManager mNotificationManager =
                         (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.createNotificationChannel(mChannel);
-                mNotificationManager.notify(cardTitle.hashCode(), notification);
+                if (title != null)
+                    mNotificationManager.notify(title.hashCode(), notification);
+                else
+                    mNotificationManager.notify(taskTitle.hashCode(), notification);
             }
         }
     }

@@ -1,8 +1,10 @@
 package com.kha.cbc.comfy.view.team
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.Menu
@@ -14,8 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
+import com.kennyc.bottomsheet.BottomSheet
+import com.kennyc.bottomsheet.BottomSheetListener
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.model.Stage
+import com.kha.cbc.comfy.presenter.Notification.CloudPushHelper
 import com.kha.cbc.comfy.presenter.TeamDetailPresenter
 import com.kha.cbc.comfy.view.common.BaseRefreshView
 import com.kha.cbc.comfy.view.team.grouptrack.GroupTrackActivity
@@ -24,9 +31,11 @@ import com.tmall.ultraviewpager.UltraViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_team_detail.*
 import java.util.*
 
-class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView {
+class TeamDetailActivity : AppCompatActivity(),
+    TeamDetailView,
+    BaseRefreshView,
+    BottomSheetListener {
 
-    lateinit var bar: ProgressBar
     lateinit var viewPager: UltraViewPager
     lateinit var presenter: TeamDetailPresenter
     lateinit var fragmentList: MutableList<StageFragment>
@@ -38,7 +47,6 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team_detail)
 
-        bar = loading_progressBar
         viewPager = stage_viewpager
         viewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL)
 
@@ -58,6 +66,7 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.location_sharing, menu)
+        menuInflater.inflate(R.menu.setting, menu)
         return true
     }
 
@@ -67,6 +76,13 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
                 val intent = Intent(this, GroupTrackActivity::class.java)
                 intent.putExtra("taskObjectId", taskObjectId)
                 startActivity(intent)
+            }
+            R.id.setting -> {
+                BottomSheet.Builder(this)
+                    .setSheet(R.menu.bottom_grid)
+                    .grid()
+                    .setListener(this)
+                    .show()
             }
         }
         return true
@@ -79,7 +95,7 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
     }
 
     override fun refresh(b: Boolean) {
-        bar.visibility = if (b) View.VISIBLE else View.GONE
+        team_detail_progress_wheel.visibility = if (b) View.VISIBLE else View.GONE
     }
 
     override fun onComplete() {
@@ -107,5 +123,58 @@ class TeamDetailActivity : AppCompatActivity(), TeamDetailView, BaseRefreshView 
         viewPager.indicator.setRadius(20)
             .setIndicatorPadding(40)
         viewPager.indicator.build()
+    }
+
+    override fun onSheetItemSelected(p0: BottomSheet, item: MenuItem?, p2: Any?) {
+        when (item!!.itemId) {
+            R.id.edit_item -> {
+                MaterialDialog(this)
+                    .input { materialDialog, charSequence ->
+                        presenter.editTask(taskObjectId, charSequence.toString())
+                        CloudPushHelper.pushUpdateOnTask(taskObjectId)
+                        val taskTitleView = task_detail_name
+                        taskTitleView.text = charSequence.toString()
+                    }
+                    .positiveButton()
+                    .negativeButton()
+                    .show()
+            }
+
+            R.id.delete_item -> {
+                MaterialDialog(this)
+                    .title(text = "确认删除该项目")
+                    .message(text = "删除该项目将删除其中所有任务")
+                    .positiveButton {
+                        CloudPushHelper.pushOperationOnTask(taskObjectId, false)
+                        val intent = Intent()
+                        intent.putExtra("taskObjectId", taskObjectId)
+                        setResult(Activity.RESULT_CANCELED, intent)
+                        finish()
+                    }
+                    .negativeButton()
+                    .show()
+            }
+
+            R.id.complete_item -> {
+                MaterialDialog(this)
+                    .title(text = "确认完成该项目")
+                    .message(text = "完成该项目将完成其中所有任务")
+                    .positiveButton {
+                        CloudPushHelper.pushOperationOnTask(taskObjectId, true)
+                        val intent = Intent()
+                        intent.putExtra("taskObjectId", taskObjectId)
+                        setResult(Activity.RESULT_CANCELED, intent)
+                        finish()
+                    }
+                    .negativeButton()
+                    .show()
+            }
+        }
+    }
+
+    override fun onSheetDismissed(p0: BottomSheet, p1: Any?, p2: Int) {
+    }
+
+    override fun onSheetShown(p0: BottomSheet, p1: Any?) {
     }
 }

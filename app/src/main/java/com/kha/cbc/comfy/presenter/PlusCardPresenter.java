@@ -93,7 +93,8 @@ public class PlusCardPresenter extends AvatarPresenter {
                 TeamCard card = new TeamCard(avObject.getAVObject("Stage").getString("TaskId"),
                         avObject.getAVObject("Executor").getString("username"),
                         avObject.getString("CardTitle"),
-                        avObject.getObjectId());
+                        avObject.getObjectId(),
+                        avObject.getString("Description"));
                 plusCardView.setSavedCard(card);
             }
         });

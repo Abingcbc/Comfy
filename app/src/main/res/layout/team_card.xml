@@ -40,20 +40,66 @@ android:id="@+id/team_card_swipe_layout">
 
 
     <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/fake_cardview">
+            android:id="@+id/team_card"
+            android:layout_marginBottom="1dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_height="match_parent"
+            android:background="@drawable/fake_cardview"
+            android:elevation="5dp"
+            android:padding="5dp">
 
-        <TextView
-                android:id="@+id/team_card_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <RelativeLayout
+                android:layout_marginLeft="16dp"
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="?android:attr/listPreferredItemHeight">
 
-        <TextView
-                android:id="@+id/team_card_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <TextView
+                    android:layout_alignParentTop="true"
+                    tools:ignore="MissingPrefix"
+                    android:id="@+id/team_card_title"
+                    android:lines="1"
+                    android:gravity="start|bottom"
+                    android:textColor="@color/black"
+                    android:ellipsize="end"
+                    android:textSize="24dp"
+                    android:text="Clean your room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            <TextView
+                    android:layout_below="@id/team_card_title"
+                    android:id="@+id/team_card_description"
+                    android:text="27 Sept 2015, 22:30"
+                    android:textColor="?attr/colorAccent"
+                    android:textSize="18sp"
+                    android:gravity="start|center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/team_card_executor"
+                android:src="@drawable/account"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:paddingRight="20dp"/>
+
+
+        <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right|center"
+                android:scaleType="fitXY"
+                android:paddingLeft="10dp"
+                android:background="@drawable/share_variant"
+                android:clickable="true"
+                android:focusable="true" />
+
 
     </LinearLayout>
 

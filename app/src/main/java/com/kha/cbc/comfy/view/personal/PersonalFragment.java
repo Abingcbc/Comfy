@@ -216,6 +216,15 @@ public class PersonalFragment extends Fragment
         presenter.loadAllTasksFromDB(taskDao);
     }
 
+    public void onUpdateTask (PersonalTask task, String taskId) {
+        GDPersonalTaskDao taskDao = ((ComfyApp) getActivity().getApplication())
+            .getDaoSession().getGDPersonalTaskDao();
+        GDPersonalTask gdPersonalTask = taskDao.queryBuilder().
+                where(GDPersonalTaskDao.Properties.Id.eq(taskId)).unique();
+        gdPersonalTask.setTitle(task.getTitle());
+        presenter.loadAllTasksFromDB(taskDao);
+    }
+
     public void onCompleteCard (PersonalCard card) {
         onDeleteItemInDB(card);
         Snackbar.make(view, "恭喜你 完成任务！", Snackbar.LENGTH_SHORT).show();
