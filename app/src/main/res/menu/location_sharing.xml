@@ -6,5 +6,9 @@
             android:icon="@drawable/map_marker_multiple"
             android:title="plus_success"
             app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/group_chat"
+        android:icon="@drawable/conversation"
+        app:showAsAction="ifRoom"/>
 
 </menu>

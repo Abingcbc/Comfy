@@ -32,9 +32,10 @@ import java.util.*
  */
 class StageFragment : Fragment(), BaseRefreshView, BottomSheetListener, StageFragView{
 
-    override fun onComplete() {
 
-    }
+    override fun onChatReady(conversationId: String) {}
+
+    override fun onComplete() {}
 
     override fun refresh(b: Boolean) {
         activity!!.recreate()

@@ -40,6 +40,11 @@ public class TeamFragment extends Fragment
     TeamFragPresenter presenter = new TeamFragPresenter(this);
     public static int numOfCreate;
 
+    @Override
+    public void onChatReady(String conversationId) {
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

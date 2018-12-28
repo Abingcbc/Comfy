@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -20,9 +21,19 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.kennyc.bottomsheet.BottomSheet
 import com.kennyc.bottomsheet.BottomSheetListener
+import cn.leancloud.chatkit.LCChatKit
+import cn.leancloud.chatkit.activity.LCIMConversationActivity
+import cn.leancloud.chatkit.utils.LCIMConstants
+import com.avos.avoscloud.im.v2.AVIMClient
+import com.avos.avoscloud.im.v2.AVIMConversation
+import com.avos.avoscloud.im.v2.AVIMException
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback
 import com.kha.cbc.comfy.R
+import com.kha.cbc.comfy.data.network.providers.CustomUserProvider
 import com.kha.cbc.comfy.model.Stage
 import com.kha.cbc.comfy.presenter.Notification.CloudPushHelper
+import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.TeamDetailPresenter
 import com.kha.cbc.comfy.view.common.BaseRefreshView
 import com.kha.cbc.comfy.view.team.grouptrack.GroupTrackActivity
@@ -43,6 +54,14 @@ class TeamDetailActivity : AppCompatActivity(),
     lateinit var taskTitle: String
     lateinit var taskObjectId: String
 
+
+    override fun onChatReady(conversationId: String) {
+        //弹出选择窗口
+        val intent = Intent(this@TeamDetailActivity, LCIMConversationActivity::class.java)
+        intent.putExtra(LCIMConstants.CONVERSATION_ID, conversationId)
+        startActivity(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team_detail)
@@ -60,11 +79,11 @@ class TeamDetailActivity : AppCompatActivity(),
         taskTitleView.text = taskTitle
 
         presenter = TeamDetailPresenter(this)
-
         reload()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        //TODO: Add menu
         menuInflater.inflate(R.menu.location_sharing, menu)
         menuInflater.inflate(R.menu.setting, menu)
         return true
@@ -83,6 +102,8 @@ class TeamDetailActivity : AppCompatActivity(),
                     .grid()
                     .setListener(this)
                     .show()
+            R.id.group_chat -> {
+                presenter.initiateGroupChat(taskObjectId, CustomUserProvider.getInstance())
             }
         }
         return true
