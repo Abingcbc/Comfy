@@ -2,30 +2,19 @@ package com.kha.cbc.comfy.view.main;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import com.avos.avoscloud.AVInstallation;
-import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.PushService;
 import com.bilibili.magicasakura.utils.ThemeUtils;
 import com.bumptech.glide.Glide;
@@ -34,7 +23,6 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.kha.cbc.comfy.BuildConfig;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.entity.GDUser;
@@ -45,17 +33,15 @@ import com.kha.cbc.comfy.model.TabEntity;
 import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.presenter.AvatarPresenter;
 import com.kha.cbc.comfy.presenter.MainPresenter;
-import com.kha.cbc.comfy.presenter.Notification.AlarmIntentService;
-import com.kha.cbc.comfy.presenter.PlusTaskPresenter;
 import com.kha.cbc.comfy.presenter.Presenter;
 import com.kha.cbc.comfy.view.common.ActivityManager;
 import com.kha.cbc.comfy.view.common.AvatarView;
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter;
 import com.kha.cbc.comfy.view.common.ThemeHelper;
 import com.kha.cbc.comfy.view.efficient.EfficientFragment;
+import com.kha.cbc.comfy.view.guide.GuideActivity;
 import com.kha.cbc.comfy.view.login.LoginActivity;
 import com.kha.cbc.comfy.view.personal.PersonalFragment;
-import com.kha.cbc.comfy.view.plus.PlusTaskActivity;
 import com.kha.cbc.comfy.view.settings.SettingsActivity;
 import com.kha.cbc.comfy.view.team.TeamFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -87,6 +73,8 @@ public class MainActivity extends BaseActivityWithPresenter
 
     MainPresenter presenter;
     AvatarPresenter avatartPresenter;
+
+    Boolean isFirstStart = false;
 
     @Override
     protected void onResume() {
@@ -174,8 +162,16 @@ public class MainActivity extends BaseActivityWithPresenter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        PushService.subscribe(this, "public", PlusTaskActivity.class);
         PushService.setDefaultPushCallback(this, MainActivity.class);
+
+        SharedPreferences preferences = getSharedPreferences("first", MODE_PRIVATE);
+        isFirstStart = preferences.getBoolean("isFirstStart", true);
+        if (isFirstStart) {
+            Intent intentGuide = new Intent(this, GuideActivity.class);
+            startActivity(intentGuide);
+            finish();
+        }
+
 
         Intent intentFrom = getIntent();
 
@@ -185,43 +181,44 @@ public class MainActivity extends BaseActivityWithPresenter
 
         GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
         List<GDUser> userList = userDao.loadAll();
-        if (userList.size() != 1 || userList.get(0) == null ||
-                userList.get(0).getUsername() == null || userList.get(0).getSessionToken() == null
-                || userList.get(0).getObjectId() == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            this.finish();
-        } else {
-            User.INSTANCE.fromGDUser(userList.get(0));
-            Toolbar toolbar = findViewById(R.id.main_toolbar);
-            setSupportActionBar(toolbar);
+        if (!isFirstStart) {
+            if (userList.size() != 1 || userList.get(0) == null ||
+                    userList.get(0).getUsername() == null || userList.get(0).getSessionToken() == null
+                    || userList.get(0).getObjectId() == null) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                this.finish();
+            } else {
+                User.INSTANCE.fromGDUser(userList.get(0));
+                Toolbar toolbar = findViewById(R.id.main_toolbar);
+                setSupportActionBar(toolbar);
 
-            fab = findViewById(R.id.main_plus_fab);
-            fab.setOnClickListener(view -> {
-                if (currentPosition == 0) {
-                    personalFragment.plusTask();
-                }
-                else {
-                    teamFragment.plusTask();
-                }
-            });
+                fab = findViewById(R.id.main_plus_fab);
+                fab.setOnClickListener(view -> {
+                    if (currentPosition == 0) {
+                        personalFragment.plusTask();
+                    } else {
+                        teamFragment.plusTask();
+                    }
+                });
 
-            DrawerLayout drawer = findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
-                @Override
-                public void onDrawerOpened(View drawerView) {
-                    avatartPresenter.loadAvatar();
-                }
-            };
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        avatartPresenter.loadAvatar();
+                    }
+                };
+                drawer.addDrawerListener(toggle);
+                toggle.syncState();
 
-            initNavigationView();
+                initNavigationView();
 
-            init();
+                init();
 
-            ActivityManager.INSTANCE.plusAssign(this);
+                ActivityManager.INSTANCE.plusAssign(this);
+            }
         }
 
 //        AMAP Test

@@ -137,8 +137,7 @@ class TeamDetailActivity : AppCompatActivity(),
             )
         fragmentList.add(stageFragment)
         var pagerAdapter = TeamDetailFragAdapter(
-            supportFragmentManager, fragmentList
-        )
+            supportFragmentManager, fragmentList)
         var ultraViewPagerAdapter = UltraViewPagerAdapter(pagerAdapter)
         viewPager.adapter = ultraViewPagerAdapter
         viewPager.initIndicator()
