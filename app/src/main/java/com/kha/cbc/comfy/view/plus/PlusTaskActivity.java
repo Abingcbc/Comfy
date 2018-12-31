@@ -44,7 +44,7 @@ public class PlusTaskActivity extends AppCompatActivity implements PlusTaskView 
                     GDPersonalTaskDao taskDao = ((ComfyApp) getApplication())
                             .getDaoSession().getGDPersonalTaskDao();
                     GDPersonalTask personalTask = new GDPersonalTask(new PersonalTask(taskTitle));
-                    taskDao.insert(personalTask);
+                    taskDao.insertOrReplace(personalTask);
                 } else {
                     presenter.postTask(new TeamTask(taskTitle, User.INSTANCE.getUsername(),null), this);
                 }

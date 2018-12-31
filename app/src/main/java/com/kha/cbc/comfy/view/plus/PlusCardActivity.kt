@@ -1,6 +1,7 @@
 package com.kha.cbc.comfy.view.plus
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
@@ -83,7 +84,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         type = bundle!!.getInt("type")
 
         /**
-         *                  Bundle
+         *                  Bundle 需要传递的内容
          *                  type
          * 0为新增个人任务    taskId
          * 1为新增团队任务    stageObjectId taskObjectId
@@ -91,8 +92,11 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
          * 3为修改团队任务    cardObjectId
          */
         when (type) {
-            0 ->
+            0 -> {
                 taskId = bundle.getString("taskId")
+                executor_assign.visibility = View.INVISIBLE
+                enterDateLinearLayout.visibility = View.INVISIBLE
+            }
             1 -> {
                 stageObjectId = bundle.getString("stageObjectId")
                 taskObjectId = bundle.getString("taskObjectId")
@@ -114,7 +118,6 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
             2 -> {
                 taskId = bundle.getString("taskId")
                 cardId = bundle.getString("cardId")
-                input_reminder_date.visibility = View.INVISIBLE
                 initialSavedPersonalCard()
             }
             3 -> {
@@ -321,12 +324,15 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
         input_card_title.setText(personalCard.title)
         input_card_description.setText(personalCard.description)
         preTitle = personalCard.title
+        executor_assign.visibility = View.INVISIBLE
         if (personalCard.isRemind) {
             reminderSwitch.isChecked = true
             enterDateLinearLayout.visibility = View.VISIBLE
             stringToDate(personalCard.remindDate)
             setDateText()
             setTimeText()
+        } else {
+            enterDateLinearLayout.visibility = View.INVISIBLE
         }
     }
 

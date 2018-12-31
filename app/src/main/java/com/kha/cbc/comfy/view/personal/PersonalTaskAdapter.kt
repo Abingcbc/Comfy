@@ -122,6 +122,17 @@ class PersonalTaskAdapter(
                     .negativeButton(text = "取消")
                     .show()
             }
+
+            R.id.complete_item -> {
+                MaterialDialog(context).title(text = "确认完成此任务列表？")
+                    .message(text = "完成任务列表将会删除其中所有的任务")
+                    .positiveButton {
+                        fragment.deleteTaskFromDB(personalTaskList[selectedPosition])
+                        cardStackView.removeViewAt(selectedPosition)
+                    }.positiveButton(text = "确认")
+                    .negativeButton(text = "取消")
+                    .show()
+            }
         }
     }
 

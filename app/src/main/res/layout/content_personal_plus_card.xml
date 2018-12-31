@@ -110,8 +110,7 @@
                 android:layout_weight="1"
                 android:animateLayoutChanges="true"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="invisible">
+                android:orientation="vertical">
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -174,8 +173,7 @@
             android:id="@+id/executor_assign"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="invisible">
+            android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/member_portrait"

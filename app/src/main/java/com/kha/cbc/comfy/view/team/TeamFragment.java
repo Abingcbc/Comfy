@@ -97,7 +97,7 @@ public class TeamFragment extends Fragment
                 if (resultCode == RESULT_OK)
                     reload();
             case 2:
-                if (resultCode == RESULT_CANCELED) {
+                if (resultCode == RESULT_CANCELED && data != null) {
                     presenter.deleteTask(data.getStringExtra("taskObjectId"));
                 }
         }
