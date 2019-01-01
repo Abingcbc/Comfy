@@ -52,35 +52,7 @@ public class PlusCardPresenter extends AvatarPresenter {
         card.put("CardTitle", title);
         card.put("Description", description);
         card.saveInBackground();
-        AVQuery<AVObject> queryMap = new AVQuery<>("UserTaskMap");
-        AVObject teamTask = AVObject.createWithoutData("TeamTask", taskObjectId);
-        queryMap.whereEqualTo("TeamTask", teamTask);
-        queryMap.include("Member");
-        queryMap.findInBackground(new FindCallback<AVObject>() {
-            @Override
-            public void done(List<AVObject> list, AVException e) {
-                boolean notFound = true;
-                for (AVObject object : list) {
-                    if (object.getAVObject("Member").equals(user)) {
-                        notFound = false;
-                        break;
-                    }
-                }
-                if (notFound) {
-                    AVObject map = new AVObject("UserTaskMap");
-                    map.put("TeamTask", teamTask);
-                    map.put("Member", user);
-                    map.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(AVException e) {
-                            CloudPushHelper.pushInvitation(taskObjectId, executorObjectId, title);
-                        }
-                    });
-                } else {
-                    CloudPushHelper.pushInvitation(taskObjectId, executorObjectId, title);
-                }
-            }
-        });
+        pushMap(taskObjectId, executorObjectId, title);
     }
 
     public void pullCard(String cardObjectId) {
@@ -125,5 +97,39 @@ public class PlusCardPresenter extends AvatarPresenter {
             }
         });
         super.loadAvatar(nameList);
+    }
+
+    public void pushMap(String taskObjectId, String executorObjectId, String title) {
+        AVObject task = AVObject.createWithoutData("TeamTask", taskObjectId);
+        AVObject user = AVObject.createWithoutData("ComfyUser", executorObjectId);
+        AVQuery<AVObject> queryMap = new AVQuery<>("UserTaskMap");
+        AVObject teamTask = AVObject.createWithoutData("TeamTask", taskObjectId);
+        queryMap.whereEqualTo("TeamTask", teamTask);
+        queryMap.include("Member");
+        queryMap.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                boolean notFound = true;
+                for (AVObject object : list) {
+                    if (object.getAVObject("Member").equals(user)) {
+                        notFound = false;
+                        break;
+                    }
+                }
+                if (notFound) {
+                    AVObject map = new AVObject("UserTaskMap");
+                    map.put("TeamTask", teamTask);
+                    map.put("Member", user);
+                    map.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            CloudPushHelper.pushInvitation(taskObjectId, executorObjectId, title);
+                        }
+                    });
+                } else {
+                    CloudPushHelper.pushInvitation(taskObjectId, executorObjectId, title);
+                }
+            }
+        });
     }
 }

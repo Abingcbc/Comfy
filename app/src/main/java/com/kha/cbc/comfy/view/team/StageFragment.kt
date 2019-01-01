@@ -100,6 +100,11 @@ class StageFragment : Fragment(), BaseRefreshView, BottomSheetListener, StageFra
         return view
     }
 
+    fun cardListSizeChange(size: Int) {
+        var stageNameView = view!!.findViewById(R.id.stage_name) as TextView
+        stageNameView.text = stageTitle + " · " + size.toString()
+    }
+
 
     override fun onSheetItemSelected(p0: BottomSheet, item: MenuItem?, p2: Any?) {
         when (item!!.itemId) {

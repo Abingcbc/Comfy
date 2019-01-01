@@ -64,7 +64,7 @@ implements StageRecyclerView{
             teamCardList.remove(position);
             notifyItemRemoved(position);
             notifyItemChanged(0, getItemCount());
-            fragment.reload();
+            fragment.cardListSizeChange(getItemCount());
         });
         holder.deleteView.setOnClickListener(v -> {
             fragment.getPresenter().deleteCard(teamCardList.get(position).getObjectId(),
@@ -73,14 +73,15 @@ implements StageRecyclerView{
             teamCardList.remove(position);
             notifyItemRemoved(position);
             notifyItemChanged(0, getItemCount());
-            fragment.reload();
+            fragment.cardListSizeChange(getItemCount());
         });
         fragment.getPresenter().getCardImageUrl(this, holder, teamCardList.get(position));
     }
 
     @Override
     public void onLoadImageCompleted(String imageUrl, ViewHolderStage holder) {
-        Glide.with(holder.itemView).load(imageUrl).into(holder.executorView);
+        if (fragment != null && fragment.getActivity() != null)
+            Glide.with(fragment).load(imageUrl).into(holder.executorView);
     }
 
     @Override
