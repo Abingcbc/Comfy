@@ -2,26 +2,12 @@ package com.kha.cbc.comfy.view.guide;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.widget.Toolbar;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.view.main.MainActivity;
 

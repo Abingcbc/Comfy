@@ -1,7 +1,6 @@
 package com.kha.cbc.comfy.view.team;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kha.cbc.comfy.R;
-import com.kha.cbc.comfy.model.Stage;
 import com.kha.cbc.comfy.model.TeamCard;
 import com.kha.cbc.comfy.view.plus.PlusCardActivity;
 import de.hdodenhof.circleimageview.CircleImageView;

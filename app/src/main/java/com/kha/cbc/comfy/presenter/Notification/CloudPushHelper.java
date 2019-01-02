@@ -1,7 +1,5 @@
 package com.kha.cbc.comfy.presenter.Notification;
 
-import android.util.Log;
-import android.widget.Toast;
 import com.avos.avoscloud.*;
 import com.kha.cbc.comfy.model.User;
 import org.json.JSONException;

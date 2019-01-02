@@ -1,8 +1,8 @@
 package com.kha.cbc.comfy.data.network.providers
 
 import cn.leancloud.chatkit.LCChatKitUser
-import cn.leancloud.chatkit.LCChatProfilesCallBack
 import cn.leancloud.chatkit.LCChatProfileProvider
+import cn.leancloud.chatkit.LCChatProfilesCallBack
 
 
 class CustomUserProvider private constructor() : LCChatProfileProvider {

@@ -1,16 +1,11 @@
 package com.kha.cbc.comfy.presenter.Notification;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.entity.GDPersonalCard;
 
-import java.util.Calendar;
 import java.util.Date;
 
 /**

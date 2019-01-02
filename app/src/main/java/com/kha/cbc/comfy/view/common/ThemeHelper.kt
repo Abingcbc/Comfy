@@ -1,16 +1,10 @@
 package com.kha.cbc.comfy.view.common
 
-import android.R.id.edit
 import android.app.Activity
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.view.View
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import com.bilibili.magicasakura.utils.ThemeUtils
-import com.google.android.material.navigation.NavigationView
 import com.kha.cbc.comfy.R
 
 

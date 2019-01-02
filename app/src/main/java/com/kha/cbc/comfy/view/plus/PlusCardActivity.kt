@@ -1,9 +1,7 @@
 package com.kha.cbc.comfy.view.plus
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -15,25 +13,23 @@ import com.avos.avoscloud.AVObject
 import com.bumptech.glide.Glide
 import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
-import com.kha.cbc.comfy.view.common.*
 import com.kha.cbc.comfy.entity.GDPersonalCard
 import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
+import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao
+import com.kha.cbc.comfy.model.TeamCard
 import com.kha.cbc.comfy.model.User
+import com.kha.cbc.comfy.presenter.Notification.AlarmHelper
+import com.kha.cbc.comfy.presenter.Notification.CloudPushHelper
 import com.kha.cbc.comfy.presenter.PlusCardPresenter
 import com.kha.cbc.comfy.view.common.AvatarView
 import com.kha.cbc.comfy.view.common.BaseActivityWithPresenter
+import com.kha.cbc.comfy.view.common.yum
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import kotlinx.android.synthetic.main.activity_personal_plus_card.*
 import kotlinx.android.synthetic.main.content_personal_plus_card.*
 import java.text.SimpleDateFormat
 import java.util.*
-import com.kha.cbc.comfy.greendao.gen.GDPersonalCardDao
-import com.kha.cbc.comfy.model.TeamCard
-import com.kha.cbc.comfy.presenter.Notification.AlarmHelper
-import com.kha.cbc.comfy.presenter.Notification.CloudPushHelper
-import com.pnikosis.materialishprogress.ProgressWheel
-import kotlinx.android.synthetic.main.content_personal_plus_card.view.*
 
 
 /**

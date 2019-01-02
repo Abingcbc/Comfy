@@ -4,8 +4,6 @@ import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;

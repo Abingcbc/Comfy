@@ -1,13 +1,9 @@
 package com.kha.cbc.comfy.view.team;
 
-import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-import com.kha.cbc.comfy.model.PersonalTask;
-import com.tmall.ultraviewpager.UltraViewPagerAdapter;
 
 import java.util.List;
 

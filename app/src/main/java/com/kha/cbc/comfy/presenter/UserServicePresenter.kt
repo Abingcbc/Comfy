@@ -3,10 +3,6 @@ package com.kha.cbc.comfy.presenter
 import com.avos.avoscloud.*
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.view.common.UserServiceView
-import com.avos.avoscloud.AVException
-import com.avos.avoscloud.AVUser
-import com.avos.avoscloud.LogInCallback
-
 
 
 class UserServicePresenter(val view: UserServiceView){

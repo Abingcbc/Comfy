@@ -4,7 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.*
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -20,7 +23,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.R
-import com.kha.cbc.comfy.entity.GDUser
 import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
 import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.AvatarPresenter
@@ -32,7 +34,6 @@ import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_user_setting.*
-import pub.devrel.easypermissions.AfterPermissionGranted
 import java.io.File
 
 class UserSettingActivity : BaseActivityWithPresenter() , AvatarView, UserServiceView{
