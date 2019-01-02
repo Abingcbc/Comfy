@@ -11,10 +11,8 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bilibili.magicasakura.utils.ThemeUtils
-import com.google.android.material.navigation.NavigationView
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.model.CustomUsageStats
 import com.kha.cbc.comfy.view.common.ThemeHelper

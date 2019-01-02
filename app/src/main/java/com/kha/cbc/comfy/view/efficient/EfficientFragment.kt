@@ -5,20 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import cn.leancloud.chatkit.LCChatKit
+import cn.leancloud.chatkit.activity.LCIMConversationActivity
+import cn.leancloud.chatkit.utils.LCIMConstants
+import com.avos.avoscloud.im.v2.AVIMClient
+import com.avos.avoscloud.im.v2.AVIMException
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.view.efficient.chart.EfficientChartActivity
-import com.kha.cbc.comfy.view.team.grouptrack.GroupTrackActivity
 import com.leon.lib.settingview.LSettingItem
-import android.widget.Toast
-import com.kha.cbc.comfy.view.main.MainActivity
-import cn.leancloud.chatkit.utils.LCIMConstants
-import cn.leancloud.chatkit.activity.LCIMConversationActivity
-import com.avos.avoscloud.im.v2.AVIMException
-import com.avos.avoscloud.im.v2.AVIMClient
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback
-import cn.leancloud.chatkit.LCChatKit
-import com.ldoublem.loadingviewlib.view.LVGhost
 
 
 class EfficientFragment : Fragment(){

@@ -1,7 +1,7 @@
 package com.kha.cbc.comfy.view.chat
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.kha.cbc.comfy.R
 
 class ChatActivity : AppCompatActivity() {

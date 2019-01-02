@@ -18,7 +18,6 @@ import com.kha.cbc.comfy.model.CustomUsageStats
 import com.kha.cbc.comfy.view.common.yum
 import com.kha.cbc.comfy.view.efficient.chart.fragments.LaunchTimesFragment
 import kotlinx.android.synthetic.main.activity_efficient_chart.*
-import kotlinx.android.synthetic.main.activity_usage.*
 import java.text.SimpleDateFormat
 import java.util.*
 

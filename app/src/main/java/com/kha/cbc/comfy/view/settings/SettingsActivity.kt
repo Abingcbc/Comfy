@@ -1,12 +1,8 @@
 package com.kha.cbc.comfy.view.settings
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import com.bilibili.magicasakura.utils.ThemeUtils
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.view.common.ActivityManager
 import com.kha.cbc.comfy.view.common.ThemeHelper

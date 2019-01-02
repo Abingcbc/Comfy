@@ -1,11 +1,6 @@
 package com.kha.cbc.comfy.presenter;
 
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.avos.avoscloud.*;
 import com.kha.cbc.comfy.ComfyApp;
@@ -19,7 +14,6 @@ import com.kha.cbc.comfy.view.plus.PlusCardActivity;
 import com.kha.cbc.comfy.view.plus.PlusCardView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

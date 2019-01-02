@@ -1,13 +1,10 @@
 package com.kha.cbc.comfy.presenter;
 
-import android.util.Log;
-import com.avos.avoscloud.*;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.LCChatKitUser;
-import cn.leancloud.chatkit.activity.LCIMConversationActivity;
 import cn.yiiguxing.compositionavatar.CompositionAvatarView;
 import com.avos.avoscloud.*;
 import com.avos.avoscloud.im.v2.AVIMClient;
@@ -19,16 +16,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.kha.cbc.comfy.data.network.providers.CustomUserProvider;
-import com.kha.cbc.comfy.model.CustomUsageStats;
 import com.kha.cbc.comfy.model.Stage;
 import com.kha.cbc.comfy.model.TeamCard;
 import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.view.common.BaseRefreshView;
-import com.kha.cbc.comfy.view.team.StageFragView;
-import com.kha.cbc.comfy.view.team.StageFragment;
 
 import java.util.ArrayList;
 import java.util.List;

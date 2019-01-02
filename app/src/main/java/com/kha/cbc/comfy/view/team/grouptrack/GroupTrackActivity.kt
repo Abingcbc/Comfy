@@ -26,7 +26,6 @@ import com.kha.cbc.comfy.ComfyApp
 import com.kha.cbc.comfy.GlideApp
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.greendao.gen.GDAvatarDao
-import com.kha.cbc.comfy.model.User
 import com.kha.cbc.comfy.presenter.AvatarPresenter
 import com.kha.cbc.comfy.presenter.GroupTrackPresenter
 import com.kha.cbc.comfy.view.common.AvatarView

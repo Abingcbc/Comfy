@@ -1,22 +1,12 @@
 package com.kha.cbc.comfy.presenter;
 
-import android.util.Log;
-import android.view.View;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import com.avos.avoscloud.*;
-import com.google.android.material.snackbar.Snackbar;
-import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.model.TeamTask;
 import com.kha.cbc.comfy.model.User;
-import com.kha.cbc.comfy.view.common.AvatarView;
 import com.kha.cbc.comfy.view.common.BaseRefreshView;
 import com.kha.cbc.comfy.view.team.TeamFragment;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
 /**

@@ -1,7 +1,7 @@
 package com.kha.cbc.comfy.model
 
-import android.graphics.drawable.Drawable
 import android.app.usage.UsageStats
+import android.graphics.drawable.Drawable
 import android.os.Parcel
 import android.os.Parcelable
 

@@ -1,17 +1,12 @@
 package com.kha.cbc.comfy.presenter;
 
 import android.content.Context;
-import com.avos.avoscloud.*;
-import com.kha.cbc.comfy.ComfyApp;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.SaveCallback;
 import com.kha.cbc.comfy.model.TeamTask;
 import com.kha.cbc.comfy.model.User;
-import com.kha.cbc.comfy.view.main.MainActivity;
 import com.kha.cbc.comfy.view.plus.PlusTaskView;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by ABINGCBC
