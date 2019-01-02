@@ -1,5 +1,6 @@
 package com.kha.cbc.comfy.view.personal
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
@@ -30,7 +31,8 @@ import kotlinx.android.synthetic.main.stack_task.view.*
 class PersonalTaskAdapter(
     context: Context,
     internal var cardStackView: CardStackView,
-    internal var fragment: PersonalFragment
+    internal var fragment: PersonalFragment,
+    internal var motherActivity: Activity
 ) : StackAdapter<Int>(context), BottomSheetListener {
 
     lateinit var personalTaskList: List<PersonalTask>
@@ -87,7 +89,7 @@ class PersonalTaskAdapter(
                 return@setOnLongClickListener true
             }
             taskTitle.text = dataList[position].title
-            val personalCardAdapter = PersonalCardAdapter(dataList[position].cards, fragment)
+            val personalCardAdapter = PersonalCardAdapter(dataList[position].cards, fragment, motherActivity);
             cardsListView.layoutManager = LinearLayoutManager(this.context)
             cardsListView.adapter = personalCardAdapter
         }

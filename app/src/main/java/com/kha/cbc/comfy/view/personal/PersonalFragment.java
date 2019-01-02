@@ -64,7 +64,7 @@ public class PersonalFragment extends Fragment
     void init() {
         backColor = new LinkedList<>();
         cardStackView = view.findViewById(R.id.cardStackView);
-        personalTaskAdapter = new PersonalTaskAdapter(getContext(), cardStackView, this);
+        personalTaskAdapter = new PersonalTaskAdapter(getContext(), cardStackView, this, getActivity());
         cardStackView.setAdapter(personalTaskAdapter);
         cardStackView.setItemExpendListener(this);
         //动画效果
@@ -155,7 +155,7 @@ public class PersonalFragment extends Fragment
         List<GDPersonalTask> personalTasks = taskDao.queryBuilder().list();
         taskList = new LinkedList<>();
         personalTaskAdapter = new PersonalTaskAdapter(getContext(),
-                cardStackView, this);
+                cardStackView, this, getActivity());
         if (personalTasks.isEmpty())
             return;
         else {

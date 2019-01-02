@@ -97,6 +97,7 @@
                     android:layout_gravity="right|center"
                     android:scaleType="fitXY"
                     android:paddingLeft="10dp"
+                    android:id="@+id/share_button"
                     android:background="@drawable/share_variant"
                     android:clickable="true"
                 android:focusable="true" />

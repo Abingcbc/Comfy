@@ -1,5 +1,11 @@
 package com.kha.cbc.comfy.view.personal;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +17,7 @@ import com.kha.cbc.comfy.R;
 import com.kha.cbc.comfy.model.PersonalCard;
 import com.kha.cbc.comfy.model.common.BaseCardModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,12 +30,14 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapte
     List<BaseCardModel> personalCardList;
     PersonalFragment fragment;
     Boolean cannotBeDeleted;
+    Activity motherActivity;
 
     PersonalCardAdapter(List<BaseCardModel> personalCardList,
-                        PersonalFragment fragment) {
+                        PersonalFragment fragment, Activity motherActivity) {
         this.personalCardList = personalCardList;
         this.fragment = fragment;
         this.cannotBeDeleted = false;
+        this.motherActivity = motherActivity;
     }
 
     @Override
@@ -110,10 +119,48 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapte
                 fragment.plusCard((PersonalCard) personalCardList.get(position));
                 notifyItemChanged(position);
             });
+            cardViewHolder.shareView.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                List<ResolveInfo> resolveInfos = motherActivity.getPackageManager().queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+                if (!resolveInfos.isEmpty()) {
+                    List<Intent> targetIntents = new ArrayList<>();
+                    for (ResolveInfo info : resolveInfos) {
+                        ActivityInfo ainfo = info.activityInfo;
+                        addShareIntent(targetIntents, ainfo, position);
+                    }
+                    Intent chooserIntent = null;
+                    if (targetIntents.size() != 0) {
+                        chooserIntent = Intent.createChooser(targetIntents.remove(0), "请选择分享平台");
+                    }
+                    if (chooserIntent != null) {
+                        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetIntents.toArray(new Parcelable[]{}));
+                    }
+                    try {
+                        motherActivity.startActivity(chooserIntent);
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(motherActivity, "找不到该分享应用组件", Toast.LENGTH_SHORT).show();
+                    }
+                    //startActivity(Intent.createChooser(intent, getTitle()));
+                }
+            });
         } else {
             holder.itemView.setOnClickListener(view
                     -> fragment.plusCard(personalCardList.get(position).getTaskId()));
         }
+    }
+
+    private void addShareIntent(List<Intent> list,ActivityInfo ainfo, int position) {
+        Intent target = new Intent(Intent.ACTION_SEND);
+        target.setType("text/plain");
+        target.putExtra(Intent.EXTRA_TEXT,
+            "今天，我的任务是 " + this.personalCardList.get(position).getTitle() + " ,我要完成: "
+                + this.personalCardList.get(position).getDescription() + " \n 冲鸭！！！！！"
+        );
+        target.setPackage(ainfo.packageName);
+        target.setClassName(ainfo.packageName, ainfo.name);
+        list.add(target);
     }
 
     @Override
@@ -130,6 +177,7 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapte
         ImageView deleteView;
         ImageView alarmView;
         ImageView changeView;
+        ImageButton shareView;
 
         public PersonalCardViewHolder(View itemView) {
             super(itemView);
@@ -140,6 +188,7 @@ public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapte
             deleteView = itemView.findViewById(R.id.personal_card_delete);
             alarmView = itemView.findViewById(R.id.alarmImage);
             changeView = itemView.findViewById(R.id.personal_card_change);
+            shareView = itemView.findViewById(R.id.share_button);
         }
     }
 }
