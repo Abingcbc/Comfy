@@ -21,14 +21,16 @@
         android:layout_height="wrap_content"
         app:leftText="More Information Using RescueTime "
         android:layout_below="@id/recent_graph"
-        android:id="@+id/with_rescue"/>
+        android:id="@+id/with_rescue"
+        android:visibility="gone"/>
 
     <com.leon.lib.settingview.LSettingItem
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:leftText="Chat"
         android:layout_below="@+id/recent_graph"
-        android:id="@+id/chat"/>
+        android:id="@+id/chat"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

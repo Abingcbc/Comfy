@@ -487,44 +487,10 @@ public class MainActivity extends BaseActivityWithPresenter
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
+        if (id == R.id.nav_manage) {
             final Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_share) {
-            //TODO: Share
-//            Intent intent = new Intent(Intent.ACTION_SEND);
-//            intent.setType("text/plain");
-//            List<ResolveInfo> resolveInfos = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-//            if (!resolveInfos.isEmpty()) {
-//                List<Intent> targetIntents = new ArrayList<>();
-//                for (ResolveInfo info : resolveInfos) {
-//                    ActivityInfo ainfo = info.activityInfo;
-//                    addShareIntent(targetIntents, ainfo);
-//                }
-//                Intent chooserIntent = null;
-//                if (targetIntents.size() != 0) {
-//                    chooserIntent = Intent.createChooser(targetIntents.remove(0), "请选择分享平台");
-//                }
-//                if (chooserIntent != null) {
-//                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetIntents.toArray(new Parcelable[]{}));
-//                }
-//                try {
-//                    startActivity(chooserIntent);
-//                } catch (android.content.ActivityNotFoundException ex) {
-//                    Toast.makeText(MainActivity.this, "找不到该分享应用组件", Toast.LENGTH_SHORT).show();
-//                }
-//                //startActivity(Intent.createChooser(intent, getTitle()));
-//            }
-        } else if (id == R.id.nav_send) {
-
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
