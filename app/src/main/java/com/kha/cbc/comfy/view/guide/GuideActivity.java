@@ -13,11 +13,14 @@ import com.kha.cbc.comfy.view.main.MainActivity;
 
 public class GuideActivity extends AppIntro {
 
+    private String returnString;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        returnString = getIntent().getStringExtra("return");
         setZoomAnimation();
 
         SliderPage page1 = new SliderPage();
@@ -47,8 +50,14 @@ public class GuideActivity extends AppIntro {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isFirstStart", false);
         editor.commit();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        try{
+            Class reflection = Class.forName(returnString);
+            Intent intent = new Intent(this, reflection);
+            startActivity(intent);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -57,8 +66,14 @@ public class GuideActivity extends AppIntro {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isFirstStart", false);
         editor.commit();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        try{
+            Class reflection = Class.forName(returnString);
+            Intent intent = new Intent(this, reflection);
+            startActivity(intent);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

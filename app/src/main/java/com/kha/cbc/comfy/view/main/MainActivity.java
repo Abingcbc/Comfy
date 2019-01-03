@@ -168,6 +168,7 @@ public class MainActivity extends BaseActivityWithPresenter
         isFirstStart = preferences.getBoolean("isFirstStart", true);
         if (isFirstStart) {
             Intent intentGuide = new Intent(this, GuideActivity.class);
+            intentGuide.putExtra("return", "com.kha.cbc.comfy.view.main.MainActivity");
             startActivity(intentGuide);
             finish();
         }

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.kha.cbc.comfy.R
 import com.kha.cbc.comfy.view.common.ActivityManager
 import com.kha.cbc.comfy.view.common.ThemeHelper
+import com.kha.cbc.comfy.view.guide.GuideActivity
 import com.kha.cbc.comfy.view.settings.user.UserSettingActivity
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum
 import com.nightonke.boommenu.BoomButtons.TextInsideCircleButton
@@ -31,6 +32,12 @@ class SettingsActivity : AppCompatActivity() {
         user_info_item.setmOnLSettingItemClick{
             val intent = Intent(this, UserSettingActivity::class.java)
             startActivity(intent)
+        }
+        help_item.setmOnLSettingItemClick {
+            val intentGuide = Intent(this, GuideActivity::class.java)
+            intentGuide.putExtra("return", "com.kha.cbc.comfy.view.settings.SettingsActivity")
+            startActivity(intentGuide)
+            finish()
         }
     }
 
