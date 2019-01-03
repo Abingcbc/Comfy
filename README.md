@@ -10,11 +10,12 @@
 ## 目录
 
 * [功能](#功能)
-  * [注册与登录](#注册与登录)
+  * [账户管理与注册登录](#账户管理与注册登录)
   * [个人](#个人)
   * [团队](#团队)
   * [使用情况](#使用情况)
   * [设置](#设置)
+  * [美观](#美观)
 * [第三方库](#第三方库)
 * [数据库](#数据库)
 
@@ -22,9 +23,31 @@
 
 ## 功能
 
-### 注册与登录
+### 账户管理与注册登录
 
+- 注册与登录主界面
 
+  <img src="./screenshots/Login.gif" height="600px">
+
+- 用户管理侧栏
+
+  <img src="./screenshots/navigation.gif" height="600px">
+
+- 设置界面
+
+  <img src="./screenshots/setting_page.jpg" height="600px">
+
+- 用户信息和登出界面
+
+  <img src="./screenshots/user_info.jpg" height="600px">
+
+- 修改用户名和密码
+
+  <img src="./screenshots/change_username.jpg" height="600px"><img src="./screenshots/change_password.jpg" height="600px">
+
+- 修改头像
+
+  <img src="./screenshots/change_avatar.jpg" height="600px">
 
 ### 个人
 
@@ -49,6 +72,10 @@
 * 编辑 删除 完成任务列表
 
 <img src="./screenshots/personal_task_list_edit.png" height="400px"/><img src="./screenshots/personal_task_list_edit_input.png" height="400px"/><img src="./screenshots/personal_task_list_confirm.png" height="400px"/>
+
+- 个人任务分享
+
+  <img src="./screenshots/share.gif" height="600px">
 
 ### 团队
 
@@ -88,7 +115,19 @@
 
 <img src="./screenshots/team_notify.png" height="400px"/><img src="./screenshots/team_notify_complete.png" height="400px"/>
 
+- 团队定位
+
+  <img src="./screenshots/location.gif" height="800px">
+
+- 聊天室
+
+  <img src="./screenshots/chat.gif" height="600px">
+
 ### 使用情况
+
+### 美观
+
+- 更换皮肤
 
 
 
