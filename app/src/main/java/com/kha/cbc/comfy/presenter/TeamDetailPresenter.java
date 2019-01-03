@@ -26,10 +26,6 @@ import com.kha.cbc.comfy.view.common.BaseRefreshView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/24
- */
 public class TeamDetailPresenter extends BasePresenter {
 
     BaseRefreshView view;

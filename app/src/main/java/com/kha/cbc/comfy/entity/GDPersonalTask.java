@@ -14,11 +14,6 @@ import org.greenrobot.greendao.annotation.ToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/5
- */
-
 @Entity
 public class GDPersonalTask {
 

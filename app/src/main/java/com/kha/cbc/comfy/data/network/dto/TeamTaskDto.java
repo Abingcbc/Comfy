@@ -1,9 +1,5 @@
 package com.kha.cbc.comfy.data.network.dto;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/23
- */
 public class TeamTaskDto {
 
     public String creatorName;

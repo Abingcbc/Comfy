@@ -11,10 +11,6 @@ import com.kha.cbc.comfy.view.team.StageRecyclerView;
 
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/24
- */
 public class StageFragPresenter extends BasePresenter {
 
     BaseRefreshView view;

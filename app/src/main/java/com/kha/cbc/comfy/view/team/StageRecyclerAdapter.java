@@ -16,10 +16,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/27
- */
 public class StageRecyclerAdapter extends RecyclerView.Adapter<StageRecyclerAdapter.ViewHolderStage>
 implements StageRecyclerView{
 

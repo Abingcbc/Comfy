@@ -26,10 +26,6 @@ import com.kha.cbc.comfy.view.plus.PlusCardActivity
 import kotlinx.android.synthetic.main.team_plus_frag.view.*
 import java.util.*
 
-/**
- * Created by ABINGCBC
- * on 2018/11/24
- */
 class StageFragment : Fragment(), BaseRefreshView, BottomSheetListener, StageFragView{
 
 

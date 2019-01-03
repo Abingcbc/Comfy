@@ -9,11 +9,6 @@ import org.greenrobot.greendao.annotation.Entity;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/2
- */
-
 @Entity
 public class PersonalTask extends BaseTaskModel {
 

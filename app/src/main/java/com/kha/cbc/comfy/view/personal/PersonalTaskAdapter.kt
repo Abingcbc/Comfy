@@ -22,11 +22,6 @@ import com.loopeer.cardstack.CardStackView
 import com.loopeer.cardstack.StackAdapter
 import kotlinx.android.synthetic.main.stack_task.view.*
 
-/**
- * Created by ABINGCBC
- * on 2018/11/2
- */
-
 class PersonalTaskAdapter(
     context: Context,
     internal var cardStackView: CardStackView,

@@ -6,10 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
-/**
- * Created by ABINGCBC
- * on 2018/12/20
- */
+
 public class CloudReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {

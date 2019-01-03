@@ -4,11 +4,6 @@ import android.util.Log;
 
 import java.util.Calendar;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/2
- */
-
 public class BaseCardModel {
 
     protected String id;

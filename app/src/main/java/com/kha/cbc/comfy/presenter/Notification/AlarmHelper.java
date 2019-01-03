@@ -8,10 +8,6 @@ import com.kha.cbc.comfy.entity.GDPersonalCard;
 
 import java.util.Date;
 
-/**
- * Created by ABINGCBC
- * on 2018/12/16
- */
 public class AlarmHelper {
 
     static public void deleteLocalReminder(GDPersonalCard card) {

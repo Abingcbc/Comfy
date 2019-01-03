@@ -4,10 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.kha.cbc.comfy.model.common.BaseCardModel;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/24
- */
 public class TeamCard extends BaseCardModel implements Parcelable {
 
     String executor;

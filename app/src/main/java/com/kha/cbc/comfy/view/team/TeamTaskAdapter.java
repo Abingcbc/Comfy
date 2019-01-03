@@ -15,10 +15,6 @@ import com.kha.cbc.comfy.view.common.BaseRefreshView;
 
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/19
- */
 public class TeamTaskAdapter extends RecyclerView.Adapter<TeamTaskAdapter.ViewHolder> implements BaseRefreshView {
 
     @Override

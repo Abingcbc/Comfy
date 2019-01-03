@@ -2,13 +2,8 @@ package com.kha.cbc.comfy.model;
 
 import com.kha.cbc.comfy.data.network.dto.TeamTaskDto;
 import com.kha.cbc.comfy.model.common.BaseTaskModel;
-
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/19
- */
 public class TeamTask extends BaseTaskModel {
 
     String founder;

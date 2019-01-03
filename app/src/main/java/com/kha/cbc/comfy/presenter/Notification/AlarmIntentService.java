@@ -4,6 +4,7 @@ import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import com.kha.cbc.comfy.ComfyApp;
 import com.kha.cbc.comfy.R;
@@ -39,7 +40,7 @@ public class AlarmIntentService extends IntentService {
                         getDaoSession().getGDPersonalCardDao();
                 GDPersonalCard card = personalCardDao.queryBuilder().
                         where(GDPersonalCardDao.Properties.Id.eq(id)).unique();
-                if (card.getIsRemind()) {
+                if (card != null && card.getIsRemind()) {
                     cardTitle = card.getTitle();
                     card.setIsRemind(false);
                     personalCardDao.update(card);

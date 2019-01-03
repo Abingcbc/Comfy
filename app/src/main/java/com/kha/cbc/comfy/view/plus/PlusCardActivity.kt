@@ -31,12 +31,6 @@ import kotlinx.android.synthetic.main.content_personal_plus_card.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-/**
- * Created by ABINGCBC
- * on 2018/11/4
- */
-
 class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     TimePickerDialog.OnTimeSetListener,
     DatePickerDialog.OnDateSetListener, AvatarView {
