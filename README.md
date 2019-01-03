@@ -125,11 +125,15 @@
 
 ### 使用情况
 
+- app使用统计
+
+  <img src="./screenshots/usage.gif" height="600px">
+
 ### 美观
 
 - 更换皮肤
 
-
+<img src="./screenshots/skin.gif" height="600px">
 
 ## 第三方库
 
