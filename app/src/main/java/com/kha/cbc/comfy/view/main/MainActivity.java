@@ -424,21 +424,6 @@ public class MainActivity extends BaseActivityWithPresenter
         });
     }
 
-//    @Override
-//    protected void onStop() {
-//        GDUserDao userDao = ((ComfyApp) getApplication()).getDaoSession().getGDUserDao();
-//        List<GDUser> userList = userDao.loadAll();
-//        if(userList != null && userList.size() > 0){
-//            for(GDUser item : userList){
-//                userDao.delete(item);
-//            }
-//        }
-//        GDUser newUser = new GDUser(User.INSTANCE.getUsername(), User.INSTANCE.getSessionToken());
-//        userDao.insert(newUser);
-//        super.onStop();
-//    }
-
-    //--------------------------------------------
 
     @Override
     public void onBackPressed() {
@@ -448,28 +433,6 @@ public class MainActivity extends BaseActivityWithPresenter
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     //TODO: Share

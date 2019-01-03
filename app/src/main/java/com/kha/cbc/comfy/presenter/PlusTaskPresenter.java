@@ -8,10 +8,6 @@ import com.kha.cbc.comfy.model.TeamTask;
 import com.kha.cbc.comfy.model.User;
 import com.kha.cbc.comfy.view.plus.PlusTaskView;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/5
- */
 public class PlusTaskPresenter extends BasePresenter {
 
     PlusTaskView view;

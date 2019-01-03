@@ -5,11 +5,6 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/5
- */
-
 @Entity
 public class GDPersonalCard {
 

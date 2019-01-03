@@ -2,6 +2,7 @@ package com.kha.cbc.comfy.view.personal;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,11 +35,6 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-
-/**
- * Created by ABINGCBC
- * on 2018/11/17
- */
 
 public class PersonalFragment extends Fragment
         implements CardStackView.ItemExpendListener, PersonalFragView {
@@ -149,18 +145,17 @@ public class PersonalFragment extends Fragment
     @Override
     public void onLoadAllFromDBSuccess(List<PersonalTask> taskList) {
 
-        GDPersonalTaskDao taskDao = ((ComfyApp) getActivity().getApplication())
-                .getDaoSession().getGDPersonalTaskDao();
-        List<GDPersonalTask> personalTasks = taskDao.queryBuilder().list();
-        taskList = new LinkedList<>();
         personalTaskAdapter = new PersonalTaskAdapter(getContext(),
                 cardStackView, this, getActivity());
-        if (personalTasks.isEmpty())
-            return;
+        ImageView imageView = view.findViewById(R.id.empty_image);
+        TextView textView = view.findViewById(R.id.empty_text);
+        if (taskList.isEmpty()) {
+            imageView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE);
+        }
         else {
-            for (GDPersonalTask task : personalTasks) {
-                taskList.add(new PersonalTask(task));
-            }
+            imageView.setVisibility(View.GONE);
+            textView.setVisibility(View.GONE);
             //TODO:这里的backColor是固定的，到后期确定涂色表要进行添加
             backColor = new LinkedList<>();
             for (int i = 0; i < taskList.size(); i++) {
@@ -168,15 +163,6 @@ public class PersonalFragment extends Fragment
             }
             cardStackView.setAdapter(personalTaskAdapter);
             personalTaskAdapter.updateData(backColor, taskList);
-        }
-        ImageView imageView = view.findViewById(R.id.empty_image);
-        TextView textView = view.findViewById(R.id.empty_text);
-        if (taskList.isEmpty()) {
-            imageView.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.VISIBLE);
-        } else {
-            imageView.setVisibility(View.GONE);
-            textView.setVisibility(View.GONE);
         }
     }
 

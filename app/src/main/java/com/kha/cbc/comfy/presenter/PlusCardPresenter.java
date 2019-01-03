@@ -16,11 +16,6 @@ import com.kha.cbc.comfy.view.plus.PlusCardView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/5
- */
-
 public class PlusCardPresenter extends AvatarPresenter {
 
     PlusCardView plusCardView;

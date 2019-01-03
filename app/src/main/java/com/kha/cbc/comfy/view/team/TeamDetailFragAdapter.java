@@ -7,10 +7,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/24
- */
 public class TeamDetailFragAdapter extends FragmentPagerAdapter {
 
     List<StageFragment> fragmentList;

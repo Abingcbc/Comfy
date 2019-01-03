@@ -24,12 +24,6 @@ import java.util.List;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/19
- */
-//user:khazeus@outlook.com
-//password: A12345678
 public class TeamFragment extends Fragment
         implements TeamFragView, BaseRefreshView {
 

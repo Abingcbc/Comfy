@@ -8,11 +8,6 @@ import com.kha.cbc.comfy.view.team.TeamFragment;
 
 import java.util.List;
 
-
-/**
- * Created by ABINGCBC
- * on 2018/11/19
- */
 public class TeamFragPresenter extends BasePresenter {
 
     BaseRefreshView view;

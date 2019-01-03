@@ -5,11 +5,6 @@ import android.util.Log;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/2
- */
-
 public class BaseTaskModel {
 
     protected String title;

@@ -7,10 +7,6 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/12/21
- */
 public class CloudPushHelper {
 
     public static void pushInvitation(String taskObjectId, String newMemberId,

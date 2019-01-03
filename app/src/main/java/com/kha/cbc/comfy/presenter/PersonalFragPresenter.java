@@ -11,10 +11,6 @@ import io.reactivex.schedulers.Schedulers;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/17
- */
 public class PersonalFragPresenter extends BasePresenter {
 
     PersonalFragView personalFragView;

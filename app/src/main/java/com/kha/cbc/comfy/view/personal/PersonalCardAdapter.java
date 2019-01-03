@@ -23,11 +23,6 @@ import com.kha.cbc.comfy.model.common.BaseCardModel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ABINGCBC
- * on 2018/11/2
- */
-
 public class PersonalCardAdapter extends RecyclerView.Adapter<PersonalCardAdapter.PersonalCardViewHolder> {
 
     List<BaseCardModel> personalCardList;
