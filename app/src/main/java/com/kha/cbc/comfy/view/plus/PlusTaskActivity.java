@@ -56,15 +56,4 @@ public class PlusTaskActivity extends AppCompatActivity implements PlusTaskView 
             return false;
         });
     }
-
-    //TODO:如果使用API做网络申请的话再调用
-    @Override
-    public void onPostSuccess(TeamTask teamTask) {
-        finish();
-    }
-
-    @Override
-    public void onPostError(Throwable e) {
-        e.printStackTrace();
-    }
 }

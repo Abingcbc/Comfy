@@ -28,14 +28,4 @@ class LeanCloudRepositoryImpl : LeanCloudRepository {
         val requestBody = RequestBody.create(JSONMediaType, json.toString())
         return api.getAccount(requestBody).map(User::fromUserInfoDto)
     }
-
-
-    override fun uploadTeamTask(taskTitle: String, createUserName: String): Single<TeamTask> {
-        val json = JSONObject()
-        json.put("TaskTitle", taskTitle)
-        json.put("CreateUserName", createUserName)
-        val requestBody = RequestBody.create(JSONMediaType, json.toString())
-        //TODO:传入图片
-        return api.postTeamTask(requestBody).map(::TeamTask)
-    }
 }

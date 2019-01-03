@@ -120,7 +120,7 @@ open class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(vi
                                                 try {
                                                     view.avatarDao.deleteAll()
                                                     val historyAvatar = GDAvatar(User.username, uploadFile.url)
-                                                    view.avatarDao.insert(historyAvatar)
+                                                    view.avatarDao.insertOrReplace(historyAvatar)
                                                 }
                                                 catch (e: Exception){
                                                     e.printStackTrace()
@@ -187,7 +187,7 @@ open class AvatarPresenter(override val view: AvatarView): LeanCloudPresenter(vi
                                                     try {
                                                         view.avatarDao.deleteAll()
                                                         val historyAvatar = GDAvatar(User.username, uploadFile.url)
-                                                        view.avatarDao.insert(historyAvatar)
+                                                        view.avatarDao.insertOrReplace(historyAvatar)
                                                     }
                                                     catch (e: Exception){
                                                         e.printStackTrace()

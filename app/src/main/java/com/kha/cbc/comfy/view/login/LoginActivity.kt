@@ -80,7 +80,7 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView , AvatarView{
         intent.putExtra("username", user.username)
         intent.putExtra("sessionToken", user.sessionToken)
         val userDao = (application as ComfyApp).daoSession.gdUserDao
-        userDao.insert(GDUser(user))
+        userDao.insertOrReplace(GDUser(user))
         val st = user.comfyUserObjectId
         startActivity(intent)
         val defaulticBitmap = BitmapFactory.decodeResource(resources, R.drawable.default_avatar)
@@ -110,7 +110,7 @@ class LoginActivity : BaseActivityWithPresenter(), LoginView , AvatarView{
         intent.putExtra("username", user.username)
         intent.putExtra("sessionToken", user.sessionToken)
         val userDao = (application as ComfyApp).daoSession.gdUserDao
-        userDao.insert(GDUser(user))
+        userDao.insertOrReplace(GDUser(user))
         startActivity(intent)
         this.finish()
     }
