@@ -129,6 +129,8 @@
 
 - 更换皮肤
 
+  <img src="./screenshots/skin.gif" height="600px">
+
 
 
 ## 第三方库
