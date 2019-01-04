@@ -1,5 +1,6 @@
 package com.kha.cbc.comfy.model;
 
+import com.kha.cbc.comfy.data.network.dto.TeamTaskDto;
 import com.kha.cbc.comfy.model.common.BaseTaskModel;
 import java.util.List;
 
@@ -13,6 +14,12 @@ public class TeamTask extends BaseTaskModel {
         this.title = title;
         this.founder = founder;
         this.objectId = objectId;
+    }
+
+    public TeamTask(TeamTaskDto dto) {
+        this.founder = dto.creatorName;
+        this.title = dto.title;
+        this.objectId = dto.objectId;
     }
 
     public String getObjectId() {

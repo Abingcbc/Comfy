@@ -376,6 +376,7 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     }
 
     override fun uploadAvatarFinish(url: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun downloadAvatarFinish(urlPairs: MutableList<Pair<String, String>>) {
@@ -388,12 +389,15 @@ class PlusCardActivity : BaseActivityWithPresenter(), PlusCardView,
     }
 
     override fun uploadProgressUpdate(progress: Int?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun setProgressBarVisible() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun downloadAvatarFinish(url: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

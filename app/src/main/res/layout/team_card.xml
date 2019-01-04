@@ -89,18 +89,6 @@ android:id="@+id/team_card_swipe_layout">
                 android:layout_height="60dp"
                 android:paddingRight="20dp"/>
 
-
-        <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="right|center"
-                android:scaleType="fitXY"
-                android:paddingLeft="10dp"
-                android:background="@drawable/share_variant"
-                android:clickable="true"
-                android:focusable="true" />
-
-
     </LinearLayout>
 
 </com.daimajia.swipe.SwipeLayout>

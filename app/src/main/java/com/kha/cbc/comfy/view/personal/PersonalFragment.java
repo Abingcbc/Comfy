@@ -32,7 +32,6 @@ import com.loopeer.cardstack.UpDownStackAnimatorAdapter;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -41,13 +40,13 @@ public class PersonalFragment extends Fragment
         implements CardStackView.ItemExpendListener, PersonalFragView {
 
 
-    private CardStackView cardStackView;
+    CardStackView cardStackView;
     List<PersonalTask> taskList;
-    private PersonalTaskAdapter personalTaskAdapter;
-    private List<Integer> backColor;
-    private View view;
-    private PersonalFragPresenter presenter = new PersonalFragPresenter(this);
-    private GDPersonalTaskDao taskDao;
+    PersonalTaskAdapter personalTaskAdapter;
+    List<Integer> backColor;
+    View view;
+    PersonalFragPresenter presenter = new PersonalFragPresenter(this);
+    GDPersonalTaskDao taskDao;
 
     @Nullable
     @Override
@@ -60,7 +59,7 @@ public class PersonalFragment extends Fragment
     void init() {
         backColor = new LinkedList<>();
         cardStackView = view.findViewById(R.id.cardStackView);
-        personalTaskAdapter = new PersonalTaskAdapter(Objects.requireNonNull(getContext()), cardStackView, this, getActivity());
+        personalTaskAdapter = new PersonalTaskAdapter(getContext(), cardStackView, this, getActivity());
         cardStackView.setAdapter(personalTaskAdapter);
         cardStackView.setItemExpendListener(this);
         //动画效果
@@ -122,7 +121,7 @@ public class PersonalFragment extends Fragment
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        DaoSession daoSession = ((ComfyApp) Objects.requireNonNull(getActivity()).getApplication()).getDaoSession();
+        DaoSession daoSession = ((ComfyApp) getActivity().getApplication()).getDaoSession();
         GDPersonalTaskDao taskDao = daoSession.getGDPersonalTaskDao();
         switch (requestCode) {
             //1为添加task
@@ -146,8 +145,8 @@ public class PersonalFragment extends Fragment
     @Override
     public void onLoadAllFromDBSuccess(List<PersonalTask> taskList) {
 
-        personalTaskAdapter = new PersonalTaskAdapter(Objects.requireNonNull(getContext()),
-                cardStackView, this, Objects.requireNonNull(getActivity()));
+        personalTaskAdapter = new PersonalTaskAdapter(getContext(),
+                cardStackView, this, getActivity());
         ImageView imageView = view.findViewById(R.id.empty_image);
         TextView textView = view.findViewById(R.id.empty_text);
         if (taskList.isEmpty()) {
@@ -173,7 +172,7 @@ public class PersonalFragment extends Fragment
     }
 
     public void onDeleteItemInDB (PersonalCard card) {
-        GDPersonalCardDao cardDao = ((ComfyApp) Objects.requireNonNull(getActivity()).getApplication())
+        GDPersonalCardDao cardDao = ((ComfyApp) getActivity().getApplication())
                 .getDaoSession().getGDPersonalCardDao();
         GDPersonalCard gdPersonalCard = new GDPersonalCard(card);
         if (gdPersonalCard.getIsRemind()) {
@@ -183,7 +182,7 @@ public class PersonalFragment extends Fragment
     }
 
     public void deleteTaskFromDB(PersonalTask task) {
-        GDPersonalTaskDao taskDao = ((ComfyApp) Objects.requireNonNull(getActivity()).getApplication())
+        GDPersonalTaskDao taskDao = ((ComfyApp) getActivity().getApplication())
                 .getDaoSession().getGDPersonalTaskDao();
         taskDao.queryBuilder().where(GDPersonalTaskDao.Properties.Id.eq(task.getId())).
                 buildDelete().executeDeleteWithoutDetachingEntities();
